@@ -1,0 +1,15 @@
+*.gguf
+ai_chats/
+music_cache/
+argonov_backups/
+.cargo/
+.cache/
+__pycache__/
+*.pyc
+*.log
+.pm.vault
+.todo.json
+.notes.json
+.ai_config.json
+.ai_context.json
+.crypto_watchlist.json
