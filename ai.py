@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AI Assistant v12 — короткий промпт, быстрый TTFT"""
+"""AI v13 — точные пути скриптов в промпте"""
 
 import os, sys, json, subprocess, time, re, signal, atexit, socket, threading
 import urllib.request, urllib.error
@@ -23,7 +23,7 @@ HOST, PORT = "127.0.0.1", 8080
 URL = f"http://{HOST}:{PORT}"
 
 STATE = {"model_path": None, "thinking": False, "auto": True, "agent": True,
-         "temp": 0.4, "max_tokens": 512, "ctx_size": 512, "threads": 4,
+         "temp": 0.4, "max_tokens": 512, "ctx_size": 1024, "threads": 4,
          "sys_prompt": "", "use_env": False, "env_text": "",
          "history": [], "proc": None, "ctx": {}}
 
@@ -88,17 +88,26 @@ def collect():
     return ctx
 
 def build_short_prompt():
-    """~50 токенов — минимум для понимания задачи"""
+    """Промпт с ТОЧНЫМИ путями — ~120 токенов"""
     return (
-        "Ты AI в Termux (Android). Русский, кратко.\n"
-        "Для действий возвращай exec-блок:\n"
-        "```exec\n"
-        "команда\n"
-        "```\n"
-        "Скрипты: todo(задачи) notes(заметки) music(музыка) "
-        "pm(пароли) crypto(крипта) hack(тул) d(загрузка) "
-        "matrix sysinfo art.\n"
-        "Пример: 'покажи задачи' → ```exec\npython ~/todo.py\n```"
+        "Ты AI-ассистент в Termux Android. Русский, кратко.\n"
+        "Если просят запустить/показать — верни ТОЧНУЮ команду:\n"
+        "```exec\nкоманда\n```\n\n"
+        "ТОЧНЫЕ КОМАНДЫ (используй ровно эти):\n"
+        "• музыка/плеер → python ~/randomaudio.py\n"
+        "• задачи/todo → python ~/todo.py\n"
+        "• заметки → python ~/notes.py\n"
+        "• пароли/pm → python ~/passmanager.py\n"
+        "• крипта → python ~/crypto_informer.py\n"
+        "• матрица → python ~/matrix.py\n"
+        "• хакер/htool → python ~/hacktool.py\n"
+        "• загрузка/download → python ~/download_zone.py\n"
+        "• sysinfo/система → python ~/sysinfo.py\n"
+        "• утилиты → python ~/utils.py\n"
+        "• пароль-генератор → python ~/passgen.py\n"
+        "• модели → ls -lh ~/*.gguf\n\n"
+        "НЕ придумывай другие команды (termux-*, music, hack и т.п.). "
+        "Только из списка выше. Если не подходит — скажи об этом."
     )
 
 def build_env_block(ctx):
@@ -160,7 +169,6 @@ def start_server(mp):
            "-c", str(STATE["ctx_size"]),
            "-t", str(STATE["threads"]),
            "--no-warmup"]
-    console.print(f"[dim]Команда: {' '.join(cmd)}[/]")
     try:
         with open(os.devnull,"w") as dn:
             STATE["proc"] = subprocess.Popen(cmd, stdout=dn, stderr=dn, stdin=dn, preexec_fn=os.setsid)
@@ -340,10 +348,8 @@ def main():
     STATE["ctx"] = collect()
     STATE["sys_prompt"] = build_short_prompt()
     STATE["env_text"] = build_env_block(STATE["ctx"])
-    # Оценка размера промпта
-    prompt_tokens = len(STATE["sys_prompt"]) // 3
     console.print(f"[green]✔ pip={len(STATE['ctx']['pip'])} pkg={len(STATE['ctx']['pkg'])} скриптов={len(STATE['ctx']['scripts'])}[/]")
-    console.print(f"[dim]Промпт: ~{prompt_tokens} токенов (было ~250)[/]")
+    console.print(f"[dim]Промпт: ~{len(STATE['sys_prompt'])//3} токенов (с точными путями)[/]")
 
     if not start_server(STATE["model_path"]): return
     console.print("[yellow]⏳ Загружаю модель...[/]")
@@ -395,7 +401,7 @@ def main():
             console.print(f"[green]⚡ Команды: {'вкл' if STATE['agent'] else 'выкл'}[/]\n"); continue
         if lo in ("контекст","context"):
             STATE["use_env"] = not STATE["use_env"]
-            console.print(f"[green]📎 Env: {'вкл (медленнее)' if STATE['use_env'] else 'выкл (быстро)'}[/]\n")
+            console.print(f"[green]📎 Env: {'вкл' if STATE['use_env'] else 'выкл'}[/]\n")
             continue
         if lo == "env":
             c = STATE["ctx"]; console.print()
