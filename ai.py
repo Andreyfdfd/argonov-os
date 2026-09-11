@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AI v15.5 — короткий промпт с примерами + pty.spawn"""
+"""AI v16 — Qwen 3B + exec/write/read + автосохранение сессий"""
 
 import os, sys, json, subprocess, time, re, signal, atexit, socket, threading
 import urllib.request, urllib.error
 import pty
+from datetime import datetime
+from pathlib import Path
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
@@ -23,6 +25,107 @@ CONFIG_FILE = os.path.join(HOME, ".ai_config.json")
 HOST, PORT = "127.0.0.1", 8080
 URL = f"http://{HOST}:{PORT}"
 
+# ═══════════ СЕССИИ ═══════════
+CHATS_DIR = os.path.join(HOME, "ai_chats")
+SESSION_VERSION = 1
+
+def get_chats_dir():
+    os.makedirs(CHATS_DIR, exist_ok=True)
+    return CHATS_DIR
+
+def new_session_id():
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+def session_path(session_id):
+    return os.path.join(get_chats_dir(), f"{session_id}.json")
+
+def list_sessions():
+    """Возвращает список (session_id, started, model, msgs) — новые сверху."""
+    d = get_chats_dir()
+    items = []
+    for f in os.listdir(d):
+        if not f.endswith(".json"): continue
+        p = os.path.join(d, f)
+        try:
+            with open(p, encoding="utf-8") as fp:
+                obj = json.load(fp)
+            items.append({
+                "session_id": obj.get("session_id", f[:-5]),
+                "started": obj.get("started", "?"),
+                "ended": obj.get("ended"),
+                "model": obj.get("model", {}).get("name", "?"),
+                "messages": len(obj.get("messages", [])),
+                "duration": obj.get("duration_sec", 0),
+                "path": p,
+                "mtime": os.path.getmtime(p),
+            })
+        except Exception:
+            continue
+    items.sort(key=lambda x: x["mtime"], reverse=True)
+    return items
+
+def last_session_path():
+    items = list_sessions()
+    return items[0]["path"] if items else None
+
+def session_save(state, ended=False):
+    """Сохраняет текущую сессию. Тихая — не падает при ошибке."""
+    sid = state.get("session_id")
+    if not sid: return False
+    try:
+        # Собираем объект сессии
+        started = state.get("session_started_at")
+        dur = int(time.time() - started) if started else 0
+
+        obj = {
+            "version": SESSION_VERSION,
+            "session_id": sid,
+            "started": state.get("session_started_str", "?"),
+            "ended": datetime.now().strftime("%Y-%m-%d %H:%M:%S") if ended else None,
+            "duration_sec": dur,
+            "model": {
+                "path": state.get("model_path", "?"),
+                "name": os.path.basename(state.get("model_path") or "?"),
+            },
+            "device": {
+                "model": state.get("ctx", {}).get("model", "?"),
+                "android": state.get("ctx", {}).get("android", "?"),
+                "python": state.get("ctx", {}).get("python", "?"),
+            },
+            "config": {
+                "temperature": state.get("temp", 0.4),
+                "max_tokens": state.get("max_tokens", 1024),
+                "ctx_size": state.get("ctx_size", 2048),
+                "threads": state.get("threads", 4),
+                "agent": state.get("agent", True),
+                "auto_exec": state.get("auto_exec", False),
+                "sandbox": state.get("sandbox", True),
+                "thinking": state.get("thinking", False),
+            },
+            "messages": state.get("history", []),
+            "files_read": list(state.get("files_read", [])),
+            "files_written": list(state.get("files_written", [])),
+            "commands_executed": list(state.get("commands_executed", [])),
+            "stats": dict(state.get("stats", {})),
+        }
+        p = session_path(sid)
+        tmp = p + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(obj, f, ensure_ascii=False, indent=1)
+        os.replace(tmp, p)
+        return True
+    except Exception:
+        return False
+
+def session_load(path):
+    """Загружает сессию. Возвращает dict или None."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+# ═══════════ КОНТЕКСТ ═══════════
 INTERACTIVE_KEYWORDS = [
     "randomaudio", "hacker_rpg", "matrix.py", "todo.py", "notes.py",
     "passmanager", "hacktool", "crypto_informer", "utils.py",
@@ -43,6 +146,26 @@ STATE = {
     "temp": 0.4, "max_tokens": 1024, "ctx_size": 2048, "threads": 4,
     "sys_prompt": "", "history": [], "proc": None, "ctx": {},
     "session_files": [],
+    # ── новые поля сессий ──
+    "session_id": None,
+    "session_started_at": None,
+    "session_started_str": None,
+    "files_read": [],
+    "files_written": [],
+    "commands_executed": [],
+    "stats": {
+        "user_messages": 0,
+        "assistant_messages": 0,
+        "commands": 0,
+        "writes": 0,
+        "reads": 0,
+        "errors": 0,
+        "ttft_sum": 0.0,
+        "ttft_count": 0,
+        "total_sum": 0.0,
+        "total_count": 0,
+    },
+    "loaded_from": None,  # если -c, ID загруженной сессии
 }
 
 def run(cmd, timeout=30):
@@ -98,7 +221,6 @@ def is_safe_path(path):
     return False
 
 def build_system_prompt(ctx):
-    """~250 токенов с примерами — TTFT 5-10 сек"""
     return (
         "Ты AI в Termux (Android). Русский, кратко.\n\n"
         "ФОРМАТЫ:\n"
@@ -258,7 +380,7 @@ def process(gen):
     tb = tb.replace("<think>","").replace("</think>","").strip()
     ab = ab.replace("<think>","").replace("</think>","").strip()
     if not ab and tb: ab = tb; tb = ""
-    return tb, ab
+    return tb, ab, (ft["t"] - st) if ft["t"] else None
 
 def reset_terminal():
     try: subprocess.run("stty sane 2>/dev/null", shell=True, timeout=3)
@@ -291,6 +413,7 @@ def execute(cmd, auto=False):
     console.print()
     if DANGER.search(cmd):
         console.print(f"[bold red]🛑 Заблокировано:[/] {cmd}")
+        STATE["stats"]["errors"] += 1
         return None
 
     if is_interactive(cmd):
@@ -307,6 +430,8 @@ def execute(cmd, auto=False):
             console.print(f"[green]✔ Код 0[/]\n")
         elif rc is not None:
             console.print(f"[red]✘ Код {rc}[/]\n")
+        STATE["commands_executed"].append(cmd)
+        STATE["stats"]["commands"] += 1
         return f"TTY-команда завершена, код {rc}"
 
     console.print(f"[bold yellow]⚡ Команда:[/] [cyan]{cmd}[/]")
@@ -330,22 +455,31 @@ def execute(cmd, auto=False):
             console.print(f"[green]✔ Код 0[/]\n")
         else:
             console.print(f"[red]✘ Код {p.returncode}[/]\n")
+        STATE["commands_executed"].append(cmd)
+        STATE["stats"]["commands"] += 1
         return result
     except subprocess.TimeoutExpired:
         console.print("[red]✘ Таймаут[/]\n")
         try: p.kill()
         except: pass
+        STATE["stats"]["errors"] += 1
         return None
     except Exception as e:
-        console.print(f"[red]✘ {e}[/]\n"); return None
+        console.print(f"[red]✘ {e}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return None
 
 def do_write(path, content, auto=False):
     path = os.path.expanduser(path.strip())
     console.print()
     if DANGER.search(content):
-        console.print(f"[bold red]🛑 Заблокировано[/]"); return False
+        console.print(f"[bold red]🛑 Заблокировано[/]")
+        STATE["stats"]["errors"] += 1
+        return False
     if not is_safe_path(path):
-        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}"); return False
+        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}")
+        STATE["stats"]["errors"] += 1
+        return False
     console.print(f"[bold yellow]📝 Запись:[/] [cyan]{path}[/]")
     console.print(f"[dim]{len(content)} символов[/]")
     for line in content.split("\n")[:15]:
@@ -364,25 +498,38 @@ def do_write(path, content, auto=False):
         if d: os.makedirs(d, exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
-        console.print(f"[green]✔ Записано[/]\n"); return True
+        console.print(f"[green]✔ Записано[/]\n")
+        STATE["files_written"].append(path)
+        STATE["stats"]["writes"] += 1
+        return True
     except Exception as e:
-        console.print(f"[red]✘ {e}[/]\n"); return False
+        console.print(f"[red]✘ {e}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return False
 
 def do_read(path):
     path = os.path.expanduser(path.strip())
     console.print()
     if not is_safe_path(path):
-        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}"); return None
+        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}")
+        STATE["stats"]["errors"] += 1
+        return None
     if not os.path.exists(path):
-        console.print(f"[red]❌ Не найден: {path}[/]\n"); return None
+        console.print(f"[red]❌ Не найден: {path}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return None
     if os.path.isdir(path):
         try:
             files = os.listdir(path)
             console.print(f"[yellow]📁 {path}:[/]")
             for f in files[:30]: console.print(f"  [cyan]•[/] {f}")
             console.print()
+            STATE["files_read"].append(path)
+            STATE["stats"]["reads"] += 1
             return "\n".join(files)
-        except: return None
+        except:
+            STATE["stats"]["errors"] += 1
+            return None
     try:
         with open(path, encoding="utf-8", errors="ignore") as f:
             content = f.read()
@@ -392,9 +539,13 @@ def do_read(path):
         else:
             console.print(f"[yellow]📄 {path} ({len(content)} симв)[/]\n")
         STATE["session_files"].append(path)
+        STATE["files_read"].append(path)
+        STATE["stats"]["reads"] += 1
         return content
     except Exception as e:
-        console.print(f"[red]✘ {e}[/]\n"); return None
+        console.print(f"[red]✘ {e}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return None
 
 def handle_response(answer):
     did_something = False
@@ -429,6 +580,7 @@ COMMANDS = [
     "думать","think","быстро","fast","авто","auto",
     "команды","agent","агент","sudo","sandbox",
     "env","модель","model",
+    "сессия","session","история","history",
     "очистить","clear","статистика","stats",
     "помощь","help","выход","q"
 ]
@@ -449,12 +601,20 @@ def title_block():
     t = Text()
     t.append("▓▒░ ", style="bold bright_green")
     t.append(mn.upper(), style="bold bright_green")
-    t.append(" ░▒▓ AI v15.5", style="bold green")
+    t.append(" ░▒▓ AI v16", style="bold green")
     t.append(f"\n  ", style="dim"); t.append(mode, style="bold bright_cyan")
     t.append(f"  ·  ", style="dim"); t.append(agent, style="bright_green" if STATE["agent"] else "dim")
     t.append(f"  ·  ", style="dim"); t.append(auto_exec, style="bright_red" if STATE["auto_exec"] else "bright_yellow")
     t.append(f"  ·  ", style="dim"); t.append(sandbox, style="bright_cyan")
-    t.append(f"\n  📝 {len(STATE['history'])}  ·  📂 {len(STATE['session_files'])}  ·  ОЗУ {free_ram()} МБ", style="dim")
+
+    sid = STATE.get("session_id") or "?"
+    loaded = STATE.get("loaded_from")
+    if loaded:
+        t.append(f"\n  📂 продолжение сессии: {sid}", style="bright_magenta")
+    else:
+        t.append(f"\n  📂 сессия: {sid}", style="dim")
+
+    t.append(f"  ·  📝 {len(STATE['history'])}  ·  📄 {len(STATE['session_files'])}  ·  ОЗУ {free_ram()} МБ", style="dim")
     return Panel(t, border_style="black", padding=(0,1))
 
 def switch_model(cfg):
@@ -483,6 +643,64 @@ def switch_model(cfg):
         console.print(f"[green]✔ {w:.1f}с[/]\n"); return True
     except: return False
 
+# ═══════════ ЗАГРУЗКА СЕССИИ ═══════════
+def load_session_by_id(session_id=None):
+    """Загружает сессию в STATE. Возвращает True/False."""
+    if session_id:
+        p = session_path(session_id)
+    else:
+        p = last_session_path()
+    if not p or not os.path.isfile(p):
+        console.print(f"[red]❌ Сессия не найдена: {session_id or 'последняя'}[/]")
+        return False
+    obj = session_load(p)
+    if not obj:
+        console.print(f"[red]❌ Ошибка чтения сессии[/]")
+        return False
+
+    # Восстанавливаем историю и метаданные
+    STATE["history"] = obj.get("messages", [])
+    STATE["files_read"] = list(obj.get("files_read", []))
+    STATE["files_written"] = list(obj.get("files_written", []))
+    STATE["commands_executed"] = list(obj.get("commands_executed", []))
+    st = obj.get("stats", {})
+    # Восстанавливаем stats аккуратно
+    for k, v in st.items():
+        if k in STATE["stats"]: STATE["stats"][k] = v
+
+    STATE["loaded_from"] = obj.get("session_id")
+    # Новая сессия, но с привязкой к загруженной
+    STATE["session_id"] = new_session_id()
+    STATE["session_started_at"] = time.time()
+    STATE["session_started_str"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    console.print(f"[green]✔ Загружена сессия: {obj.get('session_id')}[/]")
+    console.print(f"[dim]   сообщений: {len(STATE['history'])}  ·  модель: {obj.get('model',{}).get('name','?')}[/]")
+    console.print(f"[dim]   начата: {obj.get('started','?')}[/]")
+    time.sleep(1)
+    return True
+
+def print_sessions_list():
+    items = list_sessions()
+    if not items:
+        console.print("[yellow]⚠ Сессий нет[/]"); return
+    console.print()
+    t = Table(box=SIMPLE_HEAD, border_style="black", padding=(0,1))
+    t.add_column("#", style="bold yellow", width=4, justify="right")
+    t.add_column("ID", style="cyan")
+    t.add_column("Начата", style="dim")
+    t.add_column("Модель", style="green")
+    t.add_column("Сообщ.", style="yellow", justify="right")
+    t.add_column("Время", style="magenta", justify="right")
+    for i, s in enumerate(items, 1):
+        dur = f"{s['duration']//60}м" if s['duration'] else "?"
+        t.add_row(str(i), s["session_id"], s["started"][:16],
+                  s["model"].replace(".gguf","")[:18],
+                  str(s["messages"]), dur)
+    console.print(t)
+    console.print()
+
+# ═══════════ MAIN ═══════════
 def main():
     os.system("clear")
     cfg = load_cfg()
@@ -514,9 +732,16 @@ def main():
     console.print(f"[green]✔ Загружена за {res['w']:.1f}с[/]")
     time.sleep(0.3)
 
+    # ═══ Сессия ═══
+    STATE["session_id"] = new_session_id()
+    STATE["session_started_at"] = time.time()
+    STATE["session_started_str"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    session_save(STATE)
+
     os.system("clear"); console.print()
     console.print(title_block()); console.print()
     console.print("[bold green]Готов.[/] Попробуй: 'запусти матрицу', 'открой музыку'\n")
+    console.print("[dim]Команды: /last  /list  /session  /save  ·  'статистика'[/]\n")
 
     st = Style.from_dict({"prompt":"bold ansibrightmagenta",
         "completion-menu.completion":"bg:#000000 #00ff88",
@@ -530,7 +755,13 @@ def main():
         if not ui: continue
         lo = ui.lower()
 
-        if lo in ("выход","q","quit","exit"): break
+        # ─── выход ───
+        if lo in ("выход","q","quit","exit"):
+            session_save(STATE, ended=True)
+            console.print(f"[dim]💾 Сессия сохранена: {STATE['session_id']}[/]")
+            break
+
+        # ─── команды режимов ───
         if lo in ("думать","think"):
             STATE["thinking"]=True; STATE["auto"]=False
             console.print("[magenta]💭[/]\n"); continue
@@ -552,6 +783,32 @@ def main():
             STATE["sandbox"] = not STATE["sandbox"]
             cfg["sandbox"] = STATE["sandbox"]; save_cfg(cfg)
             console.print(f"[cyan]🔒 SB: {'ВКЛ' if STATE['sandbox'] else 'ВЫКЛ'}[/]\n"); continue
+
+        # ─── /last /list /session /save ───
+        if lo in ("/last", "/continue", "/продолжить"):
+            if load_session_by_id(None):
+                os.system("clear"); console.print(); console.print(title_block()); console.print()
+            continue
+        if lo == "/list":
+            print_sessions_list()
+            continue
+        if lo == "/session":
+            console.print()
+            console.print(f"[cyan]ID:[/] {STATE['session_id']}")
+            console.print(f"[cyan]Начата:[/] {STATE['session_started_str']}")
+            console.print(f"[cyan]Модель:[/] {os.path.basename(STATE['model_path'])}")
+            console.print(f"[cyan]Сообщений:[/] {len(STATE['history'])}")
+            console.print(f"[cyan]Файл:[/] {session_path(STATE['session_id'])}")
+            if STATE.get("loaded_from"):
+                console.print(f"[magenta]Продолжение:[/] {STATE['loaded_from']}")
+            console.print(); continue
+        if lo == "/save":
+            if session_save(STATE):
+                console.print(f"[green]✔ Сохранено: {STATE['session_id']}[/]\n")
+            else:
+                console.print("[red]❌ Ошибка[/]\n")
+            continue
+
         if lo == "env":
             c = STATE["ctx"]; console.print()
             console.print(f"[cyan]Python:[/] {c['python']}  ·  Android {c['android']}")
@@ -567,26 +824,58 @@ def main():
             os.system("clear"); console.print(); console.print(title_block()); console.print()
             console.print("[green]✔[/]\n"); continue
         if lo in ("статистика","stats"):
-            console.print(Panel.fit(
-                f"Модель: {os.path.basename(STATE['model_path'])}\n"
-                f"Сообщений: {len(STATE['history'])}\nОЗУ: {free_ram()} МБ",
-                border_style="black")); console.print(); continue
+            s = STATE["stats"]
+            avg_ttft = (s["ttft_sum"]/s["ttft_count"]) if s["ttft_count"] else 0
+            avg_total = (s["total_sum"]/s["total_count"]) if s["total_count"] else 0
+            console.print()
+            t = Table(box=SIMPLE_HEAD, border_style="black", padding=(0,2))
+            t.add_column("", style="bold yellow", width=22)
+            t.add_column("", style="cyan", justify="right", width=10)
+            t.add_row("💬 Сообщений (user)", str(s["user_messages"]))
+            t.add_row("🤖 Ответов (AI)", str(s["assistant_messages"]))
+            t.add_row("⚡ Команд", str(s["commands"]))
+            t.add_row("📝 Write", str(s["writes"]))
+            t.add_row("📄 Read", str(s["reads"]))
+            t.add_row("❌ Ошибок", str(s["errors"]))
+            t.add_row("⏱ Avg TTFT", f"{avg_ttft:.1f}с")
+            t.add_row("⏱ Avg total", f"{avg_total:.1f}с")
+            console.print(t); console.print()
+            if STATE.get("session_started_at"):
+                dur = int(time.time() - STATE["session_started_at"])
+                console.print(f"[dim]Длительность сессии: {dur//60}м {dur%60}с[/]\n")
+            continue
         if lo in ("помощь","help","?"):
             console.print()
-            console.print("[bold]Команды:[/] авто · быстро · думать · команды · sudo · sandbox · env · модель · очистить · выход")
+            console.print("[bold]Режимы:[/] авто · быстро · думать · команды · sudo · sandbox")
+            console.print("[bold]Инфо:[/] env · модель · статистика · /session")
+            console.print("[bold]Сессии:[/] /last · /list · /save")
             console.print("[bold]Возможности:[/] exec · write · read")
+            console.print("[bold]Выход:[/] q / выход")
             console.print(); continue
 
+        # ─── AI-запрос ───
         STATE["history"].append({"role":"user","content":ui})
+        STATE["stats"]["user_messages"] += 1
+        session_save(STATE)  # сохраняем сразу после user-сообщения
         console.print()
         t0 = time.time()
-        try: tb, ab = process(stream(ui))
+        try: tb, ab, ttft = process(stream(ui))
         except KeyboardInterrupt:
-            console.print("\n[yellow]⏹[/]\n"); STATE["history"].pop(); continue
+            console.print("\n[yellow]⏹[/]\n")
+            STATE["history"].pop()
+            STATE["stats"]["user_messages"] -= 1
+            continue
         el = time.time() - t0
         if ab.startswith("__ERROR__"):
-            console.print(f"[red]❌ {ab[10:]}[/]\n"); STATE["history"].pop(); continue
+            console.print(f"[red]❌ {ab[10:]}[/]\n")
+            STATE["history"].pop()
+            STATE["stats"]["user_messages"] -= 1
+            STATE["stats"]["errors"] += 1
+            continue
         STATE["history"].append({"role":"assistant","content":ab})
+        STATE["stats"]["assistant_messages"] += 1
+        if ttft: STATE["stats"]["ttft_sum"] += ttft; STATE["stats"]["ttft_count"] += 1
+        STATE["stats"]["total_sum"] += el; STATE["stats"]["total_count"] += 1
 
         console.print()
         if tb: console.print(f"[dim italic yellow]💭 {tb[:400]}[/]\n")
@@ -600,15 +889,22 @@ def main():
                 STATE["history"].append({"role":"user","content":follow})
                 console.print("[dim]🔄 AI получает результаты...[/]\n")
                 t1 = time.time()
-                try: tb2, ab2 = process(stream(follow[:4000]))
-                except KeyboardInterrupt: ab2 = None
+                try: tb2, ab2, ttft2 = process(stream(follow[:4000]))
+                except KeyboardInterrupt: ab2 = None; ttft2 = None
                 if ab2 and not ab2.startswith("__ERROR__"):
                     STATE["history"].append({"role":"assistant","content":ab2})
+                    STATE["stats"]["assistant_messages"] += 1
+                    if ttft2: STATE["stats"]["ttft_sum"] += ttft2; STATE["stats"]["ttft_count"] += 1
+                    el2 = time.time() - t1
+                    STATE["stats"]["total_sum"] += el2; STATE["stats"]["total_count"] += 1
                     console.print()
                     if tb2: console.print(f"[dim italic yellow]💭 {tb2[:300]}[/]\n")
                     try: console.print(Markdown(ab2))
                     except: console.print(ab2)
-                    console.print(f"\n[dim]⏱ {time.time()-t1:.1f}с[/]\n")
+                    console.print(f"\n[dim]⏱ {el2:.1f}с[/]\n")
+
+        # ─── Автосохранение после пары ───
+        session_save(STATE)
 
     reset_terminal()
     stop_server()
@@ -617,5 +913,6 @@ if __name__ == "__main__":
     try: main()
     except KeyboardInterrupt:
         console.print("\n[dim]Прервано[/]")
+        session_save(STATE, ended=True)
         reset_terminal()
         stop_server()

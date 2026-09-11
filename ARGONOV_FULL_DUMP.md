@@ -1,28 +1,261 @@
 # ARGONOV OS — Полный дамп всех скриптов
 
-Дата: Fri Sep 11 16:00:15  2026
+Дата: Fri Sep 11 16:22:21  2026
 Устройство: RMX5090 / Android 16
+
+---
+
+# 📋 ПРАВИЛА РАЗРАБОТКИ ARGONOV OS
+
+*Обязательное чтение для любой нейронки, работающей над проектом.*
+
+# ARGONOV OS · ПРАВИЛА РАЗРАБОТКИ
+
+_Обязательное чтение для нейронки, работающей над проектом._
+
+---
+
+## 1. ФОРМАТ ОТВЕТА
+
+### 1.1 Любая правка = снос + создание с нуля
+
+НИКОГДА не редактировать файл точечно.
+ВСЕГДА: удалить → создать заново → дать права → проверить.
+
+### 1.2 Один файл за раз
+
+Для каждого файла — три блока подряд:
+
+1. 🗑 СНОС — команда `rm`
+2. 📝 СОЗДАНИЕ + КОД — `nano` + код
+3. 🚀 ПРОВЕРКА — chmod + py_compile + запуск
+
+Только после проверки — следующий файл.
+Не смешивать два файла в одном ответе.
+
+### 1.3 rm и nano в одном блоке
+
+Разрешено писать подряд:
+
+    rm -f ~/имя.py
+    nano ~/имя.py
+
+### 1.4 Не обрезать файл
+
+Если ответ не влезает — писать «продолжение в следующем сообщении» и дописывать с точной строки.
+
+### 1.5 Проверка после правки
+
+- Python: python -m py_compile ~/имя.py && echo "✅ OK"
+- Bash: bash -n ~/argonov && echo "✅ OK"
+- Тест: python ~/имя.py
+
+---
+
+## 2. СТАНДАРТ ФАЙЛОВ
+
+### 2.1 Шапка Python
+
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+    # ═══════════════════════════════════════════════════════
+    #  ARGONOV OS · <Название модуля>
+    #  <Одна строка — что делает>
+    #  Версия: X.Y  ·  Обновлён: YYYY-MM-DD
+    # ═══════════════════════════════════════════════════════
+
+### 2.2 Шапка Bash
+
+    #!/data/data/com.termux/files/usr/bin/bash
+    # ═══════════════════════════════════════════════════════
+    #  ARGONOV OS · <Название>
+    #  <Одна строка — что делает>
+    #  Версия: X.Y  ·  Обновлён: YYYY-MM-DD
+    # ═══════════════════════════════════════════════════════
+
+### 2.3 Секции
+
+Разделять блоки через:
+
+    # ═══ НАЗВАНИЕ СЕКЦИИ ═══
+
+Стандарт: КОНСТАНТЫ · УТИЛИТЫ · ЯДРО · MAIN
+
+### 2.4 Импорты — три группы
+
+    # stdlib
+    import os, sys, json
+
+    # third-party
+    from rich.console import Console
+
+    # локальные
+    from net_helper import get_fx_rates
+
+### 2.5 Цвета — константами сверху
+
+Не хардкодить в функциях. Всё в секции КОНСТАНТЫ.
+
+---
+
+## 3. ДАМП + PUSH
+
+После любого крупного обновления:
+
+    python ~/argonov-dump
+
+Что делает:
+
+1. Собирает все скрипты в ~/ARGONOV_FULL_DUMP.md
+2. В начало дампа вставляет ~/ARGONOV_RULES.md
+3. Копирует в ~/argonov-os/
+4. git add + commit + push
+
+---
+
+## 4. СТРУКТУРА
+
+### 4.1 Локально (~/)
+
+- argonov — точка входа (bash)
+- argonov-dump — дамп + push (python)
+- doctor.py — диагностика
+- net_helper.py — fallback API + кэш
+- ai.py — AI-ассистент
+- 15 скриптов на Python
+
+### 4.2 Репозиторий
+
+- GitHub: https://github.com/Andreyfdfd/argonov-os
+- Локально: ~/argonov-os/
+- fish-config/config.fish
+- termux-config/colors.properties
+
+### 4.3 Данные (не в git)
+
+- ~/.pm.vault — пароли (AES-256)
+- ~/.todo.json — задачи
+- ~/.notes.json — заметки
+- ~/.hacker_rpg_save.json — RPG
+- ~/.ai_config.json — настройки AI
+- ~/music_cache/ — метаданные музыки
+- ~/ai_chats/ — история AI-сессий
+- ~/argonov_backups/ — бэкапы
+
+---
+
+## 5. ОГРАНИЧЕНИЯ
+
+### 5.1 Платформа
+
+- Android 10+ / Termux (F-Droid)
+- Python 3.13
+- Fish + starship
+- Termux:API + Termux:Styling
+
+### 5.2 AI
+
+- Модель: Qwen 2.5 Coder 3B Q4_K_M
+- Движок: llama.cpp (CPU, без GPU)
+- GPU не работает (Android блокирует /vendor)
+- TTFT 5-15 сек
+- Sandbox: только ~/ и ~/storage
+
+### 5.3 Не работает
+
+- GPU (OpenCL) — Android SELinux
+- Запись в /system, /vendor
+- Контексты > 4096 токенов
+
+---
+
+## 6. ЦВЕТА
+
+- #00FF88 — зелёный (основной)
+- #00D9FF — циан (акценты)
+- #FFD700 — жёлтый (внимание)
+- #FF3355 — красный (ошибки)
+- #557755 — dim
+
+В rich: bright_green · bright_cyan · bright_yellow · bright_red · grey50
+
+---
+
+## 7. СТИЛЬ КОДА
+
+### 7.1 Комментарии
+
+- Не дублировать код словами
+- Комментировать только неочевидное
+- Секции — крупные, не по строке
+
+### 7.2 Имена
+
+- Функции: snake_case, глаголы (load_, save_, print_, check_)
+- Константы: UPPER_CASE
+
+### 7.3 Ошибки
+
+- try/except Exception в утилитах
+- KeyboardInterrupt — везде в main()
+- Файлы сохранять через tmp + os.replace
+
+---
+
+## 8. ИСТОРИЯ
+
+### v1.0–1.3
+
+- 15+ скриптов, меню argonov, fish + CRT
+
+### v1.4 (2026-09-11)
+
+- Doctor v2, симлинки в $PREFIX/bin
+
+### v1.5 (2026-09-11)
+
+- Единый стандарт оформления
+- argonov-dump (дамп + push)
+- ARGONOV_RULES.md
+
+### Roadmap
+
+- net_helper.py v3 (кэш)
+- ai.py v16 (сессии)
+- ai.py -c (continue)
+
+---
+
+_Обновляется при крупных изменениях._
+
+---
+
+
+# 💻 ДАМП СКРИПТОВ
 
 ---
 
 ## 📄 argonov
 
-*11354 байт · 254 строк*
+*10992 байт · 252 строк*
 
 ```bash
 #!/data/data/com.termux/files/usr/bin/bash
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS v1.4 — doctor v2 + push обновлён
+#  ARGONOV OS · Main Entry
+#  Единая точка входа для всех скриптов
+#  Версия: 1.5  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
 
-ARGONOV_VERSION="1.4.0"
+ARGONOV_VERSION="1.5.0"
 REPO_DIR="$HOME/argonov-os"
 BACKUP_DIR="$HOME/argonov_backups"
 
-G="\033[92m"; DG="\033[32m"; C="\033[96m"; B="\033[94m"
-M="\033[95m"; Y="\033[93m"; R="\033[91m"; W="\033[97m"
-DIM="\033[2m"; BLD="\033[1m"; RST="\033[0m"
+G="\033[92m";  DG="\033[32m";  C="\033[96m";  B="\033[94m"
+M="\033[95m";  Y="\033[93m";   R="\033[91m";  W="\033[97m"
+DIM="\033[2m"; BLD="\033[1m";  RST="\033[0m"
 
+# ═══ ЗАГОЛОВОК / СПРАВКА / МЕНЮ ═══
 header() {
     echo ""
     echo -e "${C}┌─────────────────────────────────────────────────┐${RST}"
@@ -43,15 +276,6 @@ show_help() {
     echo -e "  ${Y}🎮 ${C}hack${RST}    · ${Y}🕹  ${C}rpg${RST}       · ${Y}📥 ${C}d${RST}"
     echo -e "  ${Y}🌧  ${C}m${RST}       · ${Y}🔐 ${C}p${RST}         · ${Y}⚡ ${C}s${RST}"
     echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}       · ${Y}🩺 ${C}doctor${RST}"
-    echo ""
-    echo -e "${M}[ ART ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${C}argonov art${RST}               — показать welcome"
-    echo -e "  ${C}argonov art <имя>${RST}         — найти и показать"
-    echo -e "  ${C}argonov art <имя> set${RST}     — установить как welcome"
-    echo -e "  ${C}argonov art reset${RST}         — сбросить welcome"
-    echo -e "  ${C}argonov art list${RST}          — список картинок"
     echo ""
     echo -e "${M}[ GIT / БЭКАПЫ ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
@@ -112,6 +336,7 @@ show_menu() {
     done
 }
 
+# ═══ ЗАПУСК СКРИПТОВ ═══
 check_py() {
     if [ ! -f "$1" ]; then
         echo -e "${R}❌ Не найден: $1${RST}"; sleep 2; return 1
@@ -135,6 +360,7 @@ run_util()    { check_py ~/utils.py && python ~/utils.py ; }
 run_art()     { check_py ~/art.py && python ~/art.py ; }
 run_doctor()  { check_py ~/doctor.py && python ~/doctor.py "$@" ; }
 
+# ═══ GIT ═══
 do_push() {
     if [ ! -d "$REPO_DIR/.git" ]; then
         echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
@@ -189,6 +415,7 @@ do_status() {
     git remote -v
 }
 
+# ═══ БЭКАПЫ ═══
 do_backup() {
     mkdir -p "$BACKUP_DIR"
     ts=$(date +%Y%m%d_%H%M%S)
@@ -232,6 +459,7 @@ do_restore() {
     sleep 2
 }
 
+# ═══ DISPATCH ═══
 case "$1" in
     "")              show_menu ;;
     ai)              run_ai ;;
@@ -269,19 +497,28 @@ esac
 
 ## 📄 argonov-dump
 
-*6987 байт · 184 строк*
+*8858 байт · 234 строк*
 
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Argonov Dump — сборка ARGONOV_FULL_DUMP.md + push в GitHub"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Dump + Push
+#  Сборка дампа всех скриптов + push в GitHub
+#  Версия: 2.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""Собирает все скрипты в ARGONOV_FULL_DUMP.md (с правилами) и пушит на GitHub."""
 
-import os, sys, subprocess, time
+import os
+import sys
+import subprocess
 from datetime import datetime
 
+# ═══ КОНСТАНТЫ ═══
 HOME = os.path.expanduser("~")
 DUMP_FILE = os.path.join(HOME, "ARGONOV_FULL_DUMP.md")
-REPO_DIR  = os.path.join(HOME, "argonov-os")
+RULES_FILE = os.path.join(HOME, "ARGONOV_RULES.md")
+REPO_DIR = os.path.join(HOME, "argonov-os")
 
 SCRIPTS = [
     ("argonov",           "bash"),
@@ -308,6 +545,7 @@ SCRIPTS = [
 G = "\033[92m"; C = "\033[96m"; Y = "\033[93m"; R = "\033[91m"
 DIM = "\033[2m"; BLD = "\033[1m"; RST = "\033[0m"
 
+# ═══ УТИЛИТЫ ═══
 def run(cmd, timeout=60):
     try:
         return subprocess.run(cmd, shell=True, capture_output=True,
@@ -315,15 +553,28 @@ def run(cmd, timeout=60):
     except Exception:
         return None
 
+
 def getprop(p):
     r = run(f"getprop {p}")
     return r.stdout.strip() if r and r.stdout else "?"
 
+
+def read_file(path):
+    try:
+        with open(path, encoding="utf-8", errors="ignore") as f:
+            return f.read()
+    except Exception:
+        return None
+
+
+# ═══ СБОРКА ДАМПА ═══
 def build_dump():
     print(f"{C}📦 Сборка дампа...{RST}")
     print()
 
     lines = []
+
+    # Шапка
     lines.append("# ARGONOV OS — Полный дамп всех скриптов")
     lines.append("")
     lines.append(f"Дата: {datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')}")
@@ -332,6 +583,28 @@ def build_dump():
     lines.append("---")
     lines.append("")
 
+    # ПРАВИЛА в начале дампа
+    rules = read_file(RULES_FILE)
+    if rules:
+        lines.append("# 📋 ПРАВИЛА РАЗРАБОТКИ ARGONOV OS")
+        lines.append("")
+        lines.append("*Обязательное чтение для любой нейронки, работающей над проектом.*")
+        lines.append("")
+        lines.append(rules.rstrip())
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+        print(f"  {G}✔{RST}  ARGONOV_RULES.md {DIM}[{len(rules)} символов]{RST}")
+    else:
+        print(f"  {Y}⚠{RST}  ARGONOV_RULES.md {DIM}[не найден — пропущен]{RST}")
+
+    lines.append("")
+    lines.append("# 💻 ДАМП СКРИПТОВ")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    # Скрипты
     included = 0
     skipped = []
 
@@ -341,12 +614,10 @@ def build_dump():
             skipped.append(fname)
             print(f"  {Y}⚠{RST}  {fname} {DIM}[нет файла]{RST}")
             continue
-        try:
-            with open(path, encoding="utf-8", errors="ignore") as f:
-                content = f.read()
-        except Exception as e:
+        content = read_file(path)
+        if content is None:
             skipped.append(fname)
-            print(f"  {R}✘{RST}  {fname} {DIM}[{e}]{RST}")
+            print(f"  {R}✘{RST}  {fname} {DIM}[ошибка чтения]{RST}")
             continue
 
         size = os.path.getsize(path)
@@ -377,6 +648,8 @@ def build_dump():
     print()
     return included
 
+
+# ═══ PUSH ═══
 def do_push():
     if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
         print(f"{R}❌ {REPO_DIR} — не git-репозиторий{RST}")
@@ -389,6 +662,8 @@ def do_push():
             subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
     subprocess.run(f'cp "{DUMP_FILE}" "{REPO_DIR}/"', shell=True)
+    if os.path.isfile(RULES_FILE):
+        subprocess.run(f'cp "{RULES_FILE}" "{REPO_DIR}/"', shell=True)
 
     fish_src = os.path.join(HOME, ".config/fish/config.fish")
     fish_dst = os.path.join(REPO_DIR, "fish-config/config.fish")
@@ -421,10 +696,12 @@ def do_push():
         print(f"{R}✘ Push вернул код {r.returncode if r else '?'}{RST}")
         return False
 
+
+# ═══ MAIN ═══
 def main():
     print()
     print(f"{C}┌─────────────────────────────────────────────────┐{RST}")
-    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH{RST}                       {C}│{RST}")
+    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH v2{RST}                    {C}│{RST}")
     print(f"{C}└─────────────────────────────────────────────────┘{RST}")
     print()
 
@@ -440,7 +717,7 @@ def main():
 
     if ok:
         print(f"{G}═══════════════════════════════════════════════════{RST}")
-        print(f"{G}  ✅ ГОТОВО  ·  дамп + push{RST}")
+        print(f"{G}  ✅ ГОТОВО  ·  дамп + правила + push{RST}")
         print(f"{G}═══════════════════════════════════════════════════{RST}")
     else:
         print(f"{Y}═══════════════════════════════════════════════════{RST}")
@@ -448,6 +725,7 @@ def main():
         print(f"{Y}═══════════════════════════════════════════════════{RST}")
         print(f"{DIM}Проверь: cd ~/argonov-os && git status{RST}")
     print()
+
 
 if __name__ == "__main__":
     try:
@@ -1584,16 +1862,18 @@ if __name__ == "__main__":
 
 ## 📄 ai.py
 
-*26248 байт · 622 строк*
+*38668 байт · 919 строк*
 
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AI v15.5 — короткий промпт с примерами + pty.spawn"""
+"""AI v16 — Qwen 3B + exec/write/read + автосохранение сессий"""
 
 import os, sys, json, subprocess, time, re, signal, atexit, socket, threading
 import urllib.request, urllib.error
 import pty
+from datetime import datetime
+from pathlib import Path
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
@@ -1612,6 +1892,107 @@ CONFIG_FILE = os.path.join(HOME, ".ai_config.json")
 HOST, PORT = "127.0.0.1", 8080
 URL = f"http://{HOST}:{PORT}"
 
+# ═══════════ СЕССИИ ═══════════
+CHATS_DIR = os.path.join(HOME, "ai_chats")
+SESSION_VERSION = 1
+
+def get_chats_dir():
+    os.makedirs(CHATS_DIR, exist_ok=True)
+    return CHATS_DIR
+
+def new_session_id():
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+def session_path(session_id):
+    return os.path.join(get_chats_dir(), f"{session_id}.json")
+
+def list_sessions():
+    """Возвращает список (session_id, started, model, msgs) — новые сверху."""
+    d = get_chats_dir()
+    items = []
+    for f in os.listdir(d):
+        if not f.endswith(".json"): continue
+        p = os.path.join(d, f)
+        try:
+            with open(p, encoding="utf-8") as fp:
+                obj = json.load(fp)
+            items.append({
+                "session_id": obj.get("session_id", f[:-5]),
+                "started": obj.get("started", "?"),
+                "ended": obj.get("ended"),
+                "model": obj.get("model", {}).get("name", "?"),
+                "messages": len(obj.get("messages", [])),
+                "duration": obj.get("duration_sec", 0),
+                "path": p,
+                "mtime": os.path.getmtime(p),
+            })
+        except Exception:
+            continue
+    items.sort(key=lambda x: x["mtime"], reverse=True)
+    return items
+
+def last_session_path():
+    items = list_sessions()
+    return items[0]["path"] if items else None
+
+def session_save(state, ended=False):
+    """Сохраняет текущую сессию. Тихая — не падает при ошибке."""
+    sid = state.get("session_id")
+    if not sid: return False
+    try:
+        # Собираем объект сессии
+        started = state.get("session_started_at")
+        dur = int(time.time() - started) if started else 0
+
+        obj = {
+            "version": SESSION_VERSION,
+            "session_id": sid,
+            "started": state.get("session_started_str", "?"),
+            "ended": datetime.now().strftime("%Y-%m-%d %H:%M:%S") if ended else None,
+            "duration_sec": dur,
+            "model": {
+                "path": state.get("model_path", "?"),
+                "name": os.path.basename(state.get("model_path") or "?"),
+            },
+            "device": {
+                "model": state.get("ctx", {}).get("model", "?"),
+                "android": state.get("ctx", {}).get("android", "?"),
+                "python": state.get("ctx", {}).get("python", "?"),
+            },
+            "config": {
+                "temperature": state.get("temp", 0.4),
+                "max_tokens": state.get("max_tokens", 1024),
+                "ctx_size": state.get("ctx_size", 2048),
+                "threads": state.get("threads", 4),
+                "agent": state.get("agent", True),
+                "auto_exec": state.get("auto_exec", False),
+                "sandbox": state.get("sandbox", True),
+                "thinking": state.get("thinking", False),
+            },
+            "messages": state.get("history", []),
+            "files_read": list(state.get("files_read", [])),
+            "files_written": list(state.get("files_written", [])),
+            "commands_executed": list(state.get("commands_executed", [])),
+            "stats": dict(state.get("stats", {})),
+        }
+        p = session_path(sid)
+        tmp = p + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(obj, f, ensure_ascii=False, indent=1)
+        os.replace(tmp, p)
+        return True
+    except Exception:
+        return False
+
+def session_load(path):
+    """Загружает сессию. Возвращает dict или None."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+# ═══════════ КОНТЕКСТ ═══════════
 INTERACTIVE_KEYWORDS = [
     "randomaudio", "hacker_rpg", "matrix.py", "todo.py", "notes.py",
     "passmanager", "hacktool", "crypto_informer", "utils.py",
@@ -1632,6 +2013,26 @@ STATE = {
     "temp": 0.4, "max_tokens": 1024, "ctx_size": 2048, "threads": 4,
     "sys_prompt": "", "history": [], "proc": None, "ctx": {},
     "session_files": [],
+    # ── новые поля сессий ──
+    "session_id": None,
+    "session_started_at": None,
+    "session_started_str": None,
+    "files_read": [],
+    "files_written": [],
+    "commands_executed": [],
+    "stats": {
+        "user_messages": 0,
+        "assistant_messages": 0,
+        "commands": 0,
+        "writes": 0,
+        "reads": 0,
+        "errors": 0,
+        "ttft_sum": 0.0,
+        "ttft_count": 0,
+        "total_sum": 0.0,
+        "total_count": 0,
+    },
+    "loaded_from": None,  # если -c, ID загруженной сессии
 }
 
 def run(cmd, timeout=30):
@@ -1687,7 +2088,6 @@ def is_safe_path(path):
     return False
 
 def build_system_prompt(ctx):
-    """~250 токенов с примерами — TTFT 5-10 сек"""
     return (
         "Ты AI в Termux (Android). Русский, кратко.\n\n"
         "ФОРМАТЫ:\n"
@@ -1847,7 +2247,7 @@ def process(gen):
     tb = tb.replace("<think>","").replace("</think>","").strip()
     ab = ab.replace("<think>","").replace("</think>","").strip()
     if not ab and tb: ab = tb; tb = ""
-    return tb, ab
+    return tb, ab, (ft["t"] - st) if ft["t"] else None
 
 def reset_terminal():
     try: subprocess.run("stty sane 2>/dev/null", shell=True, timeout=3)
@@ -1880,6 +2280,7 @@ def execute(cmd, auto=False):
     console.print()
     if DANGER.search(cmd):
         console.print(f"[bold red]🛑 Заблокировано:[/] {cmd}")
+        STATE["stats"]["errors"] += 1
         return None
 
     if is_interactive(cmd):
@@ -1896,6 +2297,8 @@ def execute(cmd, auto=False):
             console.print(f"[green]✔ Код 0[/]\n")
         elif rc is not None:
             console.print(f"[red]✘ Код {rc}[/]\n")
+        STATE["commands_executed"].append(cmd)
+        STATE["stats"]["commands"] += 1
         return f"TTY-команда завершена, код {rc}"
 
     console.print(f"[bold yellow]⚡ Команда:[/] [cyan]{cmd}[/]")
@@ -1919,22 +2322,31 @@ def execute(cmd, auto=False):
             console.print(f"[green]✔ Код 0[/]\n")
         else:
             console.print(f"[red]✘ Код {p.returncode}[/]\n")
+        STATE["commands_executed"].append(cmd)
+        STATE["stats"]["commands"] += 1
         return result
     except subprocess.TimeoutExpired:
         console.print("[red]✘ Таймаут[/]\n")
         try: p.kill()
         except: pass
+        STATE["stats"]["errors"] += 1
         return None
     except Exception as e:
-        console.print(f"[red]✘ {e}[/]\n"); return None
+        console.print(f"[red]✘ {e}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return None
 
 def do_write(path, content, auto=False):
     path = os.path.expanduser(path.strip())
     console.print()
     if DANGER.search(content):
-        console.print(f"[bold red]🛑 Заблокировано[/]"); return False
+        console.print(f"[bold red]🛑 Заблокировано[/]")
+        STATE["stats"]["errors"] += 1
+        return False
     if not is_safe_path(path):
-        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}"); return False
+        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}")
+        STATE["stats"]["errors"] += 1
+        return False
     console.print(f"[bold yellow]📝 Запись:[/] [cyan]{path}[/]")
     console.print(f"[dim]{len(content)} символов[/]")
     for line in content.split("\n")[:15]:
@@ -1953,25 +2365,38 @@ def do_write(path, content, auto=False):
         if d: os.makedirs(d, exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
-        console.print(f"[green]✔ Записано[/]\n"); return True
+        console.print(f"[green]✔ Записано[/]\n")
+        STATE["files_written"].append(path)
+        STATE["stats"]["writes"] += 1
+        return True
     except Exception as e:
-        console.print(f"[red]✘ {e}[/]\n"); return False
+        console.print(f"[red]✘ {e}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return False
 
 def do_read(path):
     path = os.path.expanduser(path.strip())
     console.print()
     if not is_safe_path(path):
-        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}"); return None
+        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}")
+        STATE["stats"]["errors"] += 1
+        return None
     if not os.path.exists(path):
-        console.print(f"[red]❌ Не найден: {path}[/]\n"); return None
+        console.print(f"[red]❌ Не найден: {path}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return None
     if os.path.isdir(path):
         try:
             files = os.listdir(path)
             console.print(f"[yellow]📁 {path}:[/]")
             for f in files[:30]: console.print(f"  [cyan]•[/] {f}")
             console.print()
+            STATE["files_read"].append(path)
+            STATE["stats"]["reads"] += 1
             return "\n".join(files)
-        except: return None
+        except:
+            STATE["stats"]["errors"] += 1
+            return None
     try:
         with open(path, encoding="utf-8", errors="ignore") as f:
             content = f.read()
@@ -1981,9 +2406,13 @@ def do_read(path):
         else:
             console.print(f"[yellow]📄 {path} ({len(content)} симв)[/]\n")
         STATE["session_files"].append(path)
+        STATE["files_read"].append(path)
+        STATE["stats"]["reads"] += 1
         return content
     except Exception as e:
-        console.print(f"[red]✘ {e}[/]\n"); return None
+        console.print(f"[red]✘ {e}[/]\n")
+        STATE["stats"]["errors"] += 1
+        return None
 
 def handle_response(answer):
     did_something = False
@@ -2018,6 +2447,7 @@ COMMANDS = [
     "думать","think","быстро","fast","авто","auto",
     "команды","agent","агент","sudo","sandbox",
     "env","модель","model",
+    "сессия","session","история","history",
     "очистить","clear","статистика","stats",
     "помощь","help","выход","q"
 ]
@@ -2038,12 +2468,20 @@ def title_block():
     t = Text()
     t.append("▓▒░ ", style="bold bright_green")
     t.append(mn.upper(), style="bold bright_green")
-    t.append(" ░▒▓ AI v15.5", style="bold green")
+    t.append(" ░▒▓ AI v16", style="bold green")
     t.append(f"\n  ", style="dim"); t.append(mode, style="bold bright_cyan")
     t.append(f"  ·  ", style="dim"); t.append(agent, style="bright_green" if STATE["agent"] else "dim")
     t.append(f"  ·  ", style="dim"); t.append(auto_exec, style="bright_red" if STATE["auto_exec"] else "bright_yellow")
     t.append(f"  ·  ", style="dim"); t.append(sandbox, style="bright_cyan")
-    t.append(f"\n  📝 {len(STATE['history'])}  ·  📂 {len(STATE['session_files'])}  ·  ОЗУ {free_ram()} МБ", style="dim")
+
+    sid = STATE.get("session_id") or "?"
+    loaded = STATE.get("loaded_from")
+    if loaded:
+        t.append(f"\n  📂 продолжение сессии: {sid}", style="bright_magenta")
+    else:
+        t.append(f"\n  📂 сессия: {sid}", style="dim")
+
+    t.append(f"  ·  📝 {len(STATE['history'])}  ·  📄 {len(STATE['session_files'])}  ·  ОЗУ {free_ram()} МБ", style="dim")
     return Panel(t, border_style="black", padding=(0,1))
 
 def switch_model(cfg):
@@ -2072,6 +2510,64 @@ def switch_model(cfg):
         console.print(f"[green]✔ {w:.1f}с[/]\n"); return True
     except: return False
 
+# ═══════════ ЗАГРУЗКА СЕССИИ ═══════════
+def load_session_by_id(session_id=None):
+    """Загружает сессию в STATE. Возвращает True/False."""
+    if session_id:
+        p = session_path(session_id)
+    else:
+        p = last_session_path()
+    if not p or not os.path.isfile(p):
+        console.print(f"[red]❌ Сессия не найдена: {session_id or 'последняя'}[/]")
+        return False
+    obj = session_load(p)
+    if not obj:
+        console.print(f"[red]❌ Ошибка чтения сессии[/]")
+        return False
+
+    # Восстанавливаем историю и метаданные
+    STATE["history"] = obj.get("messages", [])
+    STATE["files_read"] = list(obj.get("files_read", []))
+    STATE["files_written"] = list(obj.get("files_written", []))
+    STATE["commands_executed"] = list(obj.get("commands_executed", []))
+    st = obj.get("stats", {})
+    # Восстанавливаем stats аккуратно
+    for k, v in st.items():
+        if k in STATE["stats"]: STATE["stats"][k] = v
+
+    STATE["loaded_from"] = obj.get("session_id")
+    # Новая сессия, но с привязкой к загруженной
+    STATE["session_id"] = new_session_id()
+    STATE["session_started_at"] = time.time()
+    STATE["session_started_str"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    console.print(f"[green]✔ Загружена сессия: {obj.get('session_id')}[/]")
+    console.print(f"[dim]   сообщений: {len(STATE['history'])}  ·  модель: {obj.get('model',{}).get('name','?')}[/]")
+    console.print(f"[dim]   начата: {obj.get('started','?')}[/]")
+    time.sleep(1)
+    return True
+
+def print_sessions_list():
+    items = list_sessions()
+    if not items:
+        console.print("[yellow]⚠ Сессий нет[/]"); return
+    console.print()
+    t = Table(box=SIMPLE_HEAD, border_style="black", padding=(0,1))
+    t.add_column("#", style="bold yellow", width=4, justify="right")
+    t.add_column("ID", style="cyan")
+    t.add_column("Начата", style="dim")
+    t.add_column("Модель", style="green")
+    t.add_column("Сообщ.", style="yellow", justify="right")
+    t.add_column("Время", style="magenta", justify="right")
+    for i, s in enumerate(items, 1):
+        dur = f"{s['duration']//60}м" if s['duration'] else "?"
+        t.add_row(str(i), s["session_id"], s["started"][:16],
+                  s["model"].replace(".gguf","")[:18],
+                  str(s["messages"]), dur)
+    console.print(t)
+    console.print()
+
+# ═══════════ MAIN ═══════════
 def main():
     os.system("clear")
     cfg = load_cfg()
@@ -2103,9 +2599,16 @@ def main():
     console.print(f"[green]✔ Загружена за {res['w']:.1f}с[/]")
     time.sleep(0.3)
 
+    # ═══ Сессия ═══
+    STATE["session_id"] = new_session_id()
+    STATE["session_started_at"] = time.time()
+    STATE["session_started_str"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    session_save(STATE)
+
     os.system("clear"); console.print()
     console.print(title_block()); console.print()
     console.print("[bold green]Готов.[/] Попробуй: 'запусти матрицу', 'открой музыку'\n")
+    console.print("[dim]Команды: /last  /list  /session  /save  ·  'статистика'[/]\n")
 
     st = Style.from_dict({"prompt":"bold ansibrightmagenta",
         "completion-menu.completion":"bg:#000000 #00ff88",
@@ -2119,7 +2622,13 @@ def main():
         if not ui: continue
         lo = ui.lower()
 
-        if lo in ("выход","q","quit","exit"): break
+        # ─── выход ───
+        if lo in ("выход","q","quit","exit"):
+            session_save(STATE, ended=True)
+            console.print(f"[dim]💾 Сессия сохранена: {STATE['session_id']}[/]")
+            break
+
+        # ─── команды режимов ───
         if lo in ("думать","think"):
             STATE["thinking"]=True; STATE["auto"]=False
             console.print("[magenta]💭[/]\n"); continue
@@ -2141,6 +2650,32 @@ def main():
             STATE["sandbox"] = not STATE["sandbox"]
             cfg["sandbox"] = STATE["sandbox"]; save_cfg(cfg)
             console.print(f"[cyan]🔒 SB: {'ВКЛ' if STATE['sandbox'] else 'ВЫКЛ'}[/]\n"); continue
+
+        # ─── /last /list /session /save ───
+        if lo in ("/last", "/continue", "/продолжить"):
+            if load_session_by_id(None):
+                os.system("clear"); console.print(); console.print(title_block()); console.print()
+            continue
+        if lo == "/list":
+            print_sessions_list()
+            continue
+        if lo == "/session":
+            console.print()
+            console.print(f"[cyan]ID:[/] {STATE['session_id']}")
+            console.print(f"[cyan]Начата:[/] {STATE['session_started_str']}")
+            console.print(f"[cyan]Модель:[/] {os.path.basename(STATE['model_path'])}")
+            console.print(f"[cyan]Сообщений:[/] {len(STATE['history'])}")
+            console.print(f"[cyan]Файл:[/] {session_path(STATE['session_id'])}")
+            if STATE.get("loaded_from"):
+                console.print(f"[magenta]Продолжение:[/] {STATE['loaded_from']}")
+            console.print(); continue
+        if lo == "/save":
+            if session_save(STATE):
+                console.print(f"[green]✔ Сохранено: {STATE['session_id']}[/]\n")
+            else:
+                console.print("[red]❌ Ошибка[/]\n")
+            continue
+
         if lo == "env":
             c = STATE["ctx"]; console.print()
             console.print(f"[cyan]Python:[/] {c['python']}  ·  Android {c['android']}")
@@ -2156,26 +2691,58 @@ def main():
             os.system("clear"); console.print(); console.print(title_block()); console.print()
             console.print("[green]✔[/]\n"); continue
         if lo in ("статистика","stats"):
-            console.print(Panel.fit(
-                f"Модель: {os.path.basename(STATE['model_path'])}\n"
-                f"Сообщений: {len(STATE['history'])}\nОЗУ: {free_ram()} МБ",
-                border_style="black")); console.print(); continue
+            s = STATE["stats"]
+            avg_ttft = (s["ttft_sum"]/s["ttft_count"]) if s["ttft_count"] else 0
+            avg_total = (s["total_sum"]/s["total_count"]) if s["total_count"] else 0
+            console.print()
+            t = Table(box=SIMPLE_HEAD, border_style="black", padding=(0,2))
+            t.add_column("", style="bold yellow", width=22)
+            t.add_column("", style="cyan", justify="right", width=10)
+            t.add_row("💬 Сообщений (user)", str(s["user_messages"]))
+            t.add_row("🤖 Ответов (AI)", str(s["assistant_messages"]))
+            t.add_row("⚡ Команд", str(s["commands"]))
+            t.add_row("📝 Write", str(s["writes"]))
+            t.add_row("📄 Read", str(s["reads"]))
+            t.add_row("❌ Ошибок", str(s["errors"]))
+            t.add_row("⏱ Avg TTFT", f"{avg_ttft:.1f}с")
+            t.add_row("⏱ Avg total", f"{avg_total:.1f}с")
+            console.print(t); console.print()
+            if STATE.get("session_started_at"):
+                dur = int(time.time() - STATE["session_started_at"])
+                console.print(f"[dim]Длительность сессии: {dur//60}м {dur%60}с[/]\n")
+            continue
         if lo in ("помощь","help","?"):
             console.print()
-            console.print("[bold]Команды:[/] авто · быстро · думать · команды · sudo · sandbox · env · модель · очистить · выход")
+            console.print("[bold]Режимы:[/] авто · быстро · думать · команды · sudo · sandbox")
+            console.print("[bold]Инфо:[/] env · модель · статистика · /session")
+            console.print("[bold]Сессии:[/] /last · /list · /save")
             console.print("[bold]Возможности:[/] exec · write · read")
+            console.print("[bold]Выход:[/] q / выход")
             console.print(); continue
 
+        # ─── AI-запрос ───
         STATE["history"].append({"role":"user","content":ui})
+        STATE["stats"]["user_messages"] += 1
+        session_save(STATE)  # сохраняем сразу после user-сообщения
         console.print()
         t0 = time.time()
-        try: tb, ab = process(stream(ui))
+        try: tb, ab, ttft = process(stream(ui))
         except KeyboardInterrupt:
-            console.print("\n[yellow]⏹[/]\n"); STATE["history"].pop(); continue
+            console.print("\n[yellow]⏹[/]\n")
+            STATE["history"].pop()
+            STATE["stats"]["user_messages"] -= 1
+            continue
         el = time.time() - t0
         if ab.startswith("__ERROR__"):
-            console.print(f"[red]❌ {ab[10:]}[/]\n"); STATE["history"].pop(); continue
+            console.print(f"[red]❌ {ab[10:]}[/]\n")
+            STATE["history"].pop()
+            STATE["stats"]["user_messages"] -= 1
+            STATE["stats"]["errors"] += 1
+            continue
         STATE["history"].append({"role":"assistant","content":ab})
+        STATE["stats"]["assistant_messages"] += 1
+        if ttft: STATE["stats"]["ttft_sum"] += ttft; STATE["stats"]["ttft_count"] += 1
+        STATE["stats"]["total_sum"] += el; STATE["stats"]["total_count"] += 1
 
         console.print()
         if tb: console.print(f"[dim italic yellow]💭 {tb[:400]}[/]\n")
@@ -2189,15 +2756,22 @@ def main():
                 STATE["history"].append({"role":"user","content":follow})
                 console.print("[dim]🔄 AI получает результаты...[/]\n")
                 t1 = time.time()
-                try: tb2, ab2 = process(stream(follow[:4000]))
-                except KeyboardInterrupt: ab2 = None
+                try: tb2, ab2, ttft2 = process(stream(follow[:4000]))
+                except KeyboardInterrupt: ab2 = None; ttft2 = None
                 if ab2 and not ab2.startswith("__ERROR__"):
                     STATE["history"].append({"role":"assistant","content":ab2})
+                    STATE["stats"]["assistant_messages"] += 1
+                    if ttft2: STATE["stats"]["ttft_sum"] += ttft2; STATE["stats"]["ttft_count"] += 1
+                    el2 = time.time() - t1
+                    STATE["stats"]["total_sum"] += el2; STATE["stats"]["total_count"] += 1
                     console.print()
                     if tb2: console.print(f"[dim italic yellow]💭 {tb2[:300]}[/]\n")
                     try: console.print(Markdown(ab2))
                     except: console.print(ab2)
-                    console.print(f"\n[dim]⏱ {time.time()-t1:.1f}с[/]\n")
+                    console.print(f"\n[dim]⏱ {el2:.1f}с[/]\n")
+
+        # ─── Автосохранение после пары ───
+        session_save(STATE)
 
     reset_terminal()
     stop_server()
@@ -2206,6 +2780,7 @@ if __name__ == "__main__":
     try: main()
     except KeyboardInterrupt:
         console.print("\n[dim]Прервано[/]")
+        session_save(STATE, ended=True)
         reset_terminal()
         stop_server()
 ```
@@ -6783,18 +7358,25 @@ if __name__ == "__main__":
 
 ## 📄 matrix.py
 
-*7170 байт · 182 строк*
+*8215 байт · 191 строк*
 
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Matrix Rain MAX — гипер-масштабный цифровой дождь с мерцанием, вспышками и свечением"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Matrix Rain
+#  Цифровой дождь в стиле «Матрицы» (curses)
+#  Версия: 2.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""Анимированный цифровой дождь. Выход — q / Esc / Ctrl+C."""
 
 import curses
 import random
 import time
 
-# ═══════════ СИМВОЛЫ ═══════════
+# ═══════════════════════════════════════════════════════
+#  СИМВОЛЫ
+# ═══════════════════════════════════════════════════════
 KATAKANA = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ"
 HIRAGANA = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわん"
 LATIN    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -6803,38 +7385,77 @@ SYMBOLS  = "!@#$%^&*()_+-=[]{}|;:,.<>?/~`"
 GREEK    = "αβγδεζηθικλμνξοπρστυφχψω"
 CYRILLIC = "абвгдежзийклмнопрстуфхцчшщъыьэюя"
 
-# Основной набор — катаканы больше всего (как в фильме)
+# Катаканы с большим весом — как в фильме
 ALL_CHARS = (KATAKANA * 6 + HIRAGANA * 2 + LATIN + DIGITS * 3 +
              SYMBOLS * 2 + GREEK + CYRILLIC)
 
-# ═══════════ ЦВЕТА ═══════════
-C_HEAD   = 1  # белый — голова капли
+# ═══════════════════════════════════════════════════════
+#  ПАРАМЕТРЫ
+# ═══════════════════════════════════════════════════════
+TAIL_LEN       = 22       # длина хвоста капли
+FPS_DELAY      = 0.025    # ~40 FPS
+FLASH_CHANCE   = 0.08     # шанс вспышки на голове
+FLICKER_CHANCE = 0.15     # мерцание в хвосте
+
+# Коды цветов curses
+C_HEAD   = 1  # белый — голова
 C_FLASH  = 2  # ярко-белый — вспышка
 C_BRIGHT = 3  # ярко-зелёный
 C_MID    = 4  # зелёный
 C_DARK   = 5  # тёмно-зелёный
 C_FAINT  = 6  # очень тёмный
-C_FAINT2 = 7  # почти чёрный (глубокий хвост)
+C_FAINT2 = 7  # почти чёрный
 
-TAIL_LEN = 22  # Длинный хвост — эффект глубокого затухания
-
-
+# ═══════════════════════════════════════════════════════
+#  ИНИЦИАЛИЗАЦИЯ ЦВЕТОВ
+# ═══════════════════════════════════════════════════════
 def init_colors():
     curses.start_color()
     try:
         curses.use_default_colors()
     except Exception:
         pass
-    curses.init_pair(C_HEAD,   curses.COLOR_WHITE,   -1)
-    curses.init_pair(C_FLASH,  curses.COLOR_WHITE,   -1)
-    curses.init_pair(C_BRIGHT, curses.COLOR_GREEN,   -1)
-    curses.init_pair(C_MID,    curses.COLOR_GREEN,   -1)
-    curses.init_pair(C_DARK,   curses.COLOR_GREEN,   -1)
-    curses.init_pair(C_FAINT,  curses.COLOR_GREEN,   -1)
-    curses.init_pair(C_FAINT2, curses.COLOR_GREEN,   -1)
+    curses.init_pair(C_HEAD,   curses.COLOR_WHITE, -1)
+    curses.init_pair(C_FLASH,  curses.COLOR_WHITE, -1)
+    curses.init_pair(C_BRIGHT, curses.COLOR_GREEN, -1)
+    curses.init_pair(C_MID,    curses.COLOR_GREEN, -1)
+    curses.init_pair(C_DARK,   curses.COLOR_GREEN, -1)
+    curses.init_pair(C_FAINT,  curses.COLOR_GREEN, -1)
+    curses.init_pair(C_FAINT2, curses.COLOR_GREEN, -1)
+
+# ═══════════════════════════════════════════════════════
+#  ЯДРО
+# ═══════════════════════════════════════════════════════
+def new_drop(x, max_y, spread=False):
+    """Создаёт новую каплю для колонки x."""
+    return {
+        "x": x,
+        "y": random.randint(-max_y * 3, -1) if spread else random.randint(-25, -3),
+        "speed": random.choice([0.2, 0.35, 0.5, 0.7, 0.9, 1.1, 1.4, 1.8, 2.2]),
+        "counter": 0.0,
+        "tail_len": random.randint(TAIL_LEN - 8, TAIL_LEN + 6),
+        "flash_chance": random.random() * FLASH_CHANCE,
+    }
 
 
-def main(stdscr):
+def attr_for_tail(i, flicker):
+    """Возвращает curses-attr для символа на позиции i от головы."""
+    if flicker and i % 3 == 0:
+        return curses.color_pair(C_BRIGHT) | curses.A_BOLD
+    if i == 1:
+        return curses.color_pair(C_BRIGHT) | curses.A_BOLD
+    if i <= 3:
+        return curses.color_pair(C_BRIGHT)
+    if i <= 6:
+        return curses.color_pair(C_MID)
+    if i <= 10:
+        return curses.color_pair(C_DARK)
+    if i <= 15:
+        return curses.color_pair(C_FAINT)
+    return curses.color_pair(C_FAINT2) | curses.A_DIM
+
+
+def main_loop(stdscr):
     curses.curs_set(0)
     stdscr.nodelay(True)
     stdscr.timeout(0)
@@ -6842,24 +7463,11 @@ def main(stdscr):
 
     max_y, max_x = stdscr.getmaxyx()
 
-    # Инициализация капель для каждой колонки
-    def new_drop(x, spread=False):
-        return {
-            "x": x,
-            "y": random.randint(-max_y * 3, -1) if spread else random.randint(-25, -3),
-            "speed": random.choice([0.2, 0.35, 0.5, 0.7, 0.9, 1.1, 1.4, 1.8, 2.2]),
-            "counter": 0.0,
-            "tail_len": random.randint(TAIL_LEN - 8, TAIL_LEN + 6),
-            "flash_chance": random.random() * 0.08,   # шанс вспышки на шаге
-        }
-
-    drops = [new_drop(x, spread=True) for x in range(max_x)]
-
-    # Плотность: на очень широких экранах добавляем вторые капли
+    drops = [new_drop(x, max_y, spread=True) for x in range(max_x)]
+    # На широких экранах — доп. капли
     if max_x > 60:
-        drops += [new_drop(random.randint(0, max_x - 1), spread=True) for _ in range(max_x // 4)]
-
-    frame = 0
+        drops += [new_drop(random.randint(0, max_x - 1), max_y, spread=True)
+                  for _ in range(max_x // 4)]
 
     while True:
         # Выход
@@ -6871,84 +7479,58 @@ def main(stdscr):
             pass
 
         max_y, max_x = stdscr.getmaxyx()
-        frame += 1
 
-        for drop in drops:
+        for idx, drop in enumerate(drops):
             drop["counter"] += drop["speed"]
 
-            if drop["counter"] >= 1.0:
-                drop["counter"] = 0.0
-                drop["y"] += 1
+            if drop["counter"] < 1.0:
+                continue
 
-                x = drop["x"]
-                y = drop["y"]
+            drop["counter"] = 0.0
+            drop["y"] += 1
+            x = drop["x"]
+            y = drop["y"]
 
-                if x >= max_x:
+            if x >= max_x:
+                continue
+
+            flicker = random.random() < FLICKER_CHANCE
+
+            # Голова
+            if 0 <= y < max_y:
+                if random.random() < drop["flash_chance"]:
+                    attr = curses.color_pair(C_FLASH) | curses.A_BOLD | curses.A_REVERSE
+                else:
+                    attr = curses.color_pair(C_HEAD) | curses.A_BOLD
+                try:
+                    stdscr.addstr(y, x, random.choice(ALL_CHARS), attr)
+                except curses.error:
+                    pass
+
+            # Хвост
+            for i in range(1, drop["tail_len"] + 1):
+                ty = y - i
+                if not (0 <= ty < max_y):
                     continue
+                try:
+                    stdscr.addstr(ty, x, random.choice(ALL_CHARS),
+                                  attr_for_tail(i, flicker))
+                except curses.error:
+                    pass
 
-                # Случайное мерцание в хвосте (эффект «глюка»)
-                flicker = random.random() < 0.15
+            # Стереть позади хвоста
+            erase_y = y - drop["tail_len"]
+            if 0 <= erase_y < max_y:
+                try:
+                    stdscr.addstr(erase_y, x, " ")
+                except curses.error:
+                    pass
 
-                # ГОЛОВА (капля)
-                if 0 <= y < max_y:
-                    ch_head = random.choice(ALL_CHARS)
-                    # Вспышка — иногда голова становится ярче
-                    if random.random() < drop["flash_chance"]:
-                        attr = curses.color_pair(C_FLASH) | curses.A_BOLD | curses.A_REVERSE
-                    else:
-                        attr = curses.color_pair(C_HEAD) | curses.A_BOLD
-                    try:
-                        stdscr.addstr(y, x, ch_head, attr)
-                    except curses.error:
-                        pass
+            # Перезапуск капли
+            if y - drop["tail_len"] >= max_y:
+                drops[idx] = new_drop(x, max_y)
 
-                # ХВОСТ с плавным затуханием
-                tail = drop["tail_len"]
-                for i in range(1, tail + 1):
-                    ty = y - i
-                    if not (0 <= ty < max_y):
-                        continue
-
-                    tchar = random.choice(ALL_CHARS)
-
-                    # Мерцание — иногда символ «перерождается» в середине хвоста
-                    if flicker and i % 3 == 0:
-                        attr = curses.color_pair(C_BRIGHT) | curses.A_BOLD
-                    elif i == 1:
-                        attr = curses.color_pair(C_BRIGHT) | curses.A_BOLD
-                    elif i <= 3:
-                        attr = curses.color_pair(C_BRIGHT)
-                    elif i <= 6:
-                        attr = curses.color_pair(C_MID)
-                    elif i <= 10:
-                        attr = curses.color_pair(C_DARK)
-                    elif i <= 15:
-                        attr = curses.color_pair(C_FAINT)
-                    else:
-                        attr = curses.color_pair(C_FAINT2) | curses.A_DIM
-
-                    try:
-                        stdscr.addstr(ty, x, tchar, attr)
-                    except curses.error:
-                        pass
-
-                # Стираем «хвостик» позади капли
-                erase_y = y - tail
-                if 0 <= erase_y < max_y:
-                    try:
-                        stdscr.addstr(erase_y, x, " ")
-                    except curses.error:
-                        pass
-
-                # Если капля ушла — перезапуск
-                if y - tail >= max_y:
-                    drop["y"] = random.randint(-30, -5)
-                    drop["speed"] = random.choice([0.2, 0.35, 0.5, 0.7, 0.9, 1.1, 1.4, 1.8, 2.2])
-                    drop["tail_len"] = random.randint(TAIL_LEN - 8, TAIL_LEN + 6)
-                    drop["counter"] = 0.0
-                    drop["flash_chance"] = random.random() * 0.08
-
-        # Общая случайная вспышка по экрану (эффект «молнии»)
+        # Случайная вспышка по экрану (молния)
         if random.random() < 0.015:
             fx = random.randint(0, max_x - 1)
             fy = random.randint(0, max_y - 1)
@@ -6959,12 +7541,14 @@ def main(stdscr):
                 pass
 
         stdscr.refresh()
-        time.sleep(0.025)  # ~40 FPS
+        time.sleep(FPS_DELAY)
 
-
+# ═══════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════
 if __name__ == "__main__":
     try:
-        curses.wrapper(main)
+        curses.wrapper(main_loop)
     except KeyboardInterrupt:
         pass
 ```
@@ -6973,53 +7557,99 @@ if __name__ == "__main__":
 
 ## 📄 passgen.py
 
-*1729 байт · 45 строк*
+*4067 байт · 91 строк*
 
 ```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Password Generator
+#  Криптостойкий генератор паролей
+#  Версия: 2.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""Интерактивный генератор паролей на базе secrets."""
+
 import string
 import secrets
-import sys
 
-# Настройка цветов в терминале
+# ═══════════════════════════════════════════════════════
+#  КОНСТАНТЫ
+# ═══════════════════════════════════════════════════════
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
 CYAN = "\033[36m"
-RESET = "\033[0m"
+RED = "\033[91m"
+DIM = "\033[2m"
+RST = "\033[0m"
 
+DEFAULT_LENGTH = 16
+MIN_LENGTH = 4
+MAX_LENGTH = 128
+SYMBOLS = "!@#$%^&*()-_=+[{]};:,.<>?"
+
+# ═══════════════════════════════════════════════════════
+#  ЯДРО
+# ═══════════════════════════════════════════════════════
 def generate_password(length=16, use_digits=True, use_special=True):
-    # Базовый набор символов (строчные и прописные английские буквы)
     letters = string.ascii_letters
     digits = string.digits if use_digits else ""
-    special = "!@#$%^&*()-_=+[{]};:,.<>?" if use_special else ""
-    
-    all_chars = letters + digits + special
-    
-    if not all_chars:
-        return "Ошибка: нет символов для генерации!"
-    
-    # Секретная генерация (secrets надежнее, чем модуль random)
-    password = "".join(secrets.choice(all_chars) for _ in range(length))
-    return password
+    special = SYMBOLS if use_special else ""
+    pool = letters + digits + special
+    if not pool:
+        return None
+    return "".join(secrets.choice(pool) for _ in range(length))
 
-print(f"{CYAN}=== ГЕНЕРАТОР НАДЁЖНЫХ ПАРОЛЕЙ ==={RESET}\n")
 
-try:
-    # Запрашиваем длину пароля
-    length_input = input(f"{YELLOW}Введите длину пароля (по умолчанию 16): {RESET}")
-    length = int(length_input) if length_input.strip().isdigit() else 16
-    
-    # Генерируем пароль
+def prompt_length():
+    try:
+        raw = input(f"{YELLOW}Длина пароля [{DEFAULT_LENGTH}]: {RST}").strip()
+    except (EOFError, KeyboardInterrupt):
+        return None
+    if not raw:
+        return DEFAULT_LENGTH
+    if not raw.isdigit():
+        print(f"{RED}❌ Нужно число{RST}")
+        return None
+    n = int(raw)
+    if not MIN_LENGTH <= n <= MAX_LENGTH:
+        print(f"{RED}❌ Допустимо {MIN_LENGTH}-{MAX_LENGTH}{RST}")
+        return None
+    return n
+
+# ═══════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════
+def main():
+    print()
+    print(f"{CYAN}═══════════════════════════════════════════════{RST}")
+    print(f"{CYAN}  🔐  ГЕНЕРАТОР ПАРОЛЕЙ{RST}")
+    print(f"{CYAN}═══════════════════════════════════════════════{RST}")
+    print()
+
+    length = prompt_length()
+    if length is None:
+        return
+
     password = generate_password(length)
-    
-    # Выводим результат
-    print(f"\n{GREEN}[+] Сгенерированный пароль:{RESET}")
-    print(f"{GREEN}-----------------------------------{RESET}")
-    print(password)
-    print(f"{GREEN}-----------------------------------{RESET}")
-    print(f"{CYAN}Скопируйте его и сохраните в надёжном месте.{RESET}")
+    if not password:
+        print(f"{RED}❌ Ошибка генерации{RST}")
+        return
 
-except KeyboardInterrupt:
-    print(f"\n{RESET}Выход...")
+    print()
+    print(f"{GREEN}✔ Сгенерировано:{RST}")
+    print(f"{DIM}─────────────────────────────────────────────{RST}")
+    print(f"  {GREEN}{password}{RST}")
+    print(f"{DIM}─────────────────────────────────────────────{RST}")
+    print()
+    print(f"{DIM}Скопируй и сохрани в надёжном месте.{RST}")
+    print()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(f"\n{RST}Отменено.{RST}")
 ```
 
 ---

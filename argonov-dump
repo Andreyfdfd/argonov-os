@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Argonov Dump — сборка ARGONOV_FULL_DUMP.md + push в GitHub"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Dump + Push
+#  Сборка дампа всех скриптов + push в GitHub
+#  Версия: 2.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""Собирает все скрипты в ARGONOV_FULL_DUMP.md (с правилами) и пушит на GitHub."""
 
-import os, sys, subprocess, time
+import os
+import sys
+import subprocess
 from datetime import datetime
 
+# ═══ КОНСТАНТЫ ═══
 HOME = os.path.expanduser("~")
 DUMP_FILE = os.path.join(HOME, "ARGONOV_FULL_DUMP.md")
-REPO_DIR  = os.path.join(HOME, "argonov-os")
+RULES_FILE = os.path.join(HOME, "ARGONOV_RULES.md")
+REPO_DIR = os.path.join(HOME, "argonov-os")
 
 SCRIPTS = [
     ("argonov",           "bash"),
@@ -34,6 +43,7 @@ SCRIPTS = [
 G = "\033[92m"; C = "\033[96m"; Y = "\033[93m"; R = "\033[91m"
 DIM = "\033[2m"; BLD = "\033[1m"; RST = "\033[0m"
 
+# ═══ УТИЛИТЫ ═══
 def run(cmd, timeout=60):
     try:
         return subprocess.run(cmd, shell=True, capture_output=True,
@@ -41,15 +51,28 @@ def run(cmd, timeout=60):
     except Exception:
         return None
 
+
 def getprop(p):
     r = run(f"getprop {p}")
     return r.stdout.strip() if r and r.stdout else "?"
 
+
+def read_file(path):
+    try:
+        with open(path, encoding="utf-8", errors="ignore") as f:
+            return f.read()
+    except Exception:
+        return None
+
+
+# ═══ СБОРКА ДАМПА ═══
 def build_dump():
     print(f"{C}📦 Сборка дампа...{RST}")
     print()
 
     lines = []
+
+    # Шапка
     lines.append("# ARGONOV OS — Полный дамп всех скриптов")
     lines.append("")
     lines.append(f"Дата: {datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')}")
@@ -58,6 +81,28 @@ def build_dump():
     lines.append("---")
     lines.append("")
 
+    # ПРАВИЛА в начале дампа
+    rules = read_file(RULES_FILE)
+    if rules:
+        lines.append("# 📋 ПРАВИЛА РАЗРАБОТКИ ARGONOV OS")
+        lines.append("")
+        lines.append("*Обязательное чтение для любой нейронки, работающей над проектом.*")
+        lines.append("")
+        lines.append(rules.rstrip())
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+        print(f"  {G}✔{RST}  ARGONOV_RULES.md {DIM}[{len(rules)} символов]{RST}")
+    else:
+        print(f"  {Y}⚠{RST}  ARGONOV_RULES.md {DIM}[не найден — пропущен]{RST}")
+
+    lines.append("")
+    lines.append("# 💻 ДАМП СКРИПТОВ")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    # Скрипты
     included = 0
     skipped = []
 
@@ -67,12 +112,10 @@ def build_dump():
             skipped.append(fname)
             print(f"  {Y}⚠{RST}  {fname} {DIM}[нет файла]{RST}")
             continue
-        try:
-            with open(path, encoding="utf-8", errors="ignore") as f:
-                content = f.read()
-        except Exception as e:
+        content = read_file(path)
+        if content is None:
             skipped.append(fname)
-            print(f"  {R}✘{RST}  {fname} {DIM}[{e}]{RST}")
+            print(f"  {R}✘{RST}  {fname} {DIM}[ошибка чтения]{RST}")
             continue
 
         size = os.path.getsize(path)
@@ -103,6 +146,8 @@ def build_dump():
     print()
     return included
 
+
+# ═══ PUSH ═══
 def do_push():
     if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
         print(f"{R}❌ {REPO_DIR} — не git-репозиторий{RST}")
@@ -115,6 +160,8 @@ def do_push():
             subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
     subprocess.run(f'cp "{DUMP_FILE}" "{REPO_DIR}/"', shell=True)
+    if os.path.isfile(RULES_FILE):
+        subprocess.run(f'cp "{RULES_FILE}" "{REPO_DIR}/"', shell=True)
 
     fish_src = os.path.join(HOME, ".config/fish/config.fish")
     fish_dst = os.path.join(REPO_DIR, "fish-config/config.fish")
@@ -147,10 +194,12 @@ def do_push():
         print(f"{R}✘ Push вернул код {r.returncode if r else '?'}{RST}")
         return False
 
+
+# ═══ MAIN ═══
 def main():
     print()
     print(f"{C}┌─────────────────────────────────────────────────┐{RST}")
-    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH{RST}                       {C}│{RST}")
+    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH v2{RST}                    {C}│{RST}")
     print(f"{C}└─────────────────────────────────────────────────┘{RST}")
     print()
 
@@ -166,7 +215,7 @@ def main():
 
     if ok:
         print(f"{G}═══════════════════════════════════════════════════{RST}")
-        print(f"{G}  ✅ ГОТОВО  ·  дамп + push{RST}")
+        print(f"{G}  ✅ ГОТОВО  ·  дамп + правила + push{RST}")
         print(f"{G}═══════════════════════════════════════════════════{RST}")
     else:
         print(f"{Y}═══════════════════════════════════════════════════{RST}")
@@ -174,6 +223,7 @@ def main():
         print(f"{Y}═══════════════════════════════════════════════════{RST}")
         print(f"{DIM}Проверь: cd ~/argonov-os && git status{RST}")
     print()
+
 
 if __name__ == "__main__":
     try:

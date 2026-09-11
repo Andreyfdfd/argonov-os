@@ -1,16 +1,19 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS v1.4 — doctor v2 + push обновлён
+#  ARGONOV OS · Main Entry
+#  Единая точка входа для всех скриптов
+#  Версия: 1.5  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
 
-ARGONOV_VERSION="1.4.0"
+ARGONOV_VERSION="1.5.0"
 REPO_DIR="$HOME/argonov-os"
 BACKUP_DIR="$HOME/argonov_backups"
 
-G="\033[92m"; DG="\033[32m"; C="\033[96m"; B="\033[94m"
-M="\033[95m"; Y="\033[93m"; R="\033[91m"; W="\033[97m"
-DIM="\033[2m"; BLD="\033[1m"; RST="\033[0m"
+G="\033[92m";  DG="\033[32m";  C="\033[96m";  B="\033[94m"
+M="\033[95m";  Y="\033[93m";   R="\033[91m";  W="\033[97m"
+DIM="\033[2m"; BLD="\033[1m";  RST="\033[0m"
 
+# ═══ ЗАГОЛОВОК / СПРАВКА / МЕНЮ ═══
 header() {
     echo ""
     echo -e "${C}┌─────────────────────────────────────────────────┐${RST}"
@@ -31,15 +34,6 @@ show_help() {
     echo -e "  ${Y}🎮 ${C}hack${RST}    · ${Y}🕹  ${C}rpg${RST}       · ${Y}📥 ${C}d${RST}"
     echo -e "  ${Y}🌧  ${C}m${RST}       · ${Y}🔐 ${C}p${RST}         · ${Y}⚡ ${C}s${RST}"
     echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}       · ${Y}🩺 ${C}doctor${RST}"
-    echo ""
-    echo -e "${M}[ ART ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${C}argonov art${RST}               — показать welcome"
-    echo -e "  ${C}argonov art <имя>${RST}         — найти и показать"
-    echo -e "  ${C}argonov art <имя> set${RST}     — установить как welcome"
-    echo -e "  ${C}argonov art reset${RST}         — сбросить welcome"
-    echo -e "  ${C}argonov art list${RST}          — список картинок"
     echo ""
     echo -e "${M}[ GIT / БЭКАПЫ ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
@@ -100,6 +94,7 @@ show_menu() {
     done
 }
 
+# ═══ ЗАПУСК СКРИПТОВ ═══
 check_py() {
     if [ ! -f "$1" ]; then
         echo -e "${R}❌ Не найден: $1${RST}"; sleep 2; return 1
@@ -123,6 +118,7 @@ run_util()    { check_py ~/utils.py && python ~/utils.py ; }
 run_art()     { check_py ~/art.py && python ~/art.py ; }
 run_doctor()  { check_py ~/doctor.py && python ~/doctor.py "$@" ; }
 
+# ═══ GIT ═══
 do_push() {
     if [ ! -d "$REPO_DIR/.git" ]; then
         echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
@@ -177,6 +173,7 @@ do_status() {
     git remote -v
 }
 
+# ═══ БЭКАПЫ ═══
 do_backup() {
     mkdir -p "$BACKUP_DIR"
     ts=$(date +%Y%m%d_%H%M%S)
@@ -220,6 +217,7 @@ do_restore() {
     sleep 2
 }
 
+# ═══ DISPATCH ═══
 case "$1" in
     "")              show_menu ;;
     ai)              run_ai ;;
