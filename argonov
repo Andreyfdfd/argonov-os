@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS · Main Entry v2
+#  ARGONOV OS · Main Entry v2.1
 #  Единая точка входа — читает реестр скриптов
-#  Версия: 2.0  ·  Обновлён: 2026-09-11
+#  Версия: 2.1  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
 """
 Единая точка входа для всех скриптов ARGONOV OS.
@@ -16,22 +16,18 @@
     argonov version      # версия
 
 Git / backup:
-    argonov push         # git push
-    argonov pull         # git pull
-    argonov status       # git status
-    argonov backup       # архивный бэкап
-    argonov restore      # восстановить из бэкапа
-    argonov doctor       # диагностика
+    argonov push · pull · status · backup · restore · doctor
 
 Зависимости:
     - rich
-    - ~/.argonov_registry.json (создать: argonov-core init)
+    - ~/.argonov_registry.json
 """
 
 import os
 import sys
 import json
 import time
+import shutil
 import subprocess
 from datetime import datetime
 
@@ -46,7 +42,7 @@ from rich.box import SIMPLE_HEAD
 console = Console()
 HOME = os.path.expanduser("~")
 
-ARGONOV_VERSION = "2.0.0"
+ARGONOV_VERSION = "2.1.0"
 REGISTRY_FILE = os.path.join(HOME, ".argonov_registry.json")
 REPO_DIR = os.path.join(HOME, "argonov-os")
 BACKUP_DIR = os.path.join(HOME, "argonov_backups")
@@ -97,36 +93,63 @@ def header():
         border_style=CYAN, padding=(0, 2)))
     console.print()
 
-# ═══ МЕНЮ ═══
+# ═══ СПРАВКА (через таблицы — без переносов) ═══
 def show_help():
     header()
+
+    # КОМАНДЫ
     console.print(f"[bold {MAGENTA}][ КОМАНДЫ ][/]")
     console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
     console.print()
-    console.print(f"  [{YELLOW}]🧠 ai[/]      · [{YELLOW}]📈 crypto[/]    · [{YELLOW}]🎵 music[/]")
-    console.print(f"  [{YELLOW}]📌 todo[/]    · [{YELLOW}]📝 notes[/]     · [{YELLOW}]🔒 pm[/]")
-    console.print(f"  [{YELLOW}]🎮 hack[/]    · [{YELLOW}]🕹  rpg[/]       · [{YELLOW}]📥 d[/]")
-    console.print(f"  [{YELLOW}]🌧  m[/]       · [{YELLOW}]🔐 passgen[/]   · [{YELLOW}]⚡ s[/]")
-    console.print(f"  [{YELLOW}]📦 util[/]    · [{YELLOW}]🎨 art[/]       · [{YELLOW}]🩺 doctor[/]")
+    t = Table(box=None, show_header=False, padding=(0, 2), expand=True)
+    t.add_column("", style=f"bold {YELLOW}", width=14)
+    t.add_column("", style=CYAN, width=30)
+    t.add_column("", style=f"bold {YELLOW}", width=14)
+    t.add_column("", style=CYAN, width=30)
+    t.add_row("🧠 ai",      "AI-ассистент",   "📈 crypto", "Крипта и валюты")
+    t.add_row("🎵 music",   "Музыкальный плеер", "📌 todo", "Задачи")
+    t.add_row("📝 notes",   "Заметки",         "🔒 pm",     "Пароли (AES-256)")
+    t.add_row("🎮 hack",    "OSINT мультитул", "🕹  rpg",   "RPG-симулятор")
+    t.add_row("📥 d",       "Загрузчик",       "🌧  m",     "Матрица")
+    t.add_row("🔐 passgen", "Генератор паролей","⚡ s",     "Sysinfo")
+    t.add_row("📦 util",    "Сканер пакетов",  "🎨 art",    "Картинки")
+    t.add_row("🩺 doctor",  "Диагностика",     "",          "")
+    console.print(t)
     console.print()
+
+    # GIT / БЭКАПЫ
     console.print(f"[bold {MAGENTA}][ GIT / БЭКАПЫ ][/]")
     console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
     console.print()
-    console.print(f"  [{CYAN}]push · pull · status · backup · restore · doctor[/]")
+    t = Table(box=None, show_header=False, padding=(0, 2), expand=True)
+    t.add_column("", style=f"bold {YELLOW}", width=14)
+    t.add_column("", style=CYAN, width=30)
+    t.add_column("", style=f"bold {YELLOW}", width=14)
+    t.add_column("", style=CYAN, width=30)
+    t.add_row("push",    "git push",      "pull",    "git pull")
+    t.add_row("status",  "git status",    "backup",  "архивный бэкап")
+    t.add_row("restore", "из бэкапа",     "doctor",  "диагностика")
+    console.print(t)
     console.print(f"  [{GRAY}]doctor --full — с проверкой сети[/]")
     console.print()
-    console.print(f"[bold {MAGENTA}][ РЕЕСТР ][/]")
+
+    # РЕЕСТР
+    console.print(f"[bold {MAGENTA}][ РЕЕСТР СКРИПТОВ ][/]")
     console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
     console.print()
-    console.print(f"  [{CYAN}]argonov-core list[/]              — все скрипты")
-    console.print(f"  [{CYAN}]argonov-core info <name>[/]       — инфо")
-    console.print(f"  [{CYAN}]argonov-core edit <name>[/]       — открыть в nano")
-    console.print(f"  [{CYAN}]argonov-core check[/]            — проверить всё")
+    t = Table(box=None, show_header=False, padding=(0, 2), expand=True)
+    t.add_column("", style=f"bold {YELLOW}", width=38)
+    t.add_column("", style=CYAN, width=30)
+    t.add_row("argonov-core list",         "все скрипты")
+    t.add_row("argonov-core info <name>",  "инфо о скрипте")
+    t.add_row("argonov-core edit <name>",  "открыть в nano")
+    t.add_row("argonov-core run <name>",   "запустить")
+    t.add_row("argonov-core check",        "проверить всё")
+    console.print(t)
     console.print()
 
-
+# ═══ МЕНЮ ═══
 def build_menu_table(scripts):
-    """Генерирует таблицу с командами по группам."""
     grouped = {}
     for name, info in scripts.items():
         if name in ("argonov",):
@@ -220,7 +243,6 @@ def show_menu():
             do_backup()
             continue
 
-        # Ищем скрипт в реестре
         found = None
         for name, info in scripts.items():
             if name == c or info.get("short") == c:
@@ -228,8 +250,7 @@ def show_menu():
                 break
 
         if found:
-            name, info = found
-            run_script(info, args=[])
+            run_script(found[1], args=[])
         else:
             console.print(f"[red]❌ Неизвестно: {c}[/]")
             time.sleep(1)
@@ -267,7 +288,6 @@ def do_push():
         src = os.path.join(HOME, info["file"])
         if os.path.isfile(src):
             subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
-    # Дамп и правила
     for extra in ("ARGONOV_FULL_DUMP.md", "ARGONOV_RULES.md", ".argonov_registry.json"):
         src = os.path.join(HOME, extra)
         if os.path.isfile(src):
@@ -304,7 +324,6 @@ def do_pull():
     if r:
         for ln in (r.stdout or "").strip().split("\n")[-5:]:
             console.print(f"  [dim]{ln}[/]")
-    # Копируем .py и исполняемые
     for f in os.listdir(REPO_DIR):
         if f.endswith(".py") or f in ("argonov", "argonov-dump"):
             subprocess.run(f'cp "{REPO_DIR}/{f}" "{HOME}/"', shell=True)
@@ -349,7 +368,8 @@ def do_backup():
         "music_cache", "ai_chats",
     ]
 
-    all_items = " ".join(f'"{x}"' for x in script_files + extras if os.path.exists(os.path.join(HOME, x)))
+    all_items = " ".join(f'"{x}"' for x in script_files + extras
+                         if os.path.exists(os.path.join(HOME, x)))
     cmd = (f'tar -czf "{file}" '
            f'--exclude="argonov_backups" --exclude=".cache" --exclude=".cargo" '
            f'--exclude="storage" {all_items} 2>/dev/null')
@@ -420,7 +440,6 @@ def main():
         do_restore()
         return
     if cmd == "plate":
-        # алиас: показать sysinfo
         reg = load_registry()
         if reg:
             scripts = reg.get("scripts", {})
@@ -431,7 +450,6 @@ def main():
         console.print("[red]❌ sysinfo не найден в реестре[/]")
         return
 
-    # Ищем в реестре
     reg = load_registry()
     if not reg:
         console.print(f"[red]❌ Реестр не найден. Запусти: python ~/argonov-core.py init[/]")
