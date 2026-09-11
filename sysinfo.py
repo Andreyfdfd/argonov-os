@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Termux Control Center v3 — с человеческим SoC"""
+"""Sysinfo v5 — центр управления + индикатор свежести курса"""
 
-import subprocess, os, shutil, platform, re
+import subprocess, os, shutil, platform, re, sys
 from datetime import datetime
+
+sys.path.insert(0, os.path.expanduser("~"))
 
 G = "\033[92m"; DG = "\033[32m"; C = "\033[96m"; B = "\033[94m"
 M = "\033[95m"; Y = "\033[93m"; R = "\033[91m"; W = "\033[97m"
@@ -11,42 +13,37 @@ DIM = "\033[2m"; BLD = "\033[1m"; RST = "\033[0m"
 
 HOME = os.path.expanduser("~")
 
-# ═══════════ КАРТА SoC (для перевода SM8750 → человеческий) ═══════════
 SOC_NAMES = {
     "SM8750": "Snapdragon 8 Elite",
     "SM8650": "Snapdragon 8 Gen 3",
     "SM8550": "Snapdragon 8 Gen 2",
     "SM8450": "Snapdragon 8 Gen 1",
     "SM8350": "Snapdragon 888",
-    "SM8250": "Snapdragon 870 / 865",
+    "SM8250": "Snapdragon 870/865",
     "SM8150": "Snapdragon 855",
     "SM7325": "Snapdragon 778G",
     "SM6375": "Snapdragon 695",
     "SM6225": "Snapdragon 680",
     "SM4350": "Snapdragon 480",
-    "MT6989": "MediaTek Dimensity 9300",
-    "MT6985": "MediaTek Dimensity 9200",
-    "MT6983": "MediaTek Dimensity 9000",
-    "MT6895": "MediaTek Dimensity 8100",
-    "MT6877": "MediaTek Dimensity 900",
-    "MT6833": "MediaTek Dimensity 700",
-    "MT6769": "MediaTek Helio G85/G80",
-    "Exynos": "Samsung Exynos",
-    "Tensor": "Google Tensor",
+    "MT6989": "Dimensity 9300",
+    "MT6985": "Dimensity 9200",
+    "MT6983": "Dimensity 9000",
+    "MT6895": "Dimensity 8100",
+    "MT6877": "Dimensity 900",
+    "MT6833": "Dimensity 700",
+    "MT6769": "Helio G85/G80",
 }
 
 def humanize_soc(raw):
-    """SM8750 → Snapdragon 8 Elite"""
     if not raw or raw == "?": return "?"
     raw_upper = raw.upper().replace("QTI ", "").strip()
     for key, name in SOC_NAMES.items():
-        if key.upper() in raw_upper:
-            return name
+        if key.upper() in raw_upper: return name
     return raw_upper
 
 def run(cmd, timeout=15):
     try: return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
-    except Exception: return None
+    except: return None
 
 def getprop(p):
     r = run(f"getprop {p}")
@@ -56,9 +53,8 @@ def read_first(path, key):
     try:
         with open(path) as f:
             for line in f:
-                if line.startswith(key):
-                    return line.split(":", 1)[1].strip()
-    except Exception: pass
+                if line.startswith(key): return line.split(":", 1)[1].strip()
+    except: pass
     return "?"
 
 def human_size(kb):
@@ -76,7 +72,7 @@ def battery():
         import json
         d = json.loads(r.stdout)
         return f"{d.get('percentage','?')}% ({d.get('status','?')})"
-    except Exception: return None
+    except: return None
 
 def has_cmd(c): return shutil.which(c) is not None
 
@@ -86,7 +82,6 @@ def cmd_version(cmd, flag="--version"):
     text = r.stdout.split("\n")[0]
     m = re.search(r"(\d+\.\d+(?:\.\d+)?)", text)
     if m: return m.group(1)
-    # для llama-server / специфичных
     r2 = run(f"{cmd} --help 2>&1 | head -3", timeout=5)
     if r2 and r2.stdout:
         m = re.search(r"(\d+\.\d+(?:\.\d+)?)", r2.stdout)
@@ -100,7 +95,6 @@ def get_pip_packages():
         for line in r.stdout.strip().split("\n"):
             if "==" in line:
                 n, v = line.split("==", 1)
-                # нормализуем: prompt_toolkit и prompt-toolkit → prompt-toolkit
                 key = re.sub(r"[-_.]+", "-", n).lower()
                 out[key] = v
     return out
@@ -267,11 +261,8 @@ def main():
     item("⚡", "SoC:                 ", f"{soc_manuf} {soc_human}")
     item("💻", "Процессор:           ", f"ARM ({os.cpu_count() or '?'} ядер, {abi})")
     item("📱", "Android:             ", getprop("ro.build.version.release"))
-
-    # Ядро Linux — нормальный формат
     kern = platform.release()
     if kern:
-        # отрезаем "-android15-..." и оставляем версию
         kern_ver = kern.split("-")[0] if "-" in kern else kern
         item("🧩", "Ядро Linux:          ", f"Linux {kern_ver}", color=DG)
 
@@ -286,14 +277,14 @@ def main():
         a_h = human_size(int(avail.split()[0]))
         pct = int(int(avail.split()[0]) / int(total.split()[0]) * 100)
         print(f"  💻 Память ОЗУ: {G}{a_h}{RST} / {t_h} ({pct}%)")
-    except Exception: pass
+    except: pass
     try:
         u = shutil.disk_usage(HOME)
         free_gb = u.free // (1024**3)
         total_gb = (u.free + u.used) // (1024**3)
         pct_used = int(u.used / (u.free + u.used) * 100) if (u.free + u.used) > 0 else 0
         print(f"  💾 Накопитель: {G}{free_gb} ГБ свободно{RST} / {total_gb} ГБ ({pct_used}% занято)")
-    except Exception: pass
+    except: pass
     try:
         code_bytes, py_files = 0, 0
         for f in os.listdir(HOME):
@@ -302,31 +293,36 @@ def main():
                 code_bytes += os.path.getsize(fp)
                 py_files += 1
         print(f"  📦 Объем кода: {G}{code_bytes/(1024*1024):.1f} МБ{RST} (Файлов Python: {G}{py_files}{RST})")
-    except Exception: pass
+    except: pass
 
-    # ═══ КУРС ВАЛЮТ ═══
+    # ═══ КУРС ВАЛЮТ (с индикатором) ═══
     section("КУРС ВАЛЮТ (онлайн)")
     try:
-        import json as j
-        r = run("curl -s --max-time 8 'https://open.er-api.com/v6/latest/USD'", timeout=12)
-        if r and r.stdout:
-            d = j.loads(r.stdout)
-            if d.get("result") == "success":
-                rates = d.get("rates", {})
-                usd_rub = rates.get("RUB", 0)
-                usd_eur = rates.get("EUR", 0)
-                eur_rub = usd_rub / usd_eur if usd_eur else 0
-                print(f"  💵 1 USD  →  {G}{usd_rub:.2f} ₽{RST}")
-                if eur_rub: print(f"  💶 1 EUR  →  {G}{eur_rub:.2f} ₽{RST}")
-                if usd_eur: print(f"  💵 1 USD  →  {C}{usd_eur:.4f} €{RST}")
-                upd = d.get("time_last_update_utc", "")[:16]
-                if upd: print(f"  {DIM}🕐 Обновлено: {upd} (UTC){RST}")
+        from net_helper import get_fx_rates, freshness_badge_plain
+        fx, fx_src, fx_meta = get_fx_rates(with_meta=True)
+        if fx:
+            badge = freshness_badge_plain(fx_meta)
+            # Цвет бейджа
+            if fx_meta and fx_meta.get("fresh"):
+                bcol = G
+            elif fx_meta and fx_meta.get("stale"):
+                bcol = R
             else:
-                print(f"  {R}✘{RST} {DIM}Не удалось получить курс{RST}")
+                bcol = Y
+            print(f"  💵 1 USD  →  {G}{fx['USD_RUB']:.2f} ₽{RST}    {bcol}{badge}{RST}")
+            if fx.get("EUR_RUB"):
+                print(f"  💶 1 EUR  →  {G}{fx['EUR_RUB']:.2f} ₽{RST}")
+            if fx.get("USD_EUR"):
+                print(f"  💵 1 USD  →  {C}{fx['USD_EUR']:.4f} €{RST}")
+            upd = fx.get("updated", "")
+            if upd:
+                print(f"  {DIM}🕐 {upd}  ·  📡 {fx_src}{RST}")
         else:
-            print(f"  {R}✘{RST} {DIM}Нет интернета{RST}")
-    except Exception:
-        print(f"  {R}✘{RST} {DIM}Ошибка{RST}")
+            print(f"  {R}✘{RST} {DIM}Все источники курса недоступны{RST}")
+    except ImportError:
+        print(f"  {R}✘{RST} {DIM}net_helper.py не найден{RST}")
+    except Exception as e:
+        print(f"  {R}✘{RST} {DIM}{e}{RST}")
 
     # ═══ ИНСТРУМЕНТЫ ═══
     section("СИСТЕМНЫЕ ИНСТРУМЕНТЫ")

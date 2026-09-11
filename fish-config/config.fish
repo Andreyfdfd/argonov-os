@@ -1,6 +1,6 @@
 # ~/.config/fish/config.fish
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS — Fish config v1.4
+#  ARGONOV OS — Fish config v1.5 (плашка без рамок)
 # ═══════════════════════════════════════════════════════
 
 # ─── ЦВЕТА FISH ───
@@ -38,53 +38,64 @@ if test -d ~/.cargo/bin
 end
 
 # ═══════════════════════════════════════════════════════
-#  ПЛАШКА КОМАНД
+#  ПЛАШКА КОМАНД (без рамок)
 # ═══════════════════════════════════════════════════════
 function plate --description '📌 Показать плашку команд'
     set_color brblack
-    echo '  ┌─ 📌 Доступные команды ──────────────────────────────────'
+    echo '  📌 Доступные команды'
+    set_color normal
+    echo ''
     set_color cyan
-    echo -n '  │  ⚡ argonov  '
+    echo -n '  ⚡ argonov  '
     set_color brblack
-    echo -n '— меню всех команд    '
+    echo -n '— меню      '
     set_color cyan
     echo -n '🧠 ai     '
     set_color brblack
     echo '— AI-ассистент'
     set_color cyan
-    echo -n '  │  🎵 music    '
+    echo -n '  🎵 music    '
     set_color brblack
-    echo -n '— плеер               '
+    echo -n '— плеер     '
     set_color cyan
     echo -n '📝 notes  '
     set_color brblack
     echo '— заметки'
     set_color cyan
-    echo -n '  │  📌 todo     '
+    echo -n '  📌 todo     '
     set_color brblack
-    echo -n '— задачи              '
+    echo -n '— задачи    '
     set_color cyan
     echo -n '🔒 pm     '
     set_color brblack
     echo '— пароли'
     set_color cyan
-    echo -n '  │  🎮 hack     '
+    echo -n '  🎮 hack     '
     set_color brblack
-    echo -n '— хакерский тул       '
+    echo -n '— хакер     '
     set_color cyan
     echo -n '🕹  rpg    '
     set_color brblack
-    echo '— симулятор хакера'
+    echo '— симулятор'
     set_color cyan
-    echo -n '  │  📈 crypto   '
+    echo -n '  📈 crypto   '
     set_color brblack
-    echo -n '— крипта              '
+    echo -n '— крипта    '
     set_color cyan
     echo -n '🎨 art    '
     set_color brblack
     echo '— картинка'
+    set_color cyan
+    echo -n '  📦 util     '
     set_color brblack
-    echo '  └─ Tab — автодополнение  •  ↑↓ — выбор ──────────────────'
+    echo -n '— утилиты   '
+    set_color cyan
+    echo -n '⚡ s      '
+    set_color brblack
+    echo '— sysinfo'
+    set_color brblack
+    echo ''
+    echo '  Tab — автодополнение  ·  ↑↓ — выбор'
     set_color normal
 end
 
@@ -176,7 +187,6 @@ function m      --description '🌧 Матрица'          ; command argonov m
 function p      --description '🔐 Пароль'           ; command argonov p ; end
 function util   --description '📦 Утилиты'          ; command argonov util ; end
 
-# art — передаём все аргументы
 function art --description '🎨 Картинка'
     command argonov art $argv
 end
@@ -196,11 +206,11 @@ for sub in ai crypto music todo notes pm hack rpg d m p s util art push pull sta
     complete -c argonov -f -a $sub
 end
 
-complete -c art -f -a 'set' -d '⭐ Установить как welcome'
-complete -c art -f -a 'reset' -d '↩ Сбросить welcome'
-complete -c art -f -a 'list' -d '📋 Список картинок'
+complete -c art -f -a 'set' -d '⭐ Welcome'
+complete -c art -f -a 'reset' -d '↩ Сброс'
+complete -c art -f -a 'list' -d '📋 Список'
 complete -c art -f -a 'help' -d '❓ Справка'
-complete -c art -F  # файлы из текущей папки
+complete -c art -F
 
 complete -c hack -f -a 'scan'         -d '🌐 WHOIS + DNS'
 complete -c hack -f -a 'crt'          -d '🕵️  CRT'
@@ -239,7 +249,7 @@ set_color brblack
 echo '  ────────────────────────────────────────'
 set_color normal
 
-# Welcome-картинка: если задана — показываем; иначе fallback на fantasy.png
+# Welcome-картинка
 set -l welcome_file ""
 if test -f ~/.argonov_welcome_image
     set welcome_file (cat ~/.argonov_welcome_image)

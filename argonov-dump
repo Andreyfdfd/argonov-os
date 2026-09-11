@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Argonov Dump — сборка ARGONOV_FULL_DUMP.md + push в GitHub"""
+
+import os, sys, subprocess, time
+from datetime import datetime
+
+HOME = os.path.expanduser("~")
+DUMP_FILE = os.path.join(HOME, "ARGONOV_FULL_DUMP.md")
+REPO_DIR  = os.path.join(HOME, "argonov-os")
+
+# ─── Файлы для дампа ───
+SCRIPTS = [
+    ("argonov",           "bash"),
+    ("argonov-dump",      "python"),
+    ("net_helper.py",     "python"),
+    ("ai.py",             "python"),
+    ("hacktool.py",       "python"),
+    ("randomaudio.py",    "python"),
+    ("music_meta.py",     "python"),
+    ("todo.py",           "python"),
+    ("notes.py",          "python"),
+    ("passmanager.py",    "python"),
+    ("crypto_informer.py","python"),
+    ("hacker_rpg.py",     "python"),
+    ("download_zone.py",  "python"),
+    ("matrix.py",         "python"),
+    ("passgen.py",        "python"),
+    ("sysinfo.py",        "python"),
+    ("utils.py",          "python"),
+    ("art.py",            "python"),
+]
+
+G = "\033[92m"; C = "\033[96m"; Y = "\033[93m"; R = "\033[91m"
+DIM = "\033[2m"; BLD = "\033[1m"; RST = "\033[0m"
+
+def run(cmd, timeout=60):
+    try:
+        return subprocess.run(cmd, shell=True, capture_output=True,
+                              text=True, timeout=timeout)
+    except Exception:
+        return None
+
+def getprop(p):
+    r = run(f"getprop {p}")
+    return r.stdout.strip() if r and r.stdout else "?"
+
+def build_dump():
+    print(f"{C}📦 Сборка дампа...{RST}")
+    print()
+
+    lines = []
+    lines.append("# ARGONOV OS — Полный дамп всех скриптов")
+    lines.append("")
+    lines.append(f"Дата: {datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')}")
+    lines.append(f"Устройство: {getprop('ro.product.model')} / Android {getprop('ro.build.version.release')}")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    included = 0
+    skipped = []
+
+    for fname, lang in SCRIPTS:
+        path = os.path.join(HOME, fname)
+        if not os.path.isfile(path):
+            skipped.append(fname)
+            print(f"  {Y}⚠{RST}  {fname} {DIM}[нет файла]{RST}")
+            continue
+        try:
+            with open(path, encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+        except Exception as e:
+            skipped.append(fname)
+            print(f"  {R}✘{RST}  {fname} {DIM}[{e}]{RST}")
+            continue
+
+        size = os.path.getsize(path)
+        lines.append(f"## 📄 {fname}")
+        lines.append("")
+        lines.append(f"*{size} байт · {content.count(chr(10))+1} строк*")
+        lines.append("")
+        lines.append(f"```{lang}")
+        lines.append(content.rstrip())
+        lines.append("```")
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+        included += 1
+        print(f"  {G}✔{RST}  {fname} {DIM}[{size} б · {content.count(chr(10))+1} строк]{RST}")
+
+    with open(DUMP_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+    total_size = os.path.getsize(DUMP_FILE)
+    total_lines = sum(1 for _ in open(DUMP_FILE, encoding="utf-8"))
+
+    print()
+    print(f"{G}✅ Дамп собран:{RST}  {BLD}{DUMP_FILE}{RST}")
+    print(f"   {C}{included}{RST} скриптов  ·  {total_lines} строк  ·  {total_size//1024} КБ")
+    if skipped:
+        print(f"   {Y}пропущено: {len(skipped)} ({', '.join(skipped)}){RST}")
+    print()
+    return included
+
+def do_push():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        print(f"{R}❌ {REPO_DIR} — не git-репозиторий{RST}")
+        print(f"{DIM}   Сначала: argonov push (создаст и запушит){RST}")
+        return False
+
+    print(f"{C}⚙ Копирую свежие скрипты в репо...{RST}")
+    # Копируем всё из SCRIPTS + конфиги
+    for fname, _ in SCRIPTS:
+        src = os.path.join(HOME, fname)
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
+
+    # Дамп тоже кладём в репо
+    subprocess.run(f'cp "{DUMP_FILE}" "{REPO_DIR}/"', shell=True)
+
+    # fish config
+    fish_src = os.path.join(HOME, ".config/fish/config.fish")
+    fish_dst = os.path.join(REPO_DIR, "fish-config/config.fish")
+    if os.path.isfile(fish_src):
+        os.makedirs(os.path.dirname(fish_dst), exist_ok=True)
+        subprocess.run(f'cp "{fish_src}" "{fish_dst}"', shell=True)
+
+    os.chdir(REPO_DIR)
+    subprocess.run("git add .", shell=True)
+
+    r = run("git diff --cached --quiet", timeout=10)
+    if r and r.returncode == 0:
+        print(f"{DIM}Нет изменений для коммита{RST}")
+        return True
+
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    subprocess.run(f'git commit -m "Update {ts}"', shell=True, capture_output=True)
+
+    print(f"{C}⚙ Отправляю на GitHub...{RST}")
+    r = run("git push origin main 2>&1", timeout=120)
+    if r:
+        tail = (r.stdout or r.stderr or "").strip().split("\n")
+        for ln in tail[-5:]:
+            print(f"   {DIM}{ln}{RST}")
+
+    if r and r.returncode == 0:
+        print(f"{G}✔ Push выполнен{RST}")
+        return True
+    else:
+        print(f"{R}✘ Push вернул код {r.returncode if r else '?'}{RST}")
+        return False
+
+def main():
+    print()
+    print(f"{C}┌─────────────────────────────────────────────────┐{RST}")
+    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH{RST}                       {C}│{RST}")
+    print(f"{C}└─────────────────────────────────────────────────┘{RST}")
+    print()
+
+    n = build_dump()
+    if n == 0:
+        print(f"{R}❌ Нечего собирать{RST}")
+        sys.exit(1)
+
+    print(f"{C}📤 Push в GitHub...{RST}")
+    print()
+    ok = do_push()
+    print()
+
+    if ok:
+        print(f"{G}═══════════════════════════════════════════════════{RST}")
+        print(f"{G}  ✅ ГОТОВО  ·  дамп + push{RST}")
+        print(f"{G}═══════════════════════════════════════════════════{RST}")
+    else:
+        print(f"{Y}═══════════════════════════════════════════════════{RST}")
+        print(f"{Y}  ⚠ Дамп собран, но push не прошёл{RST}")
+        print(f"{Y}═══════════════════════════════════════════════════{RST}")
+        print(f"{DIM}Проверь: cd ~/argonov-os && git status{RST}")
+    print()
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print(f"\n{DIM}Прервано.{RST}")
+        sys.exit(1)
