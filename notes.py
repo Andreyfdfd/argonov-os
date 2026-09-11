@@ -125,7 +125,7 @@ def export_notes(fmt="md"):
     console.print(Text(f"  ✔ Экспортировано: {path}", style=GREEN_BRIGHT))
 
 # ═══════════ РИСОВКА ═══════════
-def clear(): console.clear()
+def clear(): os.system("clear")
 
 def title_block(main, sub=""):
     lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
@@ -184,7 +184,7 @@ def notes_table(notes, filter_mode=None):
     console.print()
 
 def commands_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="green",
+    t = Table(box=box.DOUBLE_EDGE, border_style="black",
               show_header=False, padding=(0, 2))
     t.add_column("Команда", style="bold yellow", width=26, justify="right")
     t.add_column("Действие", style="white")
@@ -199,7 +199,7 @@ def commands_panel():
     t.add_row("[cyan]export md|txt|json[/]", "💾 Экспорт в ~/notes_export/")
     t.add_row("[cyan]q[/]",             "🚪 Выход")
     console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
-                        border_style="green"))
+                        border_style="black"))
     console.print()
 
 # ═══════════ TAB-COMPLETER ═══════════

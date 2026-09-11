@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AI v13 — точные пути скриптов в промпте"""
+"""AI v14 — без рамок вокруг ответа (чистое копирование)"""
 
 import os, sys, json, subprocess, time, re, signal, atexit, socket, threading
 import urllib.request, urllib.error
+from datetime import datetime
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
@@ -88,26 +89,25 @@ def collect():
     return ctx
 
 def build_short_prompt():
-    """Промпт с ТОЧНЫМИ путями — ~120 токенов"""
     return (
         "Ты AI-ассистент в Termux Android. Русский, кратко.\n"
-        "Если просят запустить/показать — верни ТОЧНУЮ команду:\n"
+        "Если просят запустить/показать — верни команду так:\n"
         "```exec\nкоманда\n```\n\n"
         "ТОЧНЫЕ КОМАНДЫ (используй ровно эти):\n"
         "• музыка/плеер → python ~/randomaudio.py\n"
         "• задачи/todo → python ~/todo.py\n"
         "• заметки → python ~/notes.py\n"
-        "• пароли/pm → python ~/passmanager.py\n"
+        "• пароли → python ~/passmanager.py\n"
         "• крипта → python ~/crypto_informer.py\n"
         "• матрица → python ~/matrix.py\n"
-        "• хакер/htool → python ~/hacktool.py\n"
-        "• загрузка/download → python ~/download_zone.py\n"
+        "• хакер/hacktool → python ~/hacktool.py\n"
+        "• загрузка → python ~/download_zone.py\n"
         "• sysinfo/система → python ~/sysinfo.py\n"
         "• утилиты → python ~/utils.py\n"
         "• пароль-генератор → python ~/passgen.py\n"
+        "• QR-код → python ~/hacktool.py (и команду qr <текст>)\n"
         "• модели → ls -lh ~/*.gguf\n\n"
-        "НЕ придумывай другие команды (termux-*, music, hack и т.п.). "
-        "Только из списка выше. Если не подходит — скажи об этом."
+        "НЕ придумывай termux-*, qrencode, music и т.п. Только из списка."
     )
 
 def build_env_block(ctx):
@@ -148,7 +148,7 @@ def find_models():
 def ask_model(cfg):
     models = find_models()
     if not models:
-        console.print(Panel("[red]❌ Нет моделей[/]", border_style="red")); return None
+        console.print("[red]❌ Нет моделей[/]"); return None
     last = cfg.get("last_model")
     if last:
         for fp, sz in models:
@@ -164,11 +164,8 @@ def ask_model(cfg):
 def start_server(mp):
     if check_port(): return True
     console.print(f"[yellow]⚠ ОЗУ: {free_ram()} МБ[/]")
-    cmd = ["llama-server", "-m", mp,
-           "--host", HOST, "--port", str(PORT),
-           "-c", str(STATE["ctx_size"]),
-           "-t", str(STATE["threads"]),
-           "--no-warmup"]
+    cmd = ["llama-server", "-m", mp, "--host", HOST, "--port", str(PORT),
+           "-c", str(STATE["ctx_size"]), "-t", str(STATE["threads"]), "--no-warmup"]
     try:
         with open(os.devnull,"w") as dn:
             STATE["proc"] = subprocess.Popen(cmd, stdout=dn, stderr=dn, stdin=dn, preexec_fn=os.setsid)
@@ -199,8 +196,7 @@ atexit.register(stop_server)
 
 def stream(user_msg):
     sys_p = STATE["sys_prompt"]
-    if STATE["use_env"]:
-        sys_p += "\n\n" + STATE["env_text"]
+    if STATE["use_env"]: sys_p += "\n\n" + STATE["env_text"]
     msgs = [{"role":"system","content":sys_p}]
     msgs.extend(STATE["history"][-2:])
     msgs.append({"role":"user","content":user_msg})
@@ -228,26 +224,24 @@ DANGER = re.compile(r"rm\s+-rf\s+/[^sd]|mkfs|dd\s+if=|shutdown|reboot|halt|power
 EXEC = re.compile(r"```exec\s*\n(.*?)\n```", re.DOTALL)
 
 def process(gen):
+    """Стриминг раздумий. Live — только для раздумий. Ответ — отдельно."""
     tb, ab = "", ""; it = False; st = time.time(); ft = {"t":None}
-    def render():
-        el = int(time.time() - st); parts = []
-        status = f"⏱ {el}с · ⏳ обработка..." if ft["t"] is None else f"⏱ {el}с · TTFT {ft['t']-st:.1f}с"
-        parts.append(Text(status, style="bold yellow"))
-        if it or tb:
+
+    def render_think():
+        el = int(time.time() - st)
+        if ft["t"] is None:
+            status = f"⏱ {el}с · ⏳ обработка..."
+        else:
+            status = f"⏱ {el}с · TTFT {ft['t']-st:.1f}с"
+        lines = [Text(status, style="bold yellow")]
+        if tb:
             tail = tb[-500:] if len(tb) > 500 else tb
-            parts.append(Panel(Text(tail or "...", style="dim italic yellow"),
-                title="[bold yellow]💭 РАЗМЫШЛЕНИЯ[/]", border_style="yellow", padding=(0,1)))
-        if ab:
-            try: parts.append(Panel(Markdown(ab), title="[bold green]🧠 ОТВЕТ[/]",
-                border_style="green", padding=(0,1)))
-            except: parts.append(Panel(Text(ab), title="[bold green]🧠 ОТВЕТ[/]",
-                border_style="green", padding=(0,1)))
-        elif not it:
-            parts.append(Panel(Text("...", style="dim"), title="[bold green]🧠 ОТВЕТ[/]",
-                border_style="green", padding=(0,1)))
-        return Group(*parts)
-    with Live(render(), console=console, refresh_per_second=10) as live:
-        live.update(render())
+            lines.append(Text(tail, style="dim italic yellow"))
+        return Group(*lines)
+
+    # Live только для раздумий (если они есть)
+    with Live(render_think(), console=console, refresh_per_second=10, transient=True) as live:
+        live.update(render_think())
         for p in gen:
             if ft["t"] is None: ft["t"] = time.time()
             if "<think>" in p and not it:
@@ -257,7 +251,8 @@ def process(gen):
             else:
                 if it: tb += p
                 else: ab += p
-            live.update(render())
+            live.update(render_think())
+
     tb = tb.replace("<think>","").replace("</think>","").strip()
     ab = ab.replace("<think>","").replace("</think>","").strip()
     if not ab and tb: ab = tb; tb = ""
@@ -266,18 +261,22 @@ def process(gen):
 def execute(cmd):
     console.print()
     if DANGER.search(cmd):
-        console.print(Panel(f"[red]⚠ ОПАСНАЯ[/]\n[white]{cmd}[/]",
-            title="[bold red]🛑[/]", border_style="red")); return False
-    console.print(Panel(f"[bold cyan]{cmd}[/]", title="[bold yellow]⚡ КОМАНДА[/]", border_style="yellow"))
+        console.print(f"[bold red]🛑 Заблокировано:[/] {cmd}")
+        return False
+    console.print(f"[bold yellow]⚡ Команда:[/] [cyan]{cmd}[/]")
     try:
         a = console.input("[bold magenta]Выполнить? (y/N)> [/]").strip().lower()
     except: return False
-    if a != "y": console.print("[dim]Отменено[/]\n"); return False
+    if a != "y":
+        console.print("[dim]Отменено[/]\n"); return False
     console.print(f"[dim]$ {cmd}[/]\n")
     try:
         p = subprocess.Popen(cmd, shell=True)
         p.wait(timeout=600)
-        console.print(f"[green]✔ Готово[/]\n" if p.returncode == 0 else f"[red]✘ Код {p.returncode}[/]\n")
+        if p.returncode == 0:
+            console.print(f"[green]✔ Готово[/]\n")
+        else:
+            console.print(f"[red]✘ Код {p.returncode}[/]\n")
     except subprocess.TimeoutExpired:
         console.print("[red]✘ Таймаут[/]\n")
         try: p.kill()
@@ -301,15 +300,17 @@ def title_block():
     agent = "⚡ АГЕНТ" if STATE["agent"] else "— выкл"
     env = "📎 вкл" if STATE["use_env"] else "— выкл"
     mn = os.path.basename(STATE['model_path'] or '?').replace('.gguf','')
-    t = Text()
-    t.append("▓▒░ ", style="bold bright_green")
-    t.append(mn.upper(), style="bold bright_green")
-    t.append(" ░▒▓ AI", style="bold green")
-    t.append(f"\n  Режим: ", style="bold yellow"); t.append(mode, style="bold bright_cyan")
-    t.append(f"  ·  🛠 ", style="bold yellow"); t.append(agent, style="bright_green" if STATE["agent"] else "dim")
-    t.append(f"  ·  📎 ", style="bold yellow"); t.append(env, style="bright_cyan" if STATE["use_env"] else "dim")
-    t.append(f"\n  📝 {len(STATE['history'])} сообщ.  ·  ОЗУ: {free_ram()} МБ  ·  ctx: {STATE['ctx_size']}  ·  threads: {STATE['threads']}", style="dim")
-    return Panel(t, border_style="green", padding=(0,1))
+    text = Text()
+    text.append("▓▒░ ", style="bold bright_green")
+    text.append(mn.upper(), style="bold bright_green")
+    text.append(" ░▒▓ AI  ·  ", style="bold green")
+    text.append(mode, style="bold bright_cyan")
+    text.append("  ·  ", style="dim")
+    text.append(agent, style="bright_green" if STATE["agent"] else "dim")
+    text.append("  ·  ", style="dim")
+    text.append(env, style="bright_cyan" if STATE["use_env"] else "dim")
+    text.append(f"  ·  ctx {STATE['ctx_size']}  ·  t {STATE['threads']}  ·  ОЗУ {free_ram()} МБ", style="dim")
+    return Panel(text, border_style="green", padding=(0, 1))
 
 def switch_model(cfg):
     models = find_models()
@@ -349,26 +350,22 @@ def main():
     STATE["sys_prompt"] = build_short_prompt()
     STATE["env_text"] = build_env_block(STATE["ctx"])
     console.print(f"[green]✔ pip={len(STATE['ctx']['pip'])} pkg={len(STATE['ctx']['pkg'])} скриптов={len(STATE['ctx']['scripts'])}[/]")
-    console.print(f"[dim]Промпт: ~{len(STATE['sys_prompt'])//3} токенов (с точными путями)[/]")
 
     if not start_server(STATE["model_path"]): return
     console.print("[yellow]⏳ Загружаю модель...[/]")
     t0 = time.time()
     def rw():
         el = int(time.time() - t0)
-        return Panel(Group(Text(f"⏱ {el} сек", style="bold yellow"),
-                            Text("Загрузка в ОЗУ", style="dim")),
-            title="[bold yellow]⏳ ЗАГРУЗКА[/]", border_style="yellow", padding=(0,1))
-    with Live(rw(), console=console, refresh_per_second=2) as live:
+        return Text(f"⏱ {el} сек · загрузка в ОЗУ...", style="bold yellow")
+    with Live(rw(), console=console, refresh_per_second=2, transient=True) as live:
         res = {"w": None}
         def w(): res["w"] = warmup()
         th = threading.Thread(target=w, daemon=True); th.start()
         while th.is_alive(): live.update(rw()); time.sleep(0.5)
         th.join()
-    if res["w"] is None:
-        console.print("[red]❌ Прогрев не удался[/]"); return
+    if res["w"] is None: console.print("[red]❌ Прогрев не удался[/]"); return
     console.print(f"[green]✔ Модель в ОЗУ за {res['w']:.1f} сек[/]")
-    time.sleep(0.5)
+    time.sleep(0.3)
 
     console.clear(); console.print()
     console.print(title_block()); console.print()
@@ -401,15 +398,15 @@ def main():
             console.print(f"[green]⚡ Команды: {'вкл' if STATE['agent'] else 'выкл'}[/]\n"); continue
         if lo in ("контекст","context"):
             STATE["use_env"] = not STATE["use_env"]
-            console.print(f"[green]📎 Env: {'вкл' if STATE['use_env'] else 'выкл'}[/]\n")
-            continue
+            console.print(f"[green]📎 Env: {'вкл' if STATE['use_env'] else 'выкл'}[/]\n"); continue
         if lo == "env":
             c = STATE["ctx"]; console.print()
             console.print(f"[cyan]Python:[/] {c['python']}")
             console.print(f"[cyan]pip:[/]  " + ", ".join(c["pip"]))
             console.print(f"[cyan]pkg:[/]  " + ", ".join(c["pkg"]))
             console.print(f"[cyan]Скрипты:[/] " + ", ".join(c["scripts"]))
-            console.print(f"[cyan]Модели:[/] " + ", ".join(c["models"])); console.print(); continue
+            console.print(f"[cyan]Модели:[/] " + ", ".join(c["models"]))
+            console.print(); continue
         if lo in ("модель","model"):
             if switch_model(cfg):
                 console.clear(); console.print(); console.print(title_block()); console.print()
@@ -420,12 +417,7 @@ def main():
             console.clear(); console.print(); console.print(title_block()); console.print()
             console.print("[green]✔[/]\n"); continue
         if lo in ("статистика","stats"):
-            console.print(Panel.fit(
-                f"Модель: {os.path.basename(STATE['model_path'])}\n"
-                f"Сообщений: {len(STATE['history'])}\nОЗУ: {free_ram()} МБ\n"
-                f"ctx: {STATE['ctx_size']}  ·  threads: {STATE['threads']}\n"
-                f"Промпт: ~{len(STATE['sys_prompt'])//3} токенов",
-                border_style="cyan"))
+            console.print(f"Модель: {os.path.basename(STATE['model_path'])}  ·  ОЗУ: {free_ram()} МБ")
             console.print(); continue
         if lo in ("помощь","help","?"):
             console.print("  авто/быстро/думать · команды · контекст · модель · env · очистить · выход\n"); continue
@@ -443,7 +435,16 @@ def main():
         if ab.startswith("__ERROR__"):
             console.print(f"[red]❌ {ab[10:]}[/]\n"); STATE["history"].pop(); continue
         STATE["history"].append({"role":"assistant","content":ab})
-        console.print(f"\n  [dim]⏱ {el:.1f}с[/]\n")
+
+        # ⬅️ ПРОСТО Markdown, БЕЗ Panel — можно копировать
+        console.print()
+        if tb:
+            console.print(f"[dim italic yellow]💭 {tb[:600]}[/]\n")
+        try:
+            console.print(Markdown(ab))
+        except:
+            console.print(ab)
+        console.print(f"\n[dim]⏱ {el:.1f}с[/]\n")
 
         cmds = [m.strip() for m in EXEC.findall(ab) if m.strip()]
         if cmds and STATE["agent"]:

@@ -26,7 +26,7 @@ RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
 
 # ═══════════ БАННЕР ═══════════
 def banner():
-    console.clear()
+    os.system("clear")
     art = r"""
     ██╗  ██╗ █████╗  ██████╗██╗  ██╗████████╗ ██████╗  ██████╗ ██╗
     ██║  ██║██╔══██╗██╔════╝██║ ██╔╝╚══██╔══╝██╔═══██╗██╔═══██╗██║
@@ -41,7 +41,7 @@ def banner():
     console.print()
 
 def menu():
-    t = Table(box=DOUBLE_EDGE, border_style="green", show_header=False, padding=(0, 1))
+    t = Table(box=None, border_style="black", show_header=False, padding=(0, 1))
     t.add_column("Команда", style="bold yellow", width=24, justify="center")
     t.add_column("Описание", style="white")
 
@@ -94,7 +94,7 @@ def menu():
     t.add_row("[cyan]exit[/]",               "🚪 Выход")
 
     console.print(Panel(t, title="[bold green]🎮 Команды (Tab — автодополнение)[/]",
-                        border_style="green"))
+                        border_style="black"))
     console.print()
 
 # ═══════════ УТИЛИТЫ ═══════════
@@ -265,7 +265,7 @@ def cmd_headers(url):
     try:
         import requests
         r = requests.head(url, timeout=10, allow_redirects=True)
-        t = Table(box=SIMPLE_HEAD, border_style="cyan", header_style="bold cyan", padding=(0,1))
+        t = Table(box=None, border_style="black", header_style="bold cyan", padding=(0,1))
         t.add_column("Заголовок", style="bold yellow")
         t.add_column("Значение", style="cyan")
         for k, v in r.headers.items():
@@ -347,7 +347,7 @@ def cmd_ip():
     try:
         import requests
         d = requests.get("https://ipinfo.io/json", timeout=10).json()
-        t = Table(box=SIMPLE_HEAD, show_header=False, border_style="cyan", padding=(0,2))
+        t = Table(box=None, show_header=False, border_style="black", padding=(0,2))
         t.add_column("", style="bold yellow", width=16)
         t.add_column("", style="cyan")
         for k, label in [("ip","🌐 IP"),("city","🏙 Город"),("region","🌍 Регион"),
@@ -371,7 +371,7 @@ def cmd_speed():
         mbps = (sz * 8) / (el * 1_000_000)
         ps = time.time(); requests.get("https://1.1.1.1", timeout=5)
         pm = (time.time() - ps) * 1000
-        t = Table(box=SIMPLE_HEAD, show_header=False, border_style="green", padding=(0,2))
+        t = Table(box=None, show_header=False, border_style="black", padding=(0,2))
         t.add_column("", style="bold yellow", width=16)
         t.add_column("", style="green")
         t.add_row("📥 Скорость", f"{mbps:.2f} Мбит/с")
@@ -386,7 +386,7 @@ def cmd_hash(text):
     if not text: console.print("[red]❌ hash <текст>[/]"); return
     import hashlib
     console.print()
-    t = Table(title=f"🧮 Хэши: {text[:40]}", box=SIMPLE_HEAD, border_style="cyan",
+    t = Table(title=f"🧮 Хэши: {text[:40]}", box=None, border_style="black",
               header_style="bold cyan")
     t.add_column("Алгоритм", style="bold yellow", width=10)
     t.add_column("Хэш", style="cyan")
@@ -419,7 +419,7 @@ def cmd_hashid(h):
     if not types:
         types.append(("Не определён", "❓"))
 
-    t = Table(box=SIMPLE_HEAD, border_style="cyan", header_style="bold cyan")
+    t = Table(box=None, border_style="black", header_style="bold cyan")
     t.add_column("Символ", width=8)
     t.add_column("Тип хэша", style="cyan")
     for name, sym in types:
@@ -436,7 +436,7 @@ def cmd_b64(args):
         if mode in ("enc","e"): res = base64.b64encode(text.encode()).decode()
         elif mode in ("dec","d"): res = base64.b64decode(text.encode()).decode()
         else: console.print("[red]❌ enc|dec[/]"); return
-        console.print(); console.print(Panel(f"[bold cyan]{res}[/]", border_style="cyan")); console.print()
+        console.print(); console.print(Panel(f"[bold cyan]{res}[/]", border_style="black")); console.print()
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
@@ -449,7 +449,7 @@ def cmd_pass(length_str):
     alphabet = string.ascii_letters + string.digits + "!@#$%^&*()-_=+[]{};:,.<>?"
     pwd = "".join(secrets.choice(alphabet) for _ in range(length))
     console.print()
-    console.print(Panel(f"[bold green]{pwd}[/]", title=f"🔐 {length} символов", border_style="green"))
+    console.print(Panel(f"[bold green]{pwd}[/]", title=f"🔐 {length} символов", border_style="black"))
     try:
         import pyperclip; pyperclip.copy(pwd)
         console.print("[dim]✔ Скопировано в буфер[/]")
@@ -470,7 +470,7 @@ def cmd_pass_audit(pwd):
     elif ent < 50: lbl, col = "Средний", "yellow"
     elif ent < 70: lbl, col = "Хороший", "green"
     else: lbl, col = "Отличный", "bold green"
-    t = Table(box=SIMPLE_HEAD, show_header=False, border_style=col, padding=(0,2))
+    t = Table(box=None, show_header=False, border_style=col, padding=(0,2))
     t.add_column("", style="bold yellow", width=18); t.add_column("", style="white")
     t.add_row("Длина", str(len(pwd)))
     t.add_row("Строчные", "✔" if lo else "✘"); t.add_row("Прописные", "✔" if up else "✘")
@@ -489,7 +489,7 @@ def cmd_crypto():
             params={"ids":"bitcoin,ethereum,solana","vs_currencies":"usd,rub",
                     "include_24hr_change":"true"}, timeout=10)
         d = r.json()
-        t = Table(box=SIMPLE_HEAD, border_style="yellow", header_style="bold yellow")
+        t = Table(box=None, border_style="black", header_style="bold yellow")
         t.add_column("Монета", style="bold cyan")
         t.add_column("USD", style="green", justify="right")
         t.add_column("RUB", style="green", justify="right")
@@ -536,12 +536,12 @@ def cmd_qr(text):
 
 # ═══════════ ОБУЧЕНИЕ ═══════════
 def cmd_pentest_guide():
-    console.clear()
+    os.system("clear")
     console.print()
     console.print(Align.center(Panel.fit(
         "[bold green]📚  РОАДМАП ПЕНТЕСТЕРА  📚[/]\n"
         "[dim]Полный путь от новичка до профессионала[/]",
-        border_style="green")))
+        border_style="black")))
     console.print()
 
     stages = [
@@ -585,15 +585,15 @@ def cmd_pentest_guide():
     console.print()
 
 def cmd_ctf_links():
-    console.clear()
+    os.system("clear")
     console.print()
     console.print(Align.center(Panel.fit(
         "[bold green]🏆  ПЛОЩАДКИ CTF  🏆[/]\n"
         "[dim]Где учиться и соревноваться[/]",
-        border_style="green")))
+        border_style="black")))
     console.print()
 
-    t = Table(box=SIMPLE_HEAD, border_style="cyan", header_style="bold cyan")
+    t = Table(box=None, border_style="black", header_style="bold cyan")
     t.add_column("Площадка", style="bold cyan")
     t.add_column("Уровень", style="yellow")
     t.add_column("Ссылка", style="green")

@@ -1,9 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS v1.1 — единая точка входа
+#  ARGONOV OS v1.2 — единая точка входа
 # ═══════════════════════════════════════════════════════
 
-ARGONOV_VERSION="1.1.0"
+ARGONOV_VERSION="1.2.0"
 REPO_DIR="$HOME/argonov-os"
 BACKUP_DIR="$HOME/argonov_backups"
 
@@ -26,13 +26,14 @@ show_help() {
     echo -e "${M}[ ДОСТУПНЫЕ КОМАНДЫ ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
     echo ""
-    echo -e "  ${Y}🤖 ${C}ai${RST}         — AI-ассистент (Qwen + exec)"
+    echo -e "  ${Y}🧠 ${C}ai${RST}         — AI-ассистент (Qwen + exec)"
     echo -e "  ${Y}📈 ${C}crypto${RST}     — Крипта в реальном времени"
     echo -e "  ${Y}🎵 ${C}music${RST}      — Музыкальный плеер"
     echo -e "  ${Y}📌 ${C}todo${RST}       — Трекер задач"
     echo -e "  ${Y}📝 ${C}notes${RST}      — Заметки"
     echo -e "  ${Y}🔒 ${C}pm${RST}         — Менеджер паролей (AES-256)"
     echo -e "  ${Y}🎮 ${C}hack${RST}       — Хакерский мультитул"
+    echo -e "  ${Y}🕹  ${C}rpg${RST}        — RPG «Симулятор Хакера»"
     echo -e "  ${Y}📥 ${C}d${RST}          — Загрузчик файлов"
     echo -e "  ${Y}🌧  ${C}m${RST}          — Матрица"
     echo -e "  ${Y}🔐 ${C}p${RST}          — Генератор паролей"
@@ -46,24 +47,22 @@ show_help() {
     echo -e "  ${C}push${RST}       — Запушить изменения в GitHub"
     echo -e "  ${C}pull${RST}       — Подтянуть обновления с GitHub"
     echo -e "  ${C}status${RST}     — Статус git"
-    echo -e "  ${C}backup${RST}     — Локальный бэкап всех данных"
-    echo -e "  ${C}restore${RST}    — Восстановить из локального бэкапа"
+    echo -e "  ${C}backup${RST}     — Локальный бэкап"
+    echo -e "  ${C}restore${RST}    — Восстановить из бэкапа"
     echo -e "  ${C}doctor${RST}     — Проверка целостности"
-    echo ""
-    echo -e "${DIM}Пример:${RST} ${C}argonov push${RST}  ${DIM}— закоммитит и запушит${RST}"
     echo ""
 }
 
 show_menu() {
     while true; do
         header
-        echo -e "  ${C}1${RST})  🤖  ai          ${C}2${RST})  📈  crypto"
+        echo -e "  ${C}1${RST})  🧠  ai          ${C}2${RST})  📈  crypto"
         echo -e "  ${C}3${RST})  🎵  music       ${C}4${RST})  📌  todo"
         echo -e "  ${C}5${RST})  📝  notes       ${C}6${RST})  🔒  pm"
-        echo -e "  ${C}7${RST})  🎮  hack        ${C}8${RST})  📥  d"
-        echo -e "  ${C}9${RST})  🌧   m          ${C}10${RST}) 🔐  p"
-        echo -e "  ${C}11${RST}) ⚡  s          ${C}12${RST}) 📦  util"
-        echo -e "  ${C}13${RST}) 🎨  art"
+        echo -e "  ${C}7${RST})  🎮  hack        ${C}8${RST})  🕹   rpg"
+        echo -e "  ${C}9${RST})  📥  d           ${C}10${RST}) 🌧   m"
+        echo -e "  ${C}11${RST}) 🔐  p           ${C}12${RST}) ⚡  s"
+        echo -e "  ${C}13${RST}) 📦  util        ${C}14${RST}) 🎨  art"
         echo ""
         echo -e "  ${C}p${RST})   🚀  push    ${C}l${RST})   ⬇️   pull"
         echo -e "  ${C}st${RST})  📊  status  ${C}b${RST})   💾  backup"
@@ -80,12 +79,13 @@ show_menu() {
             5) run_notes ;;
             6) run_pm ;;
             7) run_hack ;;
-            8) run_d ;;
-            9) run_m ;;
-            10) run_p ;;
-            11) run_s ;;
-            12) run_util ;;
-            13) run_art ;;
+            8) run_rpg ;;
+            9) run_d ;;
+            10) run_m ;;
+            11) run_p ;;
+            12) run_s ;;
+            13) run_util ;;
+            14) run_art ;;
             p|push) do_push; echo -ne "${DIM}Enter...${RST}"; read -r ;;
             l|pull) do_pull; echo -ne "${DIM}Enter...${RST}"; read -r ;;
             st|status) do_status; echo -ne "${DIM}Enter...${RST}"; read -r ;;
@@ -111,6 +111,7 @@ run_todo()    { check_py ~/todo.py && python ~/todo.py ; }
 run_notes()   { check_py ~/notes.py && python ~/notes.py ; }
 run_pm()      { check_py ~/passmanager.py && python ~/passmanager.py ; }
 run_hack()    { check_py ~/hacktool.py && python ~/hacktool.py ; }
+run_rpg()     { check_py ~/hacker_rpg.py && python ~/hacker_rpg.py ; }
 run_d()       { check_py ~/download_zone.py && python ~/download_zone.py ; }
 run_m()       { check_py ~/matrix.py && python ~/matrix.py ; }
 run_p()       { check_py ~/passgen.py && python ~/passgen.py ; }
@@ -126,27 +127,24 @@ run_art()     {
     fi
 }
 
-# ═══ GIT PUSH ═══
 do_push() {
     if [ ! -d "$REPO_DIR/.git" ]; then
         echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
     fi
-    echo -e "${Y}⚙ Копирую актуальные файлы в репо...${RST}"
+    echo -e "${Y}⚙ Копирую актуальные файлы...${RST}"
     cp ~/argonov "$REPO_DIR/" 2>/dev/null
     for f in ai.py crypto_informer.py download_zone.py hacktool.py matrix.py \
              music_meta.py notes.py passmanager.py passgen.py randomaudio.py \
-             sysinfo.py todo.py utils.py; do
+             sysinfo.py todo.py utils.py hacker_rpg.py; do
         cp ~/"$f" "$REPO_DIR/" 2>/dev/null
     done
+    [ -f ~/.config/fish/config.fish ] && cp ~/.config/fish/config.fish "$REPO_DIR/fish-config/config.fish" 2>/dev/null
 
     cd "$REPO_DIR" || return 1
     git add .
-
     if git diff --cached --quiet; then
-        echo -e "${DIM}Нет изменений для коммита${RST}"
-        return 0
+        echo -e "${DIM}Нет изменений${RST}"; return 0
     fi
-
     ts=$(date +"%Y-%m-%d %H:%M")
     git commit -m "Update $ts" >/dev/null
     echo -e "${Y}⚙ Отправляю на GitHub...${RST}"
@@ -154,60 +152,51 @@ do_push() {
     echo -e "${G}✔ Готово${RST}"
 }
 
-# ═══ GIT PULL ═══
 do_pull() {
     if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
+        echo -e "${R}❌ $REPO_DIR не git${RST}"; return 1
     fi
     cd "$REPO_DIR" || return 1
-    echo -e "${Y}⚙ Забираю обновления...${RST}"
     git pull origin main 2>&1 | tail -5
-    echo -e "${Y}⚙ Копирую в \$HOME...${RST}"
     cp *.py argonov "$HOME/" 2>/dev/null
     chmod +x "$HOME/argonov"
     echo -e "${G}✔ Готово${RST}"
 }
 
-# ═══ GIT STATUS ═══
 do_status() {
     if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
+        echo -e "${R}❌ Нет репо${RST}"; return 1
     fi
     cd "$REPO_DIR" || return 1
     echo -e "${C}═══ GIT STATUS ═══${RST}"
     git status -s
     echo ""
-    echo -e "${C}═══ ПОСЛЕДНИЕ КОММИТЫ ═══${RST}"
+    echo -e "${C}═══ КОММИТЫ ═══${RST}"
     git log --oneline -5
     echo ""
     echo -e "${C}═══ REMOTE ═══${RST}"
     git remote -v
 }
 
-# ═══ ЛОКАЛЬНЫЙ БЭКАП ═══
 do_backup() {
     mkdir -p "$BACKUP_DIR"
     ts=$(date +%Y%m%d_%H%M%S)
     file="$BACKUP_DIR/argonov_backup_${ts}.tar.gz"
-
-    echo -e "${Y}⚙ Создаю бэкап...${RST}"
+    echo -e "${Y}⚙ Бэкап...${RST}"
     cd "$HOME" || exit 1
     tar -czf "$file" \
-        --exclude='argonov_backups' \
-        --exclude='.cache' \
-        --exclude='.cargo' \
+        --exclude='argonov_backups' --exclude='.cache' --exclude='.cargo' \
         --exclude='storage' \
         ai.py crypto_informer.py randomaudio.py todo.py notes.py \
-        passmanager.py hacktool.py download_zone.py matrix.py passgen.py \
-        sysinfo.py utils.py music_meta.py argonov \
+        passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
+        passgen.py sysinfo.py utils.py music_meta.py argonov \
         .ai_config.json .ai_context.json .crypto_watchlist.json \
-        .todo.json .notes.json .pm.vault \
+        .todo.json .notes.json .pm.vault .music_favorites.json .hacker_rpg_save.json \
         .config/fish .termux \
         music_cache ai_chats 2>/dev/null
-
     if [ -f "$file" ]; then
         size=$(du -h "$file" | cut -f1)
-        echo -e "${G}✔ Бэкап: $file ${DIM}($size)${RST}"
+        echo -e "${G}✔ $file ${DIM}($size)${RST}"
     fi
     sleep 2
 }
@@ -222,7 +211,6 @@ do_restore() {
     echo ""
     echo -ne "${M}Путь к бэкапу> ${RST}"; read -r bf
     if [ -f "$bf" ]; then
-        echo -e "${Y}⚙ Восстанавливаю...${RST}"
         cd "$HOME" && tar -xzf "$bf"
         echo -e "${G}✔ Восстановлено${RST}"
     else
@@ -236,18 +224,16 @@ do_doctor() {
     echo -e "${M}[ ПРОВЕРКА ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
     echo ""
-
     cf() {
         [ -f "$1" ] && echo -e "  ${G}✔${RST} $1" || echo -e "  ${R}✘${RST} $1"
     }
     cc() {
         command -v "$1" &>/dev/null && echo -e "  ${G}✔${RST} $1" || echo -e "  ${R}✘${RST} $1"
     }
-
     echo -e "${C}📂 Скрипты:${RST}"
     for f in ai.py crypto_informer.py randomaudio.py todo.py notes.py \
-             passmanager.py hacktool.py download_zone.py matrix.py passgen.py \
-             sysinfo.py utils.py music_meta.py argonov; do
+             passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
+             passgen.py sysinfo.py utils.py music_meta.py argonov; do
         cf "$HOME/$f"
     done
     echo ""
@@ -260,7 +246,7 @@ do_doctor() {
     done
     echo ""
     echo -e "${C}🌐 Git:${RST}"
-    [ -d "$REPO_DIR/.git" ] && echo -e "  ${G}✔${RST} Репо: $REPO_DIR" || echo -e "  ${R}✘${RST} Нет репо"
+    [ -d "$REPO_DIR/.git" ] && echo -e "  ${G}✔${RST} $REPO_DIR" || echo -e "  ${R}✘${RST} Нет репо"
     echo ""
     echo -ne "${DIM}Enter...${RST}"; read -r
 }
@@ -274,6 +260,7 @@ case "$1" in
     notes)           run_notes ;;
     pm)              run_pm ;;
     hack)            run_hack ;;
+    rpg|game)        run_rpg ;;
     d|download)      run_d ;;
     m|matrix)        run_m ;;
     p|pass)          run_p ;;

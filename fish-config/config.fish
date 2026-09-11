@@ -1,7 +1,9 @@
 # ~/.config/fish/config.fish
-# ============================================================
-# TERMINAL ARGONOV
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS — Fish config v1.3
+# ═══════════════════════════════════════════════════════
 
+# ─── ЦВЕТА FISH ───
 set -g fish_color_normal        E6E6E6
 set -g fish_color_command       00FF88
 set -g fish_color_keyword       00FF88
@@ -28,7 +30,7 @@ set -g fish_pager_color_selected_prefix     000000 --bold
 set -g fish_pager_color_selected_completion 000000
 set -g fish_pager_color_selected_description 003300
 
-# ─── PATH для cargo (viu) ───
+# ─── PATH ДЛЯ CARGO (viu) ───
 if test -d ~/.cargo/bin
     if not contains ~/.cargo/bin $PATH
         set -gx PATH ~/.cargo/bin $PATH
@@ -36,86 +38,72 @@ if test -d ~/.cargo/bin
 end
 
 # ═══════════════════════════════════════════════════════
-#  ART — Fantasy.png на полный экран
+#  ПЛАШКА КОМАНД
 # ═══════════════════════════════════════════════════════
-function art --description '🎨 Fantasy.png fullscreen (viu)'
-    if not test -f ~/fantasy.png
-        echo "❌ Нет файла: ~/fantasy.png"
-        return
-    end
-    command clear
-    set -l cols (tput cols)
-    set -l rows (tput lines)
-    set -l sw (math "$cols - 2")
-    set -l sh (math "$rows - 3")
-    viu -w $sw -h $sh -b -t ~/fantasy.png
-    echo ''
-    set_color brblack
-    echo "   viu  •  $sw×$sh  •  TrueColor"
-    set_color normal
-end
-
-# ─── Плашка команд ───
 function plate --description '📌 Показать плашку команд'
     set_color brblack
     echo '  ┌─ 📌 Доступные команды ──────────────────────────────────'
     set_color cyan
-    echo -n '  │  ⚡ s       '
+    echo -n '  │  ⚡ argonov  '
     set_color brblack
-    echo -n '— центр управления    '
-    set_color cyan
-    echo -n '📝 notes  '
-    set_color brblack
-    echo '— заметки'
-    set_color cyan
-    echo -n '  │  📦 util    '
-    set_color brblack
-    echo -n '— сканер утилит       '
-    set_color cyan
-    echo -n '📥 d      '
-    set_color brblack
-    echo '— загрузчик'
-    set_color cyan
-    echo -n '  │  🎮 hack    '
-    set_color brblack
-    echo -n '— хакерский тул       '
-    set_color cyan
-    echo -n '🌧 m      '
-    set_color brblack
-    echo '— матрица'
-    set_color cyan
-    echo -n '  │  🎵 music   '
-    set_color brblack
-    echo -n '— музыкальный плеер   '
-    set_color cyan
-    echo -n '🔐 p      '
-    set_color brblack
-    echo '— пароли'
-    set_color cyan
-    echo -n '  │  📌 todo    '
-    set_color brblack
-    echo -n '— трекер задач        '
-    set_color cyan
-    echo -n '🔒 pm     '
-    set_color brblack
-    echo '— менеджер паролей'
-    set_color cyan
-    echo -n '  │  📈 crypto  '
-    set_color brblack
-    echo -n '— крипта live         '
+    echo -n '— меню всех команд    '
     set_color cyan
     echo -n '🧠 ai     '
     set_color brblack
     echo '— AI-ассистент'
     set_color cyan
-    echo -n '  │  🎨 art    '
+    echo -n '  │  🎵 music    '
     set_color brblack
-    echo '— Fantasy full'
+    echo -n '— плеер               '
+    set_color cyan
+    echo -n '📝 notes  '
+    set_color brblack
+    echo '— заметки'
+    set_color cyan
+    echo -n '  │  📌 todo     '
+    set_color brblack
+    echo -n '— задачи              '
+    set_color cyan
+    echo -n '🔒 pm     '
+    set_color brblack
+    echo '— пароли'
+    set_color cyan
+    echo -n '  │  🎮 hack     '
+    set_color brblack
+    echo -n '— хакерский тул       '
+    set_color cyan
+    echo -n '🕹  rpg    '
+    set_color brblack
+    echo '— симулятор хакера'
+    set_color cyan
+    echo -n '  │  📈 crypto   '
+    set_color brblack
+    echo -n '— крипта              '
+    set_color cyan
+    echo -n '🎨 art    '
+    set_color brblack
+    echo '— картинка'
     set_color brblack
     echo '  └─ Tab — автодополнение  •  ↑↓ — выбор ──────────────────'
     set_color normal
 end
 
+# ═══════════════════════════════════════════════════════
+#  ОБЁРТКИ clear / reset
+# ═══════════════════════════════════════════════════════
+function clear --description '🧹 Очистить + плашка'
+    command clear
+    plate
+end
+
+function reset --description '🔄 Reset + плашка'
+    command reset
+    plate
+end
+
+# ═══════════════════════════════════════════════════════
+#  PROMPT
+# ═══════════════════════════════════════════════════════
 function fish_prompt
     set -l last_status $status
     set -l t (date +%H:%M)
@@ -164,99 +152,108 @@ function fish_right_prompt
     end
 end
 
+# ═══════════════════════════════════════════════════════
+#  АЛИАСЫ
+# ═══════════════════════════════════════════════════════
 alias ls='eza --icons'
 alias ll='eza -lh --icons --git'
 alias la='eza -lah --icons --git'
 alias cat='bat'
 
-function s --description '⚡ Центр управления системой'
-    python ~/sysinfo.py
-end
-function util --description '📦 Сканер всех утилит'
-    python ~/utils.py
-end
-function hack --description '🎮 Хакерский мультитул'
-    python ~/hacktool.py
-end
-function music --description '🎵 Музыкальный плеер'
-    python ~/randomaudio.py
-end
-function music-meta --description '🌐 Метаданные для музыки'
-    python ~/music_meta.py
-end
-function music-force --description '🔄 Переискать метаданные'
-    python ~/music_meta.py --force
-end
-function todo --description '📌 Трекер задач'
-    python ~/todo.py
-end
-function notes --description '📝 Заметки'
-    python ~/notes.py
-end
-function pm --description '🔒 Менеджер паролей (AES-256)'
-    python ~/passmanager.py
-end
-function crypto --description '📈 Крипта в реальном времени'
-    python ~/crypto_informer.py
-end
-function ai --description '🧠 AI-ассистент (VibeThinker)'
-    python ~/ai.py $argv
-end
-function d --description '📥 Загрузчик файлов'
-    python ~/download_zone.py
-end
-function m --description '🌧 Цифровой дождь'
-    python ~/matrix.py
-end
-function p --description '🔐 Генератор паролей'
-    python ~/passgen.py
+# ═══════════════════════════════════════════════════════
+#  КОМАНДЫ
+# ═══════════════════════════════════════════════════════
+function ai     --description '🧠 AI-ассистент'    ; command argonov ai ; end
+function crypto --description '📈 Крипта'           ; command argonov crypto ; end
+function music  --description '🎵 Музыка'           ; command argonov music ; end
+function todo   --description '📌 Задачи'           ; command argonov todo $argv ; end
+function notes  --description '📝 Заметки'          ; command argonov notes ; end
+function pm     --description '🔒 Пароли'           ; command argonov pm ; end
+function hack   --description '🎮 Хакерский тул'    ; command argonov hack ; end
+function rpg    --description '🕹  RPG Симулятор'   ; command argonov rpg ; end
+function d      --description '📥 Загрузчик'        ; command argonov d ; end
+function m      --description '🌧 Матрица'          ; command argonov m ; end
+function p      --description '🔐 Пароль'           ; command argonov p ; end
+function util   --description '📦 Утилиты'          ; command argonov util ; end
+function art    --description '🎨 Картинка'         ; command argonov art ; end
+
+function s --description '⚡ Центр управления'
+    command argonov s
+    plate
 end
 
-complete -c hack -f -a 'scan'       -d '🌐 WHOIS + DNS + IP'
-complete -c hack -f -a 'crt'        -d '🕵️  Certificate Transparency'
-complete -c hack -f -a 'crypto'     -d '💰 Курс BTC/ETH'
-complete -c hack -f -a 'news'       -d '📰 IT-новости'
-complete -c hack -f -a 'qr'         -d '📱 QR-код'
-complete -c hack -f -a 'pass'       -d '🔐 Пароль'
-complete -c hack -f -a 'pass-audit' -d '🔍 Анализ пароля'
-complete -c hack -f -a 'hash'       -d '🧮 MD5/SHA'
-complete -c hack -f -a 'b64'        -d '🔡 Base64'
-complete -c hack -f -a 'ip'         -d '📍 IP + геолокация'
-complete -c hack -f -a 'ping'       -d '🏓 Пинг'
-complete -c hack -f -a 'ports'      -d '⚙️  Порты'
-complete -c hack -f -a 'headers'    -d '📋 HTTP-заголовки'
-complete -c hack -f -a 'robots'     -d '🤖 robots.txt'
-complete -c hack -f -a 'trace'      -d '🛰 Traceroute'
-complete -c hack -f -a 'speed'      -d '⚡ Скорость'
-complete -c hack -f -a 'weather'    -d '☀️  Погода'
-complete -c hack -f -a 'matrix'     -d '🌧 Матрица'
-complete -c hack -f -a 'sysinfo'    -d '💻 Центр управления'
-complete -c hack -f -a 'clear'      -d '🧹 Очистить'
-complete -c hack -f -a 'exit'       -d '🚪 Выход'
+function backup --description '💾 Бэкап'            ; command argonov backup ; end
+function doctor --description '🩺 Проверка'         ; command argonov doctor ; end
+
+# ═══════════════════════════════════════════════════════
+#  АВТОДОПОЛНЕНИЕ
+# ═══════════════════════════════════════════════════════
+complete -c argonov -f -a 'ai'      -d '🧠 AI'
+complete -c argonov -f -a 'crypto'  -d '📈 Крипта'
+complete -c argonov -f -a 'music'   -d '🎵 Музыка'
+complete -c argonov -f -a 'todo'    -d '📌 Задачи'
+complete -c argonov -f -a 'notes'   -d '📝 Заметки'
+complete -c argonov -f -a 'pm'      -d '🔒 Пароли'
+complete -c argonov -f -a 'hack'    -d '🎮 Hack'
+complete -c argonov -f -a 'rpg'     -d '🕹  RPG'
+complete -c argonov -f -a 'd'       -d '📥 Download'
+complete -c argonov -f -a 'm'       -d '🌧 Матрица'
+complete -c argonov -f -a 'p'       -d '🔐 Пароль'
+complete -c argonov -f -a 's'       -d '⚡ Sysinfo'
+complete -c argonov -f -a 'util'    -d '📦 Утилиты'
+complete -c argonov -f -a 'art'     -d '🎨 Картинка'
+complete -c argonov -f -a 'push'    -d '🚀 Git push'
+complete -c argonov -f -a 'pull'    -d '⬇️  Git pull'
+complete -c argonov -f -a 'status'  -d '📊 Git status'
+complete -c argonov -f -a 'backup'  -d '💾 Бэкап'
+complete -c argonov -f -a 'restore' -d '♻️  Restore'
+complete -c argonov -f -a 'doctor'  -d '🩺 Doctor'
+complete -c argonov -f -a 'help'    -d '❓ Справка'
+complete -c argonov -f -a 'version' -d '📌 Версия'
+
+complete -c hack -f -a 'scan'         -d '🌐 WHOIS + DNS'
+complete -c hack -f -a 'crt'          -d '🕵️  CRT'
+complete -c hack -f -a 'subdomain'    -d '🔎 Поддомены'
+complete -c hack -f -a 'dns-enum'     -d '📡 DNS'
+complete -c hack -f -a 'robots'       -d '🤖 robots.txt'
+complete -c hack -f -a 'headers'      -d '📋 Headers'
+complete -c hack -f -a 'nmap'         -d '🔍 Nmap'
+complete -c hack -f -a 'ports'        -d '⚙️  Порты'
+complete -c hack -f -a 'ping'         -d '🏓 Ping'
+complete -c hack -f -a 'trace'        -d '🛰 Traceroute'
+complete -c hack -f -a 'ip'           -d '📍 IP'
+complete -c hack -f -a 'speed'        -d '⚡ Speed'
+complete -c hack -f -a 'hash'         -d '🧮 Hash'
+complete -c hack -f -a 'hashid'       -d '🔐 HashID'
+complete -c hack -f -a 'b64'          -d '🔡 Base64'
+complete -c hack -f -a 'pass'         -d '🎲 Pass'
+complete -c hack -f -a 'pass-audit'   -d '🔍 Audit'
+complete -c hack -f -a 'crypto'       -d '💰 Crypto'
+complete -c hack -f -a 'news'         -d '📰 News'
+complete -c hack -f -a 'qr'           -d '📱 QR'
+complete -c hack -f -a 'pentest-guide' -d '📚 Guide'
+complete -c hack -f -a 'ctf-links'    -d '🏆 CTF'
+complete -c hack -f -a 'matrix'       -d '🌧 Matrix'
+complete -c hack -f -a 'sysinfo'      -d '💻 Sysinfo'
+complete -c hack -f -a 'exit'         -d '🚪 Exit'
 
 # ═══════════════════════════════════════════════════════
 #  ЗАПУСК TERMUX
 # ═══════════════════════════════════════════════════════
-
-# 1. Очистка экрана
 command clear
 
-# 2. Логотип
 set_color green --bold
 echo '  ▓▒░ TERMINAL ARGONOV ░▒▓'
 set_color brblack
 echo '  ────────────────────────────────────────'
 set_color normal
 
-# 3. Fantasy.png
 if test -f ~/fantasy.png
     set -l cols (tput cols)
     set -l bw (math "$cols - 2")
-    set -l bh 22
-    viu -w $bw -h $bh -b -t ~/fantasy.png
+    viu -w $bw -h 22 -b -t ~/fantasy.png
 end
 
-# 4. Информация о запуске
 set_color green --bold
 echo ""
 echo "════════════════════════════════════════════════"
@@ -271,6 +268,5 @@ echo "════════════════════════�
 set_color normal
 echo ""
 
-# 5. Sysinfo + плашка
 python ~/sysinfo.py
 plate

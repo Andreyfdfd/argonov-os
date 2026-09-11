@@ -151,7 +151,7 @@ def notify(task):
         return False
 
 # ═══════════ РИСОВКА ═══════════
-def clear(): console.clear()
+def clear(): os.system("clear")
 
 def title_block(main, sub=""):
     lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
@@ -226,7 +226,7 @@ def tasks_table(tasks, filter_mode="active"):
     console.print()
 
 def commands_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="green",
+    t = Table(box=box.DOUBLE_EDGE, border_style="black",
               show_header=False, padding=(0, 2))
     t.add_column("Команда", style="bold yellow", width=26, justify="right")
     t.add_column("Действие", style="white")
@@ -241,7 +241,7 @@ def commands_panel():
     t.add_row("[cyan]clear-done[/]",    "🧹 Удалить все выполненные")
     t.add_row("[cyan]q[/]",             "🚪 Выход")
     console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
-                        border_style="green"))
+                        border_style="black"))
     console.print()
 
 # ═══════════ TAB-COMPLETER ═══════════

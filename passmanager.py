@@ -79,7 +79,7 @@ def gen_password(length=20, symbols=True, digits=True, upper=True, lower=True) -
     return "".join(secrets.choice(pool) for _ in range(length))
 
 # ═══════════ РИСОВКА ═══════════
-def clear(): console.clear()
+def clear(): os.system("clear")
 
 def title_block(main, sub=""):
     lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
@@ -134,7 +134,7 @@ def entries_table(entries, filter_cat=None, filter_search=None):
     return shown
 
 def commands_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="green",
+    t = Table(box=box.DOUBLE_EDGE, border_style="black",
               show_header=False, padding=(0, 2))
     t.add_column("Команда", style="bold yellow", width=30, justify="right")
     t.add_column("Действие", style="white")
@@ -151,7 +151,7 @@ def commands_panel():
     t.add_row("[cyan]passwd[/]",              "🔑 Сменить мастер-пароль")
     t.add_row("[cyan]lock[/]",                "🔒 Заблокировать (выйти)")
     console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
-                        border_style="green"))
+                        border_style="black"))
     console.print()
 
 # ═══════════ TAB-COMPLETER ═══════════
@@ -204,7 +204,7 @@ def unlock_vault():
         console.print(Align.center(Panel.fit(
             "[bold green]🔐  P A S S M A N A G E R  🔐[/]\n"
             "[dim]Первый запуск — создание мастер-пароля[/]",
-            border_style="green")))
+            border_style="black")))
         console.print()
         console.print("[yellow]⚠  Мастер-пароль НЕЛЬЗЯ восстановить![/]")
         console.print("[yellow]   Запомни его или запиши в надёжном месте.[/]")
@@ -234,7 +234,7 @@ def unlock_vault():
     console.print(Align.center(Panel.fit(
         "[bold green]🔐  P A S S M A N A G E R  🔐[/]\n"
         "[dim]Введи мастер-пароль[/]",
-        border_style="green")))
+        border_style="black")))
     console.print()
     for attempt in range(3):
         try:

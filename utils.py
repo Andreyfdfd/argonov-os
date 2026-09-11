@@ -112,7 +112,7 @@ def main():
     total = len(pkg) + len(pip) + len(npm) + len(car)
 
     # Сводка
-    s = Table(box=box.ROUNDED, show_header=False, border_style="magenta", padding=(0, 1))
+    s = Table(box=box.ROUNDED, show_header=False, border_style="black", padding=(0, 1))
     s.add_column("", style="bold yellow", width=22)
     s.add_column("", style="white")
     s.add_row("📦 pkg (Termux)", str(len(pkg)))
@@ -120,7 +120,7 @@ def main():
     s.add_row("📦 npm (Node.js)", str(len(npm)))
     s.add_row("🦀 cargo (Rust)", str(len(car)))
     s.add_row("[bold green]ВСЕГО[/]", f"[bold green]{total}[/]")
-    console.print(Panel(s, title="[bold]📈 Сводка утилит[/]", border_style="magenta"))
+    console.print(Panel(s, title="[bold]📈 Сводка утилит[/]", border_style="black"))
     console.print()
 
     # Категории
@@ -145,7 +145,7 @@ def main():
         if not items: continue
         items.sort(key=lambda x: x[1].lower())
         t = Table(title=f"[bold]{cat}[/] [dim]({len(items)})[/]",
-                  box=box.SIMPLE_HEAVY, border_style="magenta", padding=(0, 1))
+                  box=box.SIMPLE_HEAVY, border_style="black", padding=(0, 1))
         t.add_column("#", style="dim", width=4, justify="right")
         t.add_column("Утилита", style="bold cyan")
         t.add_column("Версия", style="yellow", width=17)
