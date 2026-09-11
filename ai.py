@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""AI v14 — без рамок вокруг ответа (чистое копирование)"""
+"""AI v15.5 — короткий промпт с примерами + pty.spawn"""
 
 import os, sys, json, subprocess, time, re, signal, atexit, socket, threading
 import urllib.request, urllib.error
-from datetime import datetime
+import pty
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
@@ -23,13 +23,30 @@ CONFIG_FILE = os.path.join(HOME, ".ai_config.json")
 HOST, PORT = "127.0.0.1", 8080
 URL = f"http://{HOST}:{PORT}"
 
-STATE = {"model_path": None, "thinking": False, "auto": True, "agent": True,
-         "temp": 0.4, "max_tokens": 512, "ctx_size": 1024, "threads": 4,
-         "sys_prompt": "", "use_env": False, "env_text": "",
-         "history": [], "proc": None, "ctx": {}}
+INTERACTIVE_KEYWORDS = [
+    "randomaudio", "hacker_rpg", "matrix.py", "todo.py", "notes.py",
+    "passmanager", "hacktool", "crypto_informer", "utils.py",
+    "art.py", "music_meta", "ai.py",
+    " vi ", "nano ", "vim ", "nvim ", "less ", "more ",
+    "top", "htop", "btop",
+]
 
-def run(cmd, t=20):
-    try: return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=t)
+def is_interactive(cmd):
+    cl = " " + cmd.lower() + " "
+    for kw in INTERACTIVE_KEYWORDS:
+        if kw in cl: return True
+    return False
+
+STATE = {
+    "model_path": None, "thinking": False, "auto": True,
+    "agent": True, "auto_exec": False, "sandbox": True,
+    "temp": 0.4, "max_tokens": 1024, "ctx_size": 2048, "threads": 4,
+    "sys_prompt": "", "history": [], "proc": None, "ctx": {},
+    "session_files": [],
+}
+
+def run(cmd, timeout=30):
+    try: return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
     except: return None
 
 def hsize(b):
@@ -50,34 +67,17 @@ def save_cfg(c):
     except: pass
 
 def collect():
-    ctx = {"python":"?","android":"?","model":"?","pip":[],"pkg":[],"scripts":[],"models":[]}
+    ctx = {"python":"?","android":"?","model":"?","scripts":[],"models":[]}
     r = run("python --version")
     if r and r.stdout: ctx["python"] = r.stdout.strip().replace("Python ","")
     r = run("getprop ro.product.model")
     if r and r.stdout: ctx["model"] = r.stdout.strip()
     r = run("getprop ro.build.version.release")
     if r and r.stdout: ctx["android"] = r.stdout.strip()
-    top_pip = ["rich","requests","httpx","fastapi","uvicorn","pydantic","aiogram",
-               "sqlalchemy","aiohttp","beautifulsoup4","redis","psutil","flet",
-               "cryptography","pyfiglet","loguru","lxml","prompt-toolkit"]
-    r = run("pip list --format=freeze 2>/dev/null")
-    if r and r.stdout:
-        allp = {re.sub(r"[-_.]+","-",l.split("==",1)[0]).lower() for l in r.stdout.strip().split("\n") if "==" in l}
-        ctx["pip"] = [p for p in top_pip if p in allp]
-    top_pkg = ["python","git","neovim","tmux","clang","rust","cargo","nodejs",
-               "fish","chafa","ffmpeg","curl","wget","ripgrep","fd","llama-cpp"]
-    r = run("pkg list-installed 2>/dev/null")
-    if r and r.stdout:
-        allpk = set()
-        for ln in r.stdout.strip().split("\n"):
-            if ln.strip() and not ln.startswith("Listing"):
-                parts = ln.split()
-                if parts: allpk.add(parts[0].split("/")[0].lower())
-        ctx["pkg"] = [p for p in top_pkg if p in allpk]
     try:
         ctx["scripts"] = [f for f in sorted(os.listdir(HOME))
                           if os.path.isfile(os.path.join(HOME, f))
-                          and f.endswith((".py",".sh",".fish"))][:30]
+                          and f.endswith((".py",".sh",".fish"))]
     except: pass
     for d in [HOME, os.path.join(HOME, "models")]:
         if os.path.isdir(d):
@@ -88,35 +88,39 @@ def collect():
                     if sz > 100_000_000: ctx["models"].append(f"{f} ({hsize(sz)})")
     return ctx
 
-def build_short_prompt():
-    return (
-        "Ты AI-ассистент в Termux Android. Русский, кратко.\n"
-        "Если просят запустить/показать — верни команду так:\n"
-        "```exec\nкоманда\n```\n\n"
-        "ТОЧНЫЕ КОМАНДЫ (используй ровно эти):\n"
-        "• музыка/плеер → python ~/randomaudio.py\n"
-        "• задачи/todo → python ~/todo.py\n"
-        "• заметки → python ~/notes.py\n"
-        "• пароли → python ~/passmanager.py\n"
-        "• крипта → python ~/crypto_informer.py\n"
-        "• матрица → python ~/matrix.py\n"
-        "• хакер/hacktool → python ~/hacktool.py\n"
-        "• загрузка → python ~/download_zone.py\n"
-        "• sysinfo/система → python ~/sysinfo.py\n"
-        "• утилиты → python ~/utils.py\n"
-        "• пароль-генератор → python ~/passgen.py\n"
-        "• QR-код → python ~/hacktool.py (и команду qr <текст>)\n"
-        "• модели → ls -lh ~/*.gguf\n\n"
-        "НЕ придумывай termux-*, qrencode, music и т.п. Только из списка."
-    )
+def is_safe_path(path):
+    if not STATE["sandbox"]: return True
+    try: ap = os.path.abspath(os.path.expanduser(path))
+    except: return False
+    allowed = [os.path.abspath(HOME), os.path.abspath(os.path.join(HOME, "storage")), "/sdcard/Download"]
+    for a in allowed:
+        if ap.startswith(a): return True
+    return False
 
-def build_env_block(ctx):
+def build_system_prompt(ctx):
+    """~250 токенов с примерами — TTFT 5-10 сек"""
     return (
-        f"Окружение: Python {ctx['python']}, Android {ctx['android']}, {ctx['model']}\n"
-        f"pip: {', '.join(ctx['pip'])}\n"
-        f"pkg: {', '.join(ctx['pkg'])}\n"
-        f"Скрипты ~/: {', '.join(ctx['scripts'])}\n"
-        f"Модели: {', '.join(ctx['models'])}"
+        "Ты AI в Termux (Android). Русский, кратко.\n\n"
+        "ФОРМАТЫ:\n"
+        "Запуск: ```exec\\npython ~/file.py\\n```\n"
+        "Write: ```write\\n~/file.py\\nсодержимое\\n```\n"
+        "Read: ```read\\n~/file.py\\n```\n\n"
+        "ПРИМЕРЫ (используй ровно python ~/):\n"
+        "'запусти матрицу' → ```exec\\npython ~/matrix.py\\n```\n"
+        "'открой музыку' → ```exec\\npython ~/randomaudio.py\\n```\n"
+        "'покажи задачи' → ```exec\\npython ~/todo.py\\n```\n"
+        "'заметки' → ```exec\\npython ~/notes.py\\n```\n"
+        "'пароли' → ```exec\\npython ~/passmanager.py\\n```\n"
+        "'крипта' → ```exec\\npython ~/crypto_informer.py\\n```\n"
+        "'хакерский тул' → ```exec\\npython ~/hacktool.py\\n```\n"
+        "'RPG' → ```exec\\npython ~/hacker_rpg.py\\n```\n"
+        "'загрузчик' → ```exec\\npython ~/download_zone.py\\n```\n"
+        "'sysinfo' → ```exec\\npython ~/sysinfo.py\\n```\n"
+        "'утилиты' → ```exec\\npython ~/utils.py\\n```\n"
+        "'картинка' → ```exec\\npython ~/art.py\\n```\n"
+        "'модели' → ```exec\\nls -lh ~/*.gguf\\n```\n\n"
+        "ВАЖНО: ВСЕГДА пиши 'python ~/file.py'. НЕ просто 'matrix' или 'todo'.\n"
+        "НЕ выдумывай termux-*, qrencode, apt и т.п."
     )
 
 def check_port():
@@ -157,7 +161,7 @@ def ask_model(cfg):
                 time.sleep(0.3); return fp
     for fp, sz in models:
         if "qwen" in os.path.basename(fp).lower():
-            console.print(f"[green]✔ Модель по умолчанию: {os.path.basename(fp)}[/]")
+            console.print(f"[green]✔ Модель: {os.path.basename(fp)}[/]")
             return fp
     return models[0][0]
 
@@ -195,10 +199,8 @@ def stop_server():
 atexit.register(stop_server)
 
 def stream(user_msg):
-    sys_p = STATE["sys_prompt"]
-    if STATE["use_env"]: sys_p += "\n\n" + STATE["env_text"]
-    msgs = [{"role":"system","content":sys_p}]
-    msgs.extend(STATE["history"][-2:])
+    msgs = [{"role":"system","content":STATE["sys_prompt"]}]
+    msgs.extend(STATE["history"][-4:])
     msgs.append({"role":"user","content":user_msg})
     payload = {"messages":msgs,"stream":True,"temperature":STATE["temp"],
                "max_tokens":STATE["max_tokens"],"cache_prompt":True}
@@ -220,26 +222,27 @@ def stream(user_msg):
     except urllib.error.HTTPError as e: yield f"__ERROR__: HTTP {e.code}"
     except Exception as e: yield f"__ERROR__: {e}"
 
-DANGER = re.compile(r"rm\s+-rf\s+/[^sd]|mkfs|dd\s+if=|shutdown|reboot|halt|poweroff|fdisk|parted|>\s*/dev/sd", re.I)
+DANGER = re.compile(
+    r"rm\s+-rf\s+/(?!data/data/com\.termux/files/home|sdcard|storage)|"
+    r"mkfs|dd\s+if=|dd\s+of=/dev|shutdown|reboot|halt|poweroff|"
+    r"fdisk|parted|>\s*/dev/sd|:\(\)\s*\{|chmod\s+-R\s+000|"
+    r"sudo\s+rm|rm\s+-rf\s+/system|rm\s+-rf\s+/vendor",
+    re.I)
+
 EXEC = re.compile(r"```exec\s*\n(.*?)\n```", re.DOTALL)
+WRITE = re.compile(r"```write\s*\n(.*?)\n(.*?)\n```", re.DOTALL)
+READ = re.compile(r"```read\s*\n(.*?)\n```", re.DOTALL)
 
 def process(gen):
-    """Стриминг раздумий. Live — только для раздумий. Ответ — отдельно."""
     tb, ab = "", ""; it = False; st = time.time(); ft = {"t":None}
-
     def render_think():
         el = int(time.time() - st)
-        if ft["t"] is None:
-            status = f"⏱ {el}с · ⏳ обработка..."
-        else:
-            status = f"⏱ {el}с · TTFT {ft['t']-st:.1f}с"
+        status = f"⏱ {el}с · ⏳..." if ft["t"] is None else f"⏱ {el}с · TTFT {ft['t']-st:.1f}с"
         lines = [Text(status, style="bold yellow")]
         if tb:
-            tail = tb[-500:] if len(tb) > 500 else tb
+            tail = tb[-400:] if len(tb) > 400 else tb
             lines.append(Text(tail, style="dim italic yellow"))
         return Group(*lines)
-
-    # Live только для раздумий (если они есть)
     with Live(render_think(), console=console, refresh_per_second=10, transient=True) as live:
         live.update(render_think())
         for p in gen:
@@ -252,41 +255,183 @@ def process(gen):
                 if it: tb += p
                 else: ab += p
             live.update(render_think())
-
     tb = tb.replace("<think>","").replace("</think>","").strip()
     ab = ab.replace("<think>","").replace("</think>","").strip()
     if not ab and tb: ab = tb; tb = ""
     return tb, ab
 
-def execute(cmd):
+def reset_terminal():
+    try: subprocess.run("stty sane 2>/dev/null", shell=True, timeout=3)
+    except: pass
+    try:
+        sys.stdout.write("\033[0m\033[2J\033[H")
+        sys.stdout.flush()
+    except: pass
+
+def run_interactive_tty(cmd):
+    reset_terminal()
+    console.print()
+    console.print(f"[bold yellow]🎮 Запуск в TTY:[/] [cyan]{cmd}[/]")
+    console.print("[dim]Выход: q / Ctrl+C / Esc[/]\n")
+    time.sleep(0.5)
+    try:
+        sys.stdout.flush()
+        sys.stdin.flush() if hasattr(sys.stdin, 'flush') else None
+    except: pass
+    try:
+        rc = pty.spawn(["/data/data/com.termux/files/usr/bin/sh", "-c", cmd])
+        return rc
+    except Exception as e:
+        console.print(f"[red]❌ pty.spawn: {e}[/]")
+        return None
+    finally:
+        reset_terminal()
+
+def execute(cmd, auto=False):
     console.print()
     if DANGER.search(cmd):
         console.print(f"[bold red]🛑 Заблокировано:[/] {cmd}")
-        return False
+        return None
+
+    if is_interactive(cmd):
+        console.print(f"[bold yellow]⚡ Интерактивная:[/] [cyan]{cmd}[/]")
+        if not auto:
+            try:
+                a = input("\033[95mЗапустить в TTY? (y/N)> \033[0m").strip().lower()
+            except: return None
+            if a != "y":
+                console.print("[dim]Отменено[/]\n"); return None
+        rc = run_interactive_tty(cmd)
+        console.print()
+        if rc == 0:
+            console.print(f"[green]✔ Код 0[/]\n")
+        elif rc is not None:
+            console.print(f"[red]✘ Код {rc}[/]\n")
+        return f"TTY-команда завершена, код {rc}"
+
     console.print(f"[bold yellow]⚡ Команда:[/] [cyan]{cmd}[/]")
-    try:
-        a = console.input("[bold magenta]Выполнить? (y/N)> [/]").strip().lower()
-    except: return False
-    if a != "y":
-        console.print("[dim]Отменено[/]\n"); return False
+    if not auto:
+        try:
+            a = input("\033[95mВыполнить? (y/N)> \033[0m").strip().lower()
+        except: return None
+        if a != "y":
+            console.print("[dim]Отменено[/]\n"); return None
     console.print(f"[dim]$ {cmd}[/]\n")
     try:
-        p = subprocess.Popen(cmd, shell=True)
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT, text=True, bufsize=1)
+        out = []
+        for line in p.stdout:
+            console.print(line.rstrip())
+            out.append(line.rstrip())
         p.wait(timeout=600)
+        result = "\n".join(out[-50:])
         if p.returncode == 0:
-            console.print(f"[green]✔ Готово[/]\n")
+            console.print(f"[green]✔ Код 0[/]\n")
         else:
             console.print(f"[red]✘ Код {p.returncode}[/]\n")
+        return result
     except subprocess.TimeoutExpired:
         console.print("[red]✘ Таймаут[/]\n")
         try: p.kill()
         except: pass
-    except Exception as e: console.print(f"[red]✘ {e}[/]\n")
-    return True
+        return None
+    except Exception as e:
+        console.print(f"[red]✘ {e}[/]\n"); return None
 
-COMMANDS = ["думать","think","быстро","fast","авто","auto","команды","agent",
-            "контекст","context","env","модель","model","очистить","clear",
-            "статистика","stats","помощь","help","выход","q"]
+def do_write(path, content, auto=False):
+    path = os.path.expanduser(path.strip())
+    console.print()
+    if DANGER.search(content):
+        console.print(f"[bold red]🛑 Заблокировано[/]"); return False
+    if not is_safe_path(path):
+        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}"); return False
+    console.print(f"[bold yellow]📝 Запись:[/] [cyan]{path}[/]")
+    console.print(f"[dim]{len(content)} символов[/]")
+    for line in content.split("\n")[:15]:
+        console.print(f"[dim]│[/] {line}")
+    if len(content.split("\n")) > 15:
+        console.print(f"[dim]│ ... ({len(content.split(chr(10)))-15} строк)[/]")
+    console.print()
+    if not auto:
+        try:
+            a = input("\033[95mЗаписать? (y/N)> \033[0m").strip().lower()
+        except: return False
+        if a != "y":
+            console.print("[dim]Отменено[/]\n"); return False
+    try:
+        d = os.path.dirname(path)
+        if d: os.makedirs(d, exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+        console.print(f"[green]✔ Записано[/]\n"); return True
+    except Exception as e:
+        console.print(f"[red]✘ {e}[/]\n"); return False
+
+def do_read(path):
+    path = os.path.expanduser(path.strip())
+    console.print()
+    if not is_safe_path(path):
+        console.print(f"[bold red]🛑 Вне sandbox:[/] {path}"); return None
+    if not os.path.exists(path):
+        console.print(f"[red]❌ Не найден: {path}[/]\n"); return None
+    if os.path.isdir(path):
+        try:
+            files = os.listdir(path)
+            console.print(f"[yellow]📁 {path}:[/]")
+            for f in files[:30]: console.print(f"  [cyan]•[/] {f}")
+            console.print()
+            return "\n".join(files)
+        except: return None
+    try:
+        with open(path, encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        if len(content) > 8000:
+            console.print(f"[yellow]📄 {path} (первые 8000 из {len(content)})[/]\n")
+            content = content[:8000] + f"\n[... обрезано]"
+        else:
+            console.print(f"[yellow]📄 {path} ({len(content)} симв)[/]\n")
+        STATE["session_files"].append(path)
+        return content
+    except Exception as e:
+        console.print(f"[red]✘ {e}[/]\n"); return None
+
+def handle_response(answer):
+    did_something = False
+    read_results = []
+    for path in READ.findall(answer):
+        content = do_read(path)
+        if content is not None:
+            read_results.append((path, content)); did_something = True
+    write_results = []
+    for path, content in WRITE.findall(answer):
+        if do_write(path, content, auto=STATE["auto_exec"]):
+            write_results.append(path); did_something = True
+    exec_results = []
+    for cmd in EXEC.findall(answer):
+        cmd = cmd.strip()
+        if not cmd: continue
+        out = execute(cmd, auto=STATE["auto_exec"])
+        if out is not None:
+            exec_results.append((cmd, out)); did_something = True
+    if read_results or write_results or exec_results:
+        follow = "\n=== РЕЗУЛЬТАТЫ ===\n"
+        for path, content in read_results:
+            follow += f"\n[READ {path}]:\n{content[:3000]}\n"
+        for path in write_results:
+            follow += f"\n[WRITE OK]: {path}\n"
+        for cmd, out in exec_results:
+            follow += f"\n[EXEC '{cmd}']:\n{out[:2000]}\n"
+        return follow
+    return None
+
+COMMANDS = [
+    "думать","think","быстро","fast","авто","auto",
+    "команды","agent","агент","sudo","sandbox",
+    "env","модель","model",
+    "очистить","clear","статистика","stats",
+    "помощь","help","выход","q"
+]
 
 class Comp(Completer):
     def get_completions(self, doc, ev):
@@ -297,26 +442,26 @@ class Comp(Completer):
 
 def title_block():
     mode = "🤖 АВТО" if STATE["auto"] else ("💭 ВСЕГДА" if STATE["thinking"] else "⚡ БЫСТРО")
-    agent = "⚡ АГЕНТ" if STATE["agent"] else "— выкл"
-    env = "📎 вкл" if STATE["use_env"] else "— выкл"
+    agent = "🔥 АГЕНТ" if STATE["agent"] else "— выкл"
+    auto_exec = "⚡ БЕЗ ПОДТВ." if STATE["auto_exec"] else "✋ ПОДТВ."
+    sandbox = "🔒 SB" if STATE["sandbox"] else "⚠ БЕЗ SB"
     mn = os.path.basename(STATE['model_path'] or '?').replace('.gguf','')
-    text = Text()
-    text.append("▓▒░ ", style="bold bright_green")
-    text.append(mn.upper(), style="bold bright_green")
-    text.append(" ░▒▓ AI  ·  ", style="bold green")
-    text.append(mode, style="bold bright_cyan")
-    text.append("  ·  ", style="dim")
-    text.append(agent, style="bright_green" if STATE["agent"] else "dim")
-    text.append("  ·  ", style="dim")
-    text.append(env, style="bright_cyan" if STATE["use_env"] else "dim")
-    text.append(f"  ·  ctx {STATE['ctx_size']}  ·  t {STATE['threads']}  ·  ОЗУ {free_ram()} МБ", style="dim")
-    return Panel(text, border_style="green", padding=(0, 1))
+    t = Text()
+    t.append("▓▒░ ", style="bold bright_green")
+    t.append(mn.upper(), style="bold bright_green")
+    t.append(" ░▒▓ AI v15.5", style="bold green")
+    t.append(f"\n  ", style="dim"); t.append(mode, style="bold bright_cyan")
+    t.append(f"  ·  ", style="dim"); t.append(agent, style="bright_green" if STATE["agent"] else "dim")
+    t.append(f"  ·  ", style="dim"); t.append(auto_exec, style="bright_red" if STATE["auto_exec"] else "bright_yellow")
+    t.append(f"  ·  ", style="dim"); t.append(sandbox, style="bright_cyan")
+    t.append(f"\n  📝 {len(STATE['history'])}  ·  📂 {len(STATE['session_files'])}  ·  ОЗУ {free_ram()} МБ", style="dim")
+    return Panel(t, border_style="black", padding=(0,1))
 
 def switch_model(cfg):
     models = find_models()
     if not models: return False
     console.print()
-    t = Table(box=SIMPLE_HEAD, border_style="cyan", padding=(0,2))
+    t = Table(box=SIMPLE_HEAD, border_style="black", padding=(0,2))
     t.add_column("#", style="bold yellow", width=4, justify="right")
     t.add_column("Модель"); t.add_column("Размер", style="cyan", justify="right", width=10)
     for i, (fp, sz) in enumerate(models, 1):
@@ -324,7 +469,7 @@ def switch_model(cfg):
         t.add_row(str(i), os.path.basename(fp), hsize(sz), m)
     console.print(t); console.print()
     try:
-        ch = console.input("[bold magenta]Какую? (Enter — отмена)> [/]").strip()
+        ch = input("\033[95mКакую? (Enter — отмена)> \033[0m").strip()
         if not ch.isdigit(): return False
         n = int(ch)
         if not (1 <= n <= len(models)): return False
@@ -335,41 +480,43 @@ def switch_model(cfg):
         if not start_server(np): return False
         w = warmup()
         if w is None: console.print("[red]❌[/]\n"); return False
-        console.print(f"[green]✔ Загружена за {w:.1f}с[/]\n"); return True
+        console.print(f"[green]✔ {w:.1f}с[/]\n"); return True
     except: return False
 
 def main():
-    console.clear()
+    os.system("clear")
     cfg = load_cfg()
     STATE["model_path"] = ask_model(cfg)
     if not STATE["model_path"]: return
     cfg["last_model"] = STATE["model_path"]; save_cfg(cfg)
+    STATE["agent"] = cfg.get("agent", True)
+    STATE["auto_exec"] = cfg.get("auto_exec", False)
+    STATE["sandbox"] = cfg.get("sandbox", True)
 
-    console.print("[yellow]⚙ Собираю контекст...[/]")
+    console.print("[yellow]⚙ Контекст...[/]")
     STATE["ctx"] = collect()
-    STATE["sys_prompt"] = build_short_prompt()
-    STATE["env_text"] = build_env_block(STATE["ctx"])
-    console.print(f"[green]✔ pip={len(STATE['ctx']['pip'])} pkg={len(STATE['ctx']['pkg'])} скриптов={len(STATE['ctx']['scripts'])}[/]")
+    STATE["sys_prompt"] = build_system_prompt(STATE["ctx"])
+    console.print(f"[green]✔ Скриптов: {len(STATE['ctx']['scripts'])}[/]")
 
     if not start_server(STATE["model_path"]): return
-    console.print("[yellow]⏳ Загружаю модель...[/]")
+    console.print("[yellow]⏳ Загрузка модели...[/]")
     t0 = time.time()
     def rw():
         el = int(time.time() - t0)
-        return Text(f"⏱ {el} сек · загрузка в ОЗУ...", style="bold yellow")
+        return Text(f"⏱ {el} сек...", style="bold yellow")
     with Live(rw(), console=console, refresh_per_second=2, transient=True) as live:
         res = {"w": None}
         def w(): res["w"] = warmup()
         th = threading.Thread(target=w, daemon=True); th.start()
         while th.is_alive(): live.update(rw()); time.sleep(0.5)
         th.join()
-    if res["w"] is None: console.print("[red]❌ Прогрев не удался[/]"); return
-    console.print(f"[green]✔ Модель в ОЗУ за {res['w']:.1f} сек[/]")
+    if res["w"] is None: console.print("[red]❌[/]"); return
+    console.print(f"[green]✔ Загружена за {res['w']:.1f}с[/]")
     time.sleep(0.3)
 
-    console.clear(); console.print()
+    os.system("clear"); console.print()
     console.print(title_block()); console.print()
-    console.print("[bold green]Готов.[/] Tab — команды.\n")
+    console.print("[bold green]Готов.[/] Попробуй: 'запусти матрицу', 'открой музыку'\n")
 
     st = Style.from_dict({"prompt":"bold ansibrightmagenta",
         "completion-menu.completion":"bg:#000000 #00ff88",
@@ -395,64 +542,80 @@ def main():
             console.print("[cyan]🤖[/]\n"); continue
         if lo in ("команды","agent"):
             STATE["agent"] = not STATE["agent"]
-            console.print(f"[green]⚡ Команды: {'вкл' if STATE['agent'] else 'выкл'}[/]\n"); continue
-        if lo in ("контекст","context"):
-            STATE["use_env"] = not STATE["use_env"]
-            console.print(f"[green]📎 Env: {'вкл' if STATE['use_env'] else 'выкл'}[/]\n"); continue
+            cfg["agent"] = STATE["agent"]; save_cfg(cfg)
+            console.print(f"[green]🔥 Exec: {'ВКЛ' if STATE['agent'] else 'выкл'}[/]\n"); continue
+        if lo in ("sudo","агент"):
+            STATE["auto_exec"] = not STATE["auto_exec"]
+            cfg["auto_exec"] = STATE["auto_exec"]; save_cfg(cfg)
+            console.print(f"[{'red' if STATE['auto_exec'] else 'yellow'}]{'⚡ БЕЗ ПОДТВ' if STATE['auto_exec'] else '✋ ПОДТВ'}[/]\n"); continue
+        if lo == "sandbox":
+            STATE["sandbox"] = not STATE["sandbox"]
+            cfg["sandbox"] = STATE["sandbox"]; save_cfg(cfg)
+            console.print(f"[cyan]🔒 SB: {'ВКЛ' if STATE['sandbox'] else 'ВЫКЛ'}[/]\n"); continue
         if lo == "env":
             c = STATE["ctx"]; console.print()
-            console.print(f"[cyan]Python:[/] {c['python']}")
-            console.print(f"[cyan]pip:[/]  " + ", ".join(c["pip"]))
-            console.print(f"[cyan]pkg:[/]  " + ", ".join(c["pkg"]))
-            console.print(f"[cyan]Скрипты:[/] " + ", ".join(c["scripts"]))
+            console.print(f"[cyan]Python:[/] {c['python']}  ·  Android {c['android']}")
+            console.print(f"[cyan]Скриптов:[/] {len(c['scripts'])}")
             console.print(f"[cyan]Модели:[/] " + ", ".join(c["models"]))
             console.print(); continue
         if lo in ("модель","model"):
             if switch_model(cfg):
-                console.clear(); console.print(); console.print(title_block()); console.print()
-                console.print("[green]✔[/]\n")
+                os.system("clear"); console.print(); console.print(title_block()); console.print()
             continue
         if lo in ("очистить","clear"):
-            STATE["history"]=[]
-            console.clear(); console.print(); console.print(title_block()); console.print()
+            STATE["history"]=[]; STATE["session_files"]=[]
+            os.system("clear"); console.print(); console.print(title_block()); console.print()
             console.print("[green]✔[/]\n"); continue
         if lo in ("статистика","stats"):
-            console.print(f"Модель: {os.path.basename(STATE['model_path'])}  ·  ОЗУ: {free_ram()} МБ")
-            console.print(); continue
+            console.print(Panel.fit(
+                f"Модель: {os.path.basename(STATE['model_path'])}\n"
+                f"Сообщений: {len(STATE['history'])}\nОЗУ: {free_ram()} МБ",
+                border_style="black")); console.print(); continue
         if lo in ("помощь","help","?"):
-            console.print("  авто/быстро/думать · команды · контекст · модель · env · очистить · выход\n"); continue
-        if lo.startswith("токены ") or lo.startswith("tokens "):
-            try: STATE["max_tokens"] = max(128, min(2048, int(ui.split(" ",1)[1])))
-            except: pass
-            continue
+            console.print()
+            console.print("[bold]Команды:[/] авто · быстро · думать · команды · sudo · sandbox · env · модель · очистить · выход")
+            console.print("[bold]Возможности:[/] exec · write · read")
+            console.print(); continue
 
         STATE["history"].append({"role":"user","content":ui})
         console.print()
         t0 = time.time()
         try: tb, ab = process(stream(ui))
-        except KeyboardInterrupt: console.print("\n[yellow]⏹[/]\n"); STATE["history"].pop(); continue
+        except KeyboardInterrupt:
+            console.print("\n[yellow]⏹[/]\n"); STATE["history"].pop(); continue
         el = time.time() - t0
         if ab.startswith("__ERROR__"):
             console.print(f"[red]❌ {ab[10:]}[/]\n"); STATE["history"].pop(); continue
         STATE["history"].append({"role":"assistant","content":ab})
 
-        # ⬅️ ПРОСТО Markdown, БЕЗ Panel — можно копировать
         console.print()
-        if tb:
-            console.print(f"[dim italic yellow]💭 {tb[:600]}[/]\n")
-        try:
-            console.print(Markdown(ab))
-        except:
-            console.print(ab)
+        if tb: console.print(f"[dim italic yellow]💭 {tb[:400]}[/]\n")
+        try: console.print(Markdown(ab))
+        except: console.print(ab)
         console.print(f"\n[dim]⏱ {el:.1f}с[/]\n")
 
-        cmds = [m.strip() for m in EXEC.findall(ab) if m.strip()]
-        if cmds and STATE["agent"]:
-            for cmd in cmds: execute(cmd)
+        if STATE["agent"]:
+            follow = handle_response(ab)
+            if follow:
+                STATE["history"].append({"role":"user","content":follow})
+                console.print("[dim]🔄 AI получает результаты...[/]\n")
+                t1 = time.time()
+                try: tb2, ab2 = process(stream(follow[:4000]))
+                except KeyboardInterrupt: ab2 = None
+                if ab2 and not ab2.startswith("__ERROR__"):
+                    STATE["history"].append({"role":"assistant","content":ab2})
+                    console.print()
+                    if tb2: console.print(f"[dim italic yellow]💭 {tb2[:300]}[/]\n")
+                    try: console.print(Markdown(ab2))
+                    except: console.print(ab2)
+                    console.print(f"\n[dim]⏱ {time.time()-t1:.1f}с[/]\n")
 
+    reset_terminal()
     stop_server()
 
 if __name__ == "__main__":
     try: main()
     except KeyboardInterrupt:
-        console.print("\n[dim]Прервано[/]"); stop_server()
+        console.print("\n[dim]Прервано[/]")
+        reset_terminal()
+        stop_server()

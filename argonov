@@ -1,9 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS v1.2 — единая точка входа
+#  ARGONOV OS v1.3 — art с поиском и welcome
 # ═══════════════════════════════════════════════════════
 
-ARGONOV_VERSION="1.2.0"
+ARGONOV_VERSION="1.3.0"
 REPO_DIR="$HOME/argonov-os"
 BACKUP_DIR="$HOME/argonov_backups"
 
@@ -23,33 +23,28 @@ header() {
 
 show_help() {
     header
-    echo -e "${M}[ ДОСТУПНЫЕ КОМАНДЫ ]:${RST}"
+    echo -e "${M}[ КОМАНДЫ ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
     echo ""
-    echo -e "  ${Y}🧠 ${C}ai${RST}         — AI-ассистент (Qwen + exec)"
-    echo -e "  ${Y}📈 ${C}crypto${RST}     — Крипта в реальном времени"
-    echo -e "  ${Y}🎵 ${C}music${RST}      — Музыкальный плеер"
-    echo -e "  ${Y}📌 ${C}todo${RST}       — Трекер задач"
-    echo -e "  ${Y}📝 ${C}notes${RST}      — Заметки"
-    echo -e "  ${Y}🔒 ${C}pm${RST}         — Менеджер паролей (AES-256)"
-    echo -e "  ${Y}🎮 ${C}hack${RST}       — Хакерский мультитул"
-    echo -e "  ${Y}🕹  ${C}rpg${RST}        — RPG «Симулятор Хакера»"
-    echo -e "  ${Y}📥 ${C}d${RST}          — Загрузчик файлов"
-    echo -e "  ${Y}🌧  ${C}m${RST}          — Матрица"
-    echo -e "  ${Y}🔐 ${C}p${RST}          — Генератор паролей"
-    echo -e "  ${Y}⚡ ${C}s${RST}          — Центр управления"
-    echo -e "  ${Y}📦 ${C}util${RST}       — Сканер утилит"
-    echo -e "  ${Y}🎨 ${C}art${RST}        — Картинка"
+    echo -e "  ${Y}🧠 ${C}ai${RST}      · ${Y}📈 ${C}crypto${RST}    · ${Y}🎵 ${C}music${RST}"
+    echo -e "  ${Y}📌 ${C}todo${RST}    · ${Y}📝 ${C}notes${RST}     · ${Y}🔒 ${C}pm${RST}"
+    echo -e "  ${Y}🎮 ${C}hack${RST}    · ${Y}🕹  ${C}rpg${RST}       · ${Y}📥 ${C}d${RST}"
+    echo -e "  ${Y}🌧  ${C}m${RST}       · ${Y}🔐 ${C}p${RST}         · ${Y}⚡ ${C}s${RST}"
+    echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}"
+    echo ""
+    echo -e "${M}[ ART ]:${RST}"
+    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
+    echo ""
+    echo -e "  ${C}argonov art${RST}               — показать welcome"
+    echo -e "  ${C}argonov art <имя>${RST}         — найти и показать"
+    echo -e "  ${C}argonov art <имя> set${RST}     — установить как welcome"
+    echo -e "  ${C}argonov art reset${RST}         — сбросить welcome"
+    echo -e "  ${C}argonov art list${RST}          — список картинок"
     echo ""
     echo -e "${M}[ GIT / БЭКАПЫ ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
     echo ""
-    echo -e "  ${C}push${RST}       — Запушить изменения в GitHub"
-    echo -e "  ${C}pull${RST}       — Подтянуть обновления с GitHub"
-    echo -e "  ${C}status${RST}     — Статус git"
-    echo -e "  ${C}backup${RST}     — Локальный бэкап"
-    echo -e "  ${C}restore${RST}    — Восстановить из бэкапа"
-    echo -e "  ${C}doctor${RST}     — Проверка целостности"
+    echo -e "  ${C}push · pull · status · backup · restore · doctor${RST}"
     echo ""
 }
 
@@ -117,15 +112,7 @@ run_m()       { check_py ~/matrix.py && python ~/matrix.py ; }
 run_p()       { check_py ~/passgen.py && python ~/passgen.py ; }
 run_s()       { check_py ~/sysinfo.py && python ~/sysinfo.py ; }
 run_util()    { check_py ~/utils.py && python ~/utils.py ; }
-run_art()     {
-    if [ -f ~/fantasy.png ]; then
-        command clear
-        cols=$(tput cols); rows=$(tput lines)
-        viu -w "$((cols-2))" -h "$((rows-3))" -b -t ~/fantasy.png
-    else
-        echo -e "${R}❌ ~/fantasy.png не найден${RST}"; sleep 2
-    fi
-}
+run_art()     { check_py ~/art.py && python ~/art.py ; }
 
 do_push() {
     if [ ! -d "$REPO_DIR/.git" ]; then
@@ -135,7 +122,7 @@ do_push() {
     cp ~/argonov "$REPO_DIR/" 2>/dev/null
     for f in ai.py crypto_informer.py download_zone.py hacktool.py matrix.py \
              music_meta.py notes.py passmanager.py passgen.py randomaudio.py \
-             sysinfo.py todo.py utils.py hacker_rpg.py; do
+             sysinfo.py todo.py utils.py hacker_rpg.py art.py; do
         cp ~/"$f" "$REPO_DIR/" 2>/dev/null
     done
     [ -f ~/.config/fish/config.fish ] && cp ~/.config/fish/config.fish "$REPO_DIR/fish-config/config.fish" 2>/dev/null
@@ -189,9 +176,10 @@ do_backup() {
         --exclude='storage' \
         ai.py crypto_informer.py randomaudio.py todo.py notes.py \
         passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
-        passgen.py sysinfo.py utils.py music_meta.py argonov \
+        passgen.py sysinfo.py utils.py music_meta.py art.py argonov \
         .ai_config.json .ai_context.json .crypto_watchlist.json \
-        .todo.json .notes.json .pm.vault .music_favorites.json .hacker_rpg_save.json \
+        .todo.json .notes.json .pm.vault .music_favorites.json \
+        .hacker_rpg_save.json .argonov_welcome_image \
         .config/fish .termux \
         music_cache ai_chats 2>/dev/null
     if [ -f "$file" ]; then
@@ -233,7 +221,7 @@ do_doctor() {
     echo -e "${C}📂 Скрипты:${RST}"
     for f in ai.py crypto_informer.py randomaudio.py todo.py notes.py \
              passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
-             passgen.py sysinfo.py utils.py music_meta.py argonov; do
+             passgen.py sysinfo.py utils.py music_meta.py art.py argonov; do
         cf "$HOME/$f"
     done
     echo ""
@@ -244,6 +232,18 @@ do_doctor() {
     for f in ~/*.gguf; do
         [ -f "$f" ] && echo -e "  ${G}✔${RST} $(basename "$f") ${DIM}($(du -h "$f"|cut -f1))${RST}"
     done
+    echo ""
+    echo -e "${C}🎨 Welcome-картинка:${RST}"
+    if [ -f "$HOME/.argonov_welcome_image" ]; then
+        wfile=$(cat "$HOME/.argonov_welcome_image")
+        if [ -f "$wfile" ]; then
+            echo -e "  ${G}✔${RST} $(basename "$wfile")"
+        else
+            echo -e "  ${Y}⚠${RST} Файл не найден: $wfile"
+        fi
+    else
+        echo -e "  ${DIM}не установлена (по умолчанию ~/fantasy.png)${RST}"
+    fi
     echo ""
     echo -e "${C}🌐 Git:${RST}"
     [ -d "$REPO_DIR/.git" ] && echo -e "  ${G}✔${RST} $REPO_DIR" || echo -e "  ${R}✘${RST} Нет репо"
@@ -266,7 +266,7 @@ case "$1" in
     p|pass)          run_p ;;
     s|sysinfo)       run_s ;;
     util)            run_util ;;
-    art)             run_art ;;
+    art)             shift; python ~/art.py "$@" ;;
     plate)           python ~/sysinfo.py; echo "" ;;
     push)            do_push ;;
     pull)            do_pull ;;

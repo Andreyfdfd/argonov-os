@@ -1,6 +1,6 @@
 # ~/.config/fish/config.fish
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS — Fish config v1.3
+#  ARGONOV OS — Fish config v1.4
 # ═══════════════════════════════════════════════════════
 
 # ─── ЦВЕТА FISH ───
@@ -30,7 +30,7 @@ set -g fish_pager_color_selected_prefix     000000 --bold
 set -g fish_pager_color_selected_completion 000000
 set -g fish_pager_color_selected_description 003300
 
-# ─── PATH ДЛЯ CARGO (viu) ───
+# ─── PATH ДЛЯ CARGO ───
 if test -d ~/.cargo/bin
     if not contains ~/.cargo/bin $PATH
         set -gx PATH ~/.cargo/bin $PATH
@@ -91,12 +91,12 @@ end
 # ═══════════════════════════════════════════════════════
 #  ОБЁРТКИ clear / reset
 # ═══════════════════════════════════════════════════════
-function clear --description '🧹 Очистить + плашка'
+function clear
     command clear
     plate
 end
 
-function reset --description '🔄 Reset + плашка'
+function reset
     command reset
     plate
 end
@@ -163,53 +163,44 @@ alias cat='bat'
 # ═══════════════════════════════════════════════════════
 #  КОМАНДЫ
 # ═══════════════════════════════════════════════════════
-function ai     --description '🧠 AI-ассистент'    ; command argonov ai ; end
+function ai     --description '🧠 AI'              ; command argonov ai ; end
 function crypto --description '📈 Крипта'           ; command argonov crypto ; end
 function music  --description '🎵 Музыка'           ; command argonov music ; end
 function todo   --description '📌 Задачи'           ; command argonov todo $argv ; end
 function notes  --description '📝 Заметки'          ; command argonov notes ; end
 function pm     --description '🔒 Пароли'           ; command argonov pm ; end
-function hack   --description '🎮 Хакерский тул'    ; command argonov hack ; end
-function rpg    --description '🕹  RPG Симулятор'   ; command argonov rpg ; end
-function d      --description '📥 Загрузчик'        ; command argonov d ; end
+function hack   --description '🎮 Hack'             ; command argonov hack ; end
+function rpg    --description '🕹  RPG'              ; command argonov rpg ; end
+function d      --description '📥 Download'         ; command argonov d ; end
 function m      --description '🌧 Матрица'          ; command argonov m ; end
 function p      --description '🔐 Пароль'           ; command argonov p ; end
 function util   --description '📦 Утилиты'          ; command argonov util ; end
-function art    --description '🎨 Картинка'         ; command argonov art ; end
 
-function s --description '⚡ Центр управления'
+# art — передаём все аргументы
+function art --description '🎨 Картинка'
+    command argonov art $argv
+end
+
+function s --description '⚡ Sysinfo'
     command argonov s
     plate
 end
 
 function backup --description '💾 Бэкап'            ; command argonov backup ; end
-function doctor --description '🩺 Проверка'         ; command argonov doctor ; end
+function doctor --description '🩺 Doctor'           ; command argonov doctor ; end
 
 # ═══════════════════════════════════════════════════════
 #  АВТОДОПОЛНЕНИЕ
 # ═══════════════════════════════════════════════════════
-complete -c argonov -f -a 'ai'      -d '🧠 AI'
-complete -c argonov -f -a 'crypto'  -d '📈 Крипта'
-complete -c argonov -f -a 'music'   -d '🎵 Музыка'
-complete -c argonov -f -a 'todo'    -d '📌 Задачи'
-complete -c argonov -f -a 'notes'   -d '📝 Заметки'
-complete -c argonov -f -a 'pm'      -d '🔒 Пароли'
-complete -c argonov -f -a 'hack'    -d '🎮 Hack'
-complete -c argonov -f -a 'rpg'     -d '🕹  RPG'
-complete -c argonov -f -a 'd'       -d '📥 Download'
-complete -c argonov -f -a 'm'       -d '🌧 Матрица'
-complete -c argonov -f -a 'p'       -d '🔐 Пароль'
-complete -c argonov -f -a 's'       -d '⚡ Sysinfo'
-complete -c argonov -f -a 'util'    -d '📦 Утилиты'
-complete -c argonov -f -a 'art'     -d '🎨 Картинка'
-complete -c argonov -f -a 'push'    -d '🚀 Git push'
-complete -c argonov -f -a 'pull'    -d '⬇️  Git pull'
-complete -c argonov -f -a 'status'  -d '📊 Git status'
-complete -c argonov -f -a 'backup'  -d '💾 Бэкап'
-complete -c argonov -f -a 'restore' -d '♻️  Restore'
-complete -c argonov -f -a 'doctor'  -d '🩺 Doctor'
-complete -c argonov -f -a 'help'    -d '❓ Справка'
-complete -c argonov -f -a 'version' -d '📌 Версия'
+for sub in ai crypto music todo notes pm hack rpg d m p s util art push pull status backup restore doctor help version
+    complete -c argonov -f -a $sub
+end
+
+complete -c art -f -a 'set' -d '⭐ Установить как welcome'
+complete -c art -f -a 'reset' -d '↩ Сбросить welcome'
+complete -c art -f -a 'list' -d '📋 Список картинок'
+complete -c art -f -a 'help' -d '❓ Справка'
+complete -c art -F  # файлы из текущей папки
 
 complete -c hack -f -a 'scan'         -d '🌐 WHOIS + DNS'
 complete -c hack -f -a 'crt'          -d '🕵️  CRT'
@@ -248,10 +239,22 @@ set_color brblack
 echo '  ────────────────────────────────────────'
 set_color normal
 
-if test -f ~/fantasy.png
+# Welcome-картинка: если задана — показываем; иначе fallback на fantasy.png
+set -l welcome_file ""
+if test -f ~/.argonov_welcome_image
+    set welcome_file (cat ~/.argonov_welcome_image)
+    if not test -f "$welcome_file"
+        set welcome_file ""
+    end
+end
+if test -z "$welcome_file"; and test -f ~/fantasy.png
+    set welcome_file ~/fantasy.png
+end
+
+if test -n "$welcome_file"; and test -f "$welcome_file"
     set -l cols (tput cols)
     set -l bw (math "$cols - 2")
-    viu -w $bw -h 22 -b -t ~/fantasy.png
+    viu -w $bw -h 22 -b -t "$welcome_file"
 end
 
 set_color green --bold
