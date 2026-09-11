@@ -1,9 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Music Metadata Fetcher v2 — iTunes + Deezer + MusicBrainz, потокобезопасный"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Music Metadata
+#  Метаданные треков: iTunes + Deezer + MusicBrainz
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Сканер музыки в памяти телефона. Собирает метаданные через
+iTunes, Deezer и MusicBrainz, кэширует в ~/music_cache/library.json.
 
-import os, re, json, time, sys
+Использование:
+    music-meta            # обычный запуск (ищет только новое)
+    music-meta --force    # полный перепоиск (игнорирует кэш)
+
+Зависимости:
+    - rich, requests, mutagen
+"""
+
+import os
+import re
+import sys
+import json
+import time
+
 import requests
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from rich.console import Console
 from rich.panel import Panel
@@ -12,6 +33,7 @@ from rich.align import Align
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, MofNCompleteColumn
 from rich import box
 
+# ═══ КОНСТАНТЫ ═══
 console = Console()
 
 CACHE_DIR = os.path.expanduser("~/music_cache")
@@ -36,7 +58,6 @@ SEARCH_DIRS = [
     os.path.expanduser("~/storage/shared"),
 ]
 
-# ═══════════ ТИПЫ ТРЕКОВ ═══════════
 TYPE_PATTERNS = [
     ("opening", [r"\bop\s?\d", r"\bopening\b", r"опенинг", r"\bop\d+\b", r"\bop\b"]),
     ("ending",  [r"\bed\s?\d", r"\bending\b", r"эндинг", r"\bed\d+\b", r"\bed\b"]),
@@ -53,6 +74,14 @@ TYPE_PATTERNS = [
     ("instrumental", [r"instrumental", r"инструментал"]),
 ]
 
+# ═══ HTTP СЕССИЯ ═══
+SESSION = requests.Session()
+SESSION.headers.update({
+    "User-Agent": "TermuxMusicMeta/2.0 ( https://termux.dev )",
+    "Accept": "application/json",
+})
+
+# ═══ УТИЛИТЫ ═══
 def detect_type(title, path):
     parts = [p.lower() for p in path.split(os.sep)]
     for part in parts:
@@ -67,31 +96,29 @@ def detect_type(title, path):
                 return t
     return "song"
 
-# ═══════════ HTTP ═══════════
-SESSION = requests.Session()
-SESSION.headers.update({
-    "User-Agent": "TermuxMusicMeta/2.0 ( https://termux.dev )",
-    "Accept": "application/json",
-})
 
 def clean_query(s):
-    if not s: return ""
+    if not s:
+        return ""
     s = str(s).strip()
     s = re.sub(r"^\d{1,3}[\s.\-_]+\s*", "", s)
     s = re.sub(r"[\(\[].*?[\)\]]", "", s)
     s = re.sub(r"\s+", " ", s).strip()
     return s
 
-# ═══════════ iTUNES ═══════════
+# ═══ iTUNES ═══
 def search_itunes(query):
-    if not query: return None
+    if not query:
+        return None
     for attempt in range(2):
         try:
             r = SESSION.get("https://itunes.apple.com/search",
                 params={"term": query, "entity": "song", "limit": 1}, timeout=8)
-            if r.status_code != 200: return None
+            if r.status_code != 200:
+                return None
             results = r.json().get("results", [])
-            if not results: return None
+            if not results:
+                return None
             f = results[0]
             return {
                 "artist": f.get("artistName", "").strip(),
@@ -102,19 +129,23 @@ def search_itunes(query):
                 "source": "itunes",
             }
         except Exception:
-            if attempt == 0: time.sleep(0.5)
+            if attempt == 0:
+                time.sleep(0.5)
     return None
 
-# ═══════════ DEEZER ═══════════
+# ═══ DEEZER ═══
 def search_deezer(query):
-    if not query: return None
+    if not query:
+        return None
     for attempt in range(2):
         try:
             r = SESSION.get("https://api.deezer.com/search",
                 params={"q": query, "limit": 1}, timeout=8)
-            if r.status_code != 200: return None
+            if r.status_code != 200:
+                return None
             items = r.json().get("data", [])
-            if not items: return None
+            if not items:
+                return None
             f = items[0]
             return {
                 "artist": f.get("artist", {}).get("name", "").strip(),
@@ -125,23 +156,25 @@ def search_deezer(query):
                 "source": "deezer",
             }
         except Exception:
-            if attempt == 0: time.sleep(0.5)
+            if attempt == 0:
+                time.sleep(0.5)
     return None
 
-# ═══════════ MUSICBRAINZ ═══════════
+# ═══ MUSICBRAINZ ═══
 def search_musicbrainz(query):
-    if not query: return None
+    if not query:
+        return None
     for attempt in range(2):
         try:
-            # MusicBrainz любит Lucene-синтаксис
             r = SESSION.get("https://musicbrainz.org/ws/2/recording",
                 params={"query": query, "fmt": "json", "limit": 1}, timeout=10)
-            if r.status_code != 200: return None
+            if r.status_code != 200:
+                return None
             recordings = r.json().get("recordings", [])
-            if not recordings: return None
+            if not recordings:
+                return None
             rec = recordings[0]
             title = rec.get("title", "").strip()
-            # Artist
             credits = rec.get("artist-credit", [])
             artist = ""
             if credits:
@@ -149,17 +182,15 @@ def search_musicbrainz(query):
                     (c.get("name") or "") + (c.get("joinphrase") or "")
                     for c in credits
                 ).strip()
-            # Album
             album = ""
             releases = rec.get("releases", [])
             if releases:
                 album = (releases[0].get("title") or "").strip()
-            # Year
             year = ""
             if releases:
                 date = releases[0].get("date", "")
-                if date: year = date[:4]
-            # Genre — из tags
+                if date:
+                    year = date[:4]
             genre = ""
             tags = rec.get("tags", [])
             if tags:
@@ -173,15 +204,16 @@ def search_musicbrainz(query):
                 "source": "musicbrainz",
             }
         except Exception:
-            if attempt == 0: time.sleep(0.5)
+            if attempt == 0:
+                time.sleep(0.5)
     return None
+
 
 def fetch_metadata(title, artist):
     """Каскад: iTunes → Deezer → MusicBrainz"""
     if not title and not artist:
         return None
 
-    # Пробуем artist + title
     if artist and title:
         q = clean_query(f"{artist} {title}")
         for fn in (search_itunes, search_deezer, search_musicbrainz):
@@ -189,7 +221,6 @@ def fetch_metadata(title, artist):
             if res and res.get("title"):
                 return res
 
-    # Только title
     if title:
         q = clean_query(title)
         for fn in (search_itunes, search_deezer, search_musicbrainz):
@@ -199,7 +230,7 @@ def fetch_metadata(title, artist):
 
     return None
 
-# ═══════════ ЛОКАЛЬНЫЕ ТЕГИ ═══════════
+# ═══ ЛОКАЛЬНЫЕ ТЕГИ ═══
 def read_local_metadata(path):
     filename = os.path.splitext(os.path.basename(path))[0]
     artist = album = title = None
@@ -208,9 +239,12 @@ def read_local_metadata(path):
         from mutagen import File as MutagenFile
         audio = MutagenFile(path, easy=True)
         if audio:
-            if audio.get("artist"):  artist = audio["artist"][0].strip()
-            if audio.get("album"):   album  = audio["album"][0].strip()
-            if audio.get("title"):   title  = audio["title"][0].strip()
+            if audio.get("artist"):
+                artist = audio["artist"][0].strip()
+            if audio.get("album"):
+                album = audio["album"][0].strip()
+            if audio.get("title"):
+                title = audio["title"][0].strip()
         audio2 = MutagenFile(path)
         if audio2 and hasattr(audio2, "info") and audio2.info:
             duration = int(audio2.info.length)
@@ -221,14 +255,17 @@ def read_local_metadata(path):
         name = re.sub(r"^\d{1,3}[\s.\-_]+\s*", "", filename)
         if " - " in name:
             left, right = name.split(" - ", 1)
-            if not artist: artist = left.strip()
-            if not title:  title  = right.strip()
+            if not artist:
+                artist = left.strip()
+            if not title:
+                title = right.strip()
         else:
-            if not title: title = name
+            if not title:
+                title = name
 
     return artist or "", album or "", title or filename, duration
 
-# ═══════════ КЭШ ═══════════
+# ═══ КЭШ ═══
 def load_cache():
     if not os.path.exists(CACHE_FILE):
         return {"version": CACHE_VERSION, "tracks": {}}
@@ -236,29 +273,29 @@ def load_cache():
         with open(CACHE_FILE, encoding="utf-8") as f:
             data = json.load(f)
             if data.get("version") != CACHE_VERSION:
-                # Мигрируем: старые версии совместимы
                 data["version"] = CACHE_VERSION
             data.setdefault("tracks", {})
             return data
     except Exception:
         return {"version": CACHE_VERSION, "tracks": {}}
 
+
 def save_cache(cache):
-    """Сохраняет кэш. Делает снимок dict чтобы избежать ошибок."""
     os.makedirs(CACHE_DIR, exist_ok=True)
     tmp = CACHE_FILE + ".tmp"
-    # Снимок — теперь точно никто не изменит во время записи
     snapshot = {"version": cache.get("version", CACHE_VERSION),
                 "tracks": dict(cache["tracks"])}
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(snapshot, f, ensure_ascii=False, indent=1)
     os.replace(tmp, CACHE_FILE)
 
-# ═══════════ ФАЙЛЫ ═══════════
+# ═══ ФАЙЛЫ ═══
 def find_all_audio():
-    found, seen = [], set()
+    found = []
+    seen = set()
     for base in SEARCH_DIRS:
-        if not os.path.isdir(base): continue
+        if not os.path.isdir(base):
+            continue
         for root, dirs, files in os.walk(base):
             dirs[:] = [d for d in dirs if d not in
                        ("Android/data", "Android/obb", ".thumbnails", ".cache")]
@@ -266,22 +303,16 @@ def find_all_audio():
                 if os.path.splitext(f)[1].lower() in AUDIO_EXTS:
                     full = os.path.join(root, f)
                     if full not in seen:
-                        seen.add(full); found.append(full)
+                        seen.add(full)
+                        found.append(full)
     return found
 
-# ═══════════ ВОРКЕР (НЕ пишет в кэш!) ═══════════
+# ═══ ВОРКЕР ═══
 def worker(path, force):
-    """
-    Читает метаданные и ищет в интернете.
-    ВАЖНО: возвращает (path, entry) или None. НЕ трогает общий кэш.
-    """
     local_artist, local_album, local_title, dur = read_local_metadata(path)
     track_type = detect_type(local_title, path)
-
-    # Убираем "Неизвестен" из запроса, чтобы не мусорить
     q_artist = local_artist if local_artist and local_artist.lower() not in ("неизвестен", "unknown") else ""
 
-    # Если в локальных тегах уже есть artist + title — попробуем сначала найти только жанр
     remote = fetch_metadata(local_title, q_artist)
 
     if remote:
@@ -308,7 +339,7 @@ def worker(path, force):
         }
     return (path, entry)
 
-# ═══════════ ГЛАВНОЕ ═══════════
+# ═══ MAIN ═══
 def main():
     console.clear()
     force = "--force" in sys.argv
@@ -328,14 +359,12 @@ def main():
     cached_count = len(cache["tracks"])
     console.print(f"💾 В кэше уже: [green]{cached_count}[/] записей\n")
 
-    # Отбираем треки для поиска
     to_process = []
     for f in files:
         existing = cache["tracks"].get(f)
         if force:
             to_process.append(f)
         else:
-            # Ищем только те, у которых нет данных из интернета
             if not existing or existing.get("source") in (None, "local", "filename", "filename-only"):
                 to_process.append(f)
 
@@ -363,7 +392,6 @@ def main():
         ) as prog:
             task = prog.add_task("Поиск...", total=len(to_process))
 
-            # ВАЖНО: воркеры только возвращают результат, кэш мутирует ГЛАВНЫЙ поток
             with ThreadPoolExecutor(max_workers=6) as pool:
                 futures = {pool.submit(worker, f, force): f for f in to_process}
                 for fut in as_completed(futures):
@@ -371,7 +399,6 @@ def main():
                         result = fut.result()
                         if result:
                             key, entry = result
-                            # Мутация кэша — только в этом потоке
                             cache["tracks"][key] = entry
                             if entry.get("source") in ("itunes", "deezer", "musicbrainz"):
                                 found_remote += 1
@@ -389,12 +416,15 @@ def main():
                     )
 
                     if done % save_every == 0:
-                        try: save_cache(cache)
-                        except Exception: pass
+                        try:
+                            save_cache(cache)
+                        except Exception:
+                            pass
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Прервано. Сохраняю...[/]")
 
-    try: save_cache(cache)
+    try:
+        save_cache(cache)
     except Exception as e:
         console.print(f"[red]❌ Ошибка сохранения: {e}[/]")
 
@@ -411,6 +441,7 @@ def main():
     console.print()
     console.print("[green]✔ Готово. Запусти [cyan]music[/][/]")
     console.print()
+
 
 if __name__ == "__main__":
     try:

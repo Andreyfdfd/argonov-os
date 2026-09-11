@@ -1,43 +1,44 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS · Dump + Push
-#  Сборка дампа всех скриптов + push в GitHub
-#  Версия: 2.0  ·  Обновлён: 2026-09-11
+#  ARGONOV OS · Dump + Push v3
+#  Сборка дампа по реестру + push в GitHub
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
-"""Собирает все скрипты в ARGONOV_FULL_DUMP.md (с правилами) и пушит на GitHub."""
+"""
+Собирает дамп всех скриптов (по ~/.argonov_registry.json) и пушит на GitHub.
+
+Использование:
+    argonov-dump           # дамп + push
+    python ~/argonov-dump  # то же
+
+Что делает:
+    1. Читает реестр ~/.argonov_registry.json
+    2. Собирает все скрипты в ~/ARGONOV_FULL_DUMP.md
+    3. В начало дампа вставляет ~/ARGONOV_RULES.md
+    4. Копирует свежие скрипты в ~/argonov-os/
+    5. git add + commit + push
+
+Зависимости:
+    - ~/.argonov_registry.json (создать: argonov-core init)
+"""
 
 import os
 import sys
+import json
 import subprocess
 from datetime import datetime
 
 # ═══ КОНСТАНТЫ ═══
 HOME = os.path.expanduser("~")
+REGISTRY_FILE = os.path.join(HOME, ".argonov_registry.json")
 DUMP_FILE = os.path.join(HOME, "ARGONOV_FULL_DUMP.md")
 RULES_FILE = os.path.join(HOME, "ARGONOV_RULES.md")
 REPO_DIR = os.path.join(HOME, "argonov-os")
 
-SCRIPTS = [
-    ("argonov",           "bash"),
-    ("argonov-dump",      "python"),
-    ("doctor.py",         "python"),
-    ("net_helper.py",     "python"),
-    ("ai.py",             "python"),
-    ("hacktool.py",       "python"),
-    ("randomaudio.py",    "python"),
-    ("music_meta.py",     "python"),
-    ("todo.py",           "python"),
-    ("notes.py",          "python"),
-    ("passmanager.py",    "python"),
-    ("crypto_informer.py","python"),
-    ("hacker_rpg.py",     "python"),
-    ("download_zone.py",  "python"),
-    ("matrix.py",         "python"),
-    ("passgen.py",        "python"),
-    ("sysinfo.py",        "python"),
-    ("utils.py",          "python"),
-    ("art.py",            "python"),
+# Порядок файлов в дампе — сначала служебные, потом всё остальное по алфавиту
+CORE_ORDER = [
+    "argonov", "argonov-core.py", "argonov-dump", "doctor.py", "net_helper.py",
 ]
 
 G = "\033[92m"; C = "\033[96m"; Y = "\033[93m"; R = "\033[91m"
@@ -64,11 +65,59 @@ def read_file(path):
     except Exception:
         return None
 
+# ═══ РЕЕСТР ═══
+def load_registry():
+    if not os.path.exists(REGISTRY_FILE):
+        print(f"{R}❌ Реестр не найден: {REGISTRY_FILE}{RST}")
+        print(f"{Y}Создай: python ~/argonov-core.py init{RST}")
+        return None
+    try:
+        with open(REGISTRY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"{R}❌ Ошибка чтения реестра: {e}{RST}")
+        return None
+
+
+def registry_to_scripts(reg):
+    """Возвращает [(filename, lang)] в правильном порядке."""
+    scripts = reg.get("scripts", {})
+
+    # Собираем файлы с lang
+    items = {}
+    for name, info in scripts.items():
+        fname = info.get("file")
+        if not fname:
+            continue
+        typ = info.get("type", "python")
+        lang = "bash" if typ == "bash" else "python"
+        items[fname] = lang
+
+    # Сортируем: сначала CORE_ORDER, потом по алфавиту
+    ordered = []
+    for f in CORE_ORDER:
+        if f in items:
+            ordered.append((f, items[f]))
+            del items[f]
+    for f in sorted(items.keys()):
+        ordered.append((f, items[f]))
+
+    # Плюс сам argonov-dump если его нет в реестре
+    if "argonov-dump" not in [x[0] for x in ordered]:
+        ordered.append(("argonov-dump", "python"))
+
+    return ordered
 
 # ═══ СБОРКА ДАМПА ═══
 def build_dump():
-    print(f"{C}📦 Сборка дампа...{RST}")
+    reg = load_registry()
+    if not reg:
+        return 0
+
+    print(f"{C}📦 Сборка дампа (по реестру)...{RST}")
     print()
+
+    SCRIPTS = registry_to_scripts(reg)
 
     lines = []
 
@@ -77,11 +126,12 @@ def build_dump():
     lines.append("")
     lines.append(f"Дата: {datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')}")
     lines.append(f"Устройство: {getprop('ro.product.model')} / Android {getprop('ro.build.version.release')}")
+    lines.append(f"Записей в реестре: {len(reg.get('scripts', {}))}")
     lines.append("")
     lines.append("---")
     lines.append("")
 
-    # ПРАВИЛА в начале дампа
+    # ПРАВИЛА в начале
     rules = read_file(RULES_FILE)
     if rules:
         lines.append("# 📋 ПРАВИЛА РАЗРАБОТКИ ARGONOV OS")
@@ -96,13 +146,27 @@ def build_dump():
     else:
         print(f"  {Y}⚠{RST}  ARGONOV_RULES.md {DIM}[не найден — пропущен]{RST}")
 
+    # РЕЕСТР
+    lines.append("")
+    lines.append("# 🗂  РЕЕСТР СКРИПТОВ")
+    lines.append("")
+    lines.append(f"*Файл: ~/.argonov_registry.json · обновлён: {reg.get('updated','?')}*")
+    lines.append("")
+    lines.append("```json")
+    lines.append(json.dumps(reg, ensure_ascii=False, indent=1))
+    lines.append("```")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    print(f"  {G}✔{RST}  .argonov_registry.json")
+
+    # СКРИПТЫ
     lines.append("")
     lines.append("# 💻 ДАМП СКРИПТОВ")
     lines.append("")
     lines.append("---")
     lines.append("")
 
-    # Скрипты
     included = 0
     skipped = []
 
@@ -146,23 +210,31 @@ def build_dump():
     print()
     return included
 
-
 # ═══ PUSH ═══
 def do_push():
+    reg = load_registry()
+    if not reg:
+        return False
+
     if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
         print(f"{R}❌ {REPO_DIR} — не git-репозиторий{RST}")
         return False
 
+    SCRIPTS = [f for f, _ in registry_to_scripts(reg)]
+
     print(f"{C}⚙ Копирую свежие скрипты в репо...{RST}")
-    for fname, _ in SCRIPTS:
+    for fname in SCRIPTS:
         src = os.path.join(HOME, fname)
         if os.path.isfile(src):
             subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
-    subprocess.run(f'cp "{DUMP_FILE}" "{REPO_DIR}/"', shell=True)
-    if os.path.isfile(RULES_FILE):
-        subprocess.run(f'cp "{RULES_FILE}" "{REPO_DIR}/"', shell=True)
+    # Дамп, правила, реестр
+    for extra in ("ARGONOV_FULL_DUMP.md", "ARGONOV_RULES.md", ".argonov_registry.json"):
+        src = os.path.join(HOME, extra)
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
+    # Fish config
     fish_src = os.path.join(HOME, ".config/fish/config.fish")
     fish_dst = os.path.join(REPO_DIR, "fish-config/config.fish")
     if os.path.isfile(fish_src):
@@ -194,12 +266,12 @@ def do_push():
         print(f"{R}✘ Push вернул код {r.returncode if r else '?'}{RST}")
         return False
 
-
 # ═══ MAIN ═══
 def main():
     print()
     print(f"{C}┌─────────────────────────────────────────────────┐{RST}")
-    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH v2{RST}                    {C}│{RST}")
+    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH v3{RST}                    {C}│{RST}")
+    print(f"{C}│{RST}      {DIM}по реестру ~/.argonov_registry.json{RST}          {C}│{RST}")
     print(f"{C}└─────────────────────────────────────────────────┘{RST}")
     print()
 
@@ -215,7 +287,7 @@ def main():
 
     if ok:
         print(f"{G}═══════════════════════════════════════════════════{RST}")
-        print(f"{G}  ✅ ГОТОВО  ·  дамп + правила + push{RST}")
+        print(f"{G}  ✅ ГОТОВО  ·  дамп + реестр + правила + push{RST}")
         print(f"{G}═══════════════════════════════════════════════════{RST}")
     else:
         print(f"{Y}═══════════════════════════════════════════════════{RST}")

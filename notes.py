@@ -1,29 +1,62 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""NOTES — заметки с тегами, поиском, экспортом + Tab-автодополнение"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Notes
+#  Заметки с тегами, поиском и экспортом
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Заметки с тегами, поиском, фильтром по тегу и экспортом.
 
-import os, sys, json, re, subprocess, time
+Использование:
+    notes                # через argonov
+    argonov notes        # то же
+
+Примеры:
+    new Рецепт блинов | 2 яйца, мука, молоко #кухня
+    new Идея проекта | Сделать крутой CLI #работа #todo
+    show 3
+    tag кухня
+    search молоко
+    export md
+
+Экспорт:
+    ~/notes_export/notes_YYYYMMDD_HHMM.{md,txt,json}
+
+Зависимости:
+    - rich, prompt_toolkit
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import subprocess
 from datetime import datetime
+
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.markdown import Markdown
 from rich import box
+
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
+# ═══ КОНСТАНТЫ ═══
 console = Console()
-NOTES_FILE  = os.path.expanduser("~/.notes.json")
-EXPORT_DIR  = os.path.expanduser("~/notes_export")
+NOTES_FILE = os.path.expanduser("~/.notes.json")
+EXPORT_DIR = os.path.expanduser("~/notes_export")
 
 GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
 CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
 RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
 
-# ═══════════ ХРАНИЛИЩЕ ═══════════
+# ═══ ХРАНИЛИЩЕ ═══
 def load_notes():
     if not os.path.exists(NOTES_FILE):
         return {"next_id": 1, "notes": []}
@@ -36,6 +69,7 @@ def load_notes():
     except Exception:
         return {"next_id": 1, "notes": []}
 
+
 def save_notes(data):
     try:
         with open(NOTES_FILE, "w", encoding="utf-8") as f:
@@ -43,10 +77,9 @@ def save_notes(data):
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
-# ═══════════ ПАРСИНГ ═══════════
+# ═══ ПАРСИНГ ═══
 def parse_new(text):
     """new Заголовок | Тело заметки #тег1 #тег2"""
-    # Теги ищем в конце
     tags = re.findall(r"#(\S+)", text)
     text_no_tags = re.sub(r"#\S+", "", text).strip()
     if "|" in text_no_tags:
@@ -56,23 +89,26 @@ def parse_new(text):
         body = ""
     return {"title": title.strip(), "body": body.strip(), "tags": tags}
 
+
 def edit_note_interactive(note):
-    """Интерактивное редактирование через мультистрочный ввод"""
     console.print(Text(f"  ✏ Текущий заголовок: {note['title']}", style=WHITE))
     try:
         new_title = console.input("[bold magenta]Новый заголовок (Enter — оставить)> [/]").strip()
-        if new_title: note["title"] = new_title
+        if new_title:
+            note["title"] = new_title
     except (EOFError, KeyboardInterrupt):
-        console.print(Text("  Отменено", style=YELLOW)); return False
+        console.print(Text("  Отменено", style=YELLOW))
+        return False
 
     console.print(Text("  Текущее тело:", style=WHITE))
-    console.print(Panel(note.get("body","") or "[dim](пусто)[/]", border_style=GRAY))
+    console.print(Panel(note.get("body", "") or "[dim](пусто)[/]", border_style=GRAY))
     console.print(Text("  Введи новый текст (Enter на пустой строке — конец):", style=CYAN))
     lines = []
     try:
         while True:
             line = console.input("[bold magenta]...[/] ")
-            if not line: break
+            if not line:
+                break
             lines.append(line)
     except (EOFError, KeyboardInterrupt):
         pass
@@ -80,7 +116,9 @@ def edit_note_interactive(note):
         note["body"] = "\n".join(lines)
 
     try:
-        new_tags = console.input(f"[bold magenta]Теги через пробел (текущие: {', '.join(note.get('tags',[])) or '—'})> [/]").strip()
+        new_tags = console.input(
+            f"[bold magenta]Теги через пробел (текущие: {', '.join(note.get('tags',[])) or '—'})> [/]"
+        ).strip()
         if new_tags:
             note["tags"] = [t.lstrip("#") for t in new_tags.split()]
     except (EOFError, KeyboardInterrupt):
@@ -88,20 +126,23 @@ def edit_note_interactive(note):
     note["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
     return True
 
-# ═══════════ ЭКСПОРТ ═══════════
+# ═══ ЭКСПОРТ ═══
 def export_notes(fmt="md"):
     os.makedirs(EXPORT_DIR, exist_ok=True)
     data = load_notes()
     notes = data["notes"]
     if not notes:
-        console.print(Text("  ⚠ Нечего экспортировать", style=YELLOW)); return
+        console.print(Text("  ⚠ Нечего экспортировать", style=YELLOW))
+        return
+
+    ts = datetime.now().strftime("%Y%m%d_%H%M")
 
     if fmt == "json":
-        path = os.path.join(EXPORT_DIR, f"notes_{datetime.now().strftime('%Y%m%d_%H%M')}.json")
+        path = os.path.join(EXPORT_DIR, f"notes_{ts}.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(notes, f, ensure_ascii=False, indent=2)
     elif fmt == "md":
-        path = os.path.join(EXPORT_DIR, f"notes_{datetime.now().strftime('%Y%m%d_%H%M')}.md")
+        path = os.path.join(EXPORT_DIR, f"notes_{ts}.md")
         with open(path, "w", encoding="utf-8") as f:
             f.write(f"# Мои заметки\n\n_Экспорт: {datetime.now().strftime('%d.%m.%Y %H:%M')}_\n\n")
             for n in notes:
@@ -112,26 +153,33 @@ def export_notes(fmt="md"):
                     f.write(n["body"] + "\n\n")
                 f.write(f"_Создано: {n.get('created','—')}_\n\n---\n\n")
     elif fmt == "txt":
-        path = os.path.join(EXPORT_DIR, f"notes_{datetime.now().strftime('%Y%m%d_%H%M')}.txt")
+        path = os.path.join(EXPORT_DIR, f"notes_{ts}.txt")
         with open(path, "w", encoding="utf-8") as f:
             for n in notes:
                 f.write(f"=== #{n['id']} — {n['title']} ===\n")
-                if n.get("tags"): f.write("Теги: " + ", ".join(n["tags"]) + "\n")
-                if n.get("body"): f.write(n["body"] + "\n")
+                if n.get("tags"):
+                    f.write("Теги: " + ", ".join(n["tags"]) + "\n")
+                if n.get("body"):
+                    f.write(n["body"] + "\n")
                 f.write("\n")
     else:
-        console.print(Text(f"  ❌ Неизвестный формат: {fmt}", style=RED)); return
+        console.print(Text(f"  ❌ Неизвестный формат: {fmt}", style=RED))
+        return
 
     console.print(Text(f"  ✔ Экспортировано: {path}", style=GREEN_BRIGHT))
 
-# ═══════════ РИСОВКА ═══════════
-def clear(): os.system("clear")
+# ═══ РИСОВКА ═══
+def clear():
+    os.system("clear")
+
 
 def title_block(main, sub=""):
     lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
     lines.append(Text("═" * 60, style=GREEN_DIM))
     return Group(*lines)
+
 
 def stats_panel(notes):
     total = len(notes)
@@ -143,14 +191,15 @@ def stats_panel(notes):
     top_s = " ".join(f"#{t}({c})" for t, c in top_tags) or "[dim]нет[/]"
 
     t = Table(box=None, show_header=False, padding=(0, 3))
-    t.add_column(""); t.add_column("")
+    t.add_column("")
+    t.add_column("")
     t.add_row(f"📝 Заметок: [bold]{total}[/]",
               f"🏷 Тегов: [bold]{len(tags_count)}[/]")
     t.add_row(f"🔝 Топ теги: {top_s}", "")
     return t
 
+
 def notes_table(notes, filter_mode=None):
-    """filter_mode: None (все), 'tag:xxx', search-строка"""
     shown = notes
     if filter_mode and filter_mode.startswith("tag:"):
         tag = filter_mode[4:].lower()
@@ -158,10 +207,10 @@ def notes_table(notes, filter_mode=None):
     elif filter_mode:
         q = filter_mode.lower()
         shown = [n for n in notes
-                 if q in n["title"].lower() or q in n.get("body","").lower()
+                 if q in n["title"].lower() or q in n.get("body", "").lower()
                  or any(q in t.lower() for t in n.get("tags", []))]
 
-    shown = sorted(shown, key=lambda x: x.get("updated") or x.get("created",""), reverse=True)
+    shown = sorted(shown, key=lambda x: x.get("updated") or x.get("created", ""), reverse=True)
 
     if not shown:
         console.print(Text(f"  📭 Заметок нет (фильтр: {filter_mode or 'нет'})", style=f"dim {GRAY}"))
@@ -183,10 +232,11 @@ def notes_table(notes, filter_mode=None):
     console.print(t)
     console.print()
 
+
 def commands_panel():
     t = Table(box=box.DOUBLE_EDGE, border_style="black",
               show_header=False, padding=(0, 2))
-    t.add_column("Команда", style="bold yellow", width=26, justify="right")
+    t.add_column("Команда", style="bold yellow", width=30, justify="right")
     t.add_column("Действие", style="white")
     t.add_row("[cyan]new <заголовок> | <тело> #tag[/]", "➕ Новая заметка")
     t.add_row("[cyan]show <id>[/]",     "👁 Показать заметку")
@@ -202,7 +252,7 @@ def commands_panel():
                         border_style="black"))
     console.print()
 
-# ═══════════ TAB-COMPLETER ═══════════
+# ═══ TAB-COMPLETER ═══
 class NotesCompleter(Completer):
     def __init__(self, get_data):
         self.get_data = get_data
@@ -210,6 +260,7 @@ class NotesCompleter(Completer):
     def get_completions(self, document, complete_event):
         text = document.text_before_cursor
         words = text.split()
+
         if not words or (len(words) == 1 and not text.endswith(" ")):
             partial = words[0] if words else ""
             commands = ["new","show","edit","del","tag","search","tags",
@@ -228,8 +279,7 @@ class NotesCompleter(Completer):
                 sid = str(n["id"])
                 if sid.startswith(partial):
                     label = f'{sid}  {n["title"][:55]}'
-                    yield Completion(sid, start_position=-len(partial),
-                                     display=label)
+                    yield Completion(sid, start_position=-len(partial), display=label)
             return
 
         if cmd == "tag":
@@ -247,7 +297,7 @@ class NotesCompleter(Completer):
                 if m.startswith(partial.lower()):
                     yield Completion(m, start_position=-len(partial))
 
-# ═══════════ MAIN ═══════════
+# ═══ MAIN ═══
 def main():
     data = load_notes()
     current_filter = None
@@ -287,22 +337,28 @@ def main():
             console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
             break
 
-        if not cmd: continue
+        if not cmd:
+            continue
         parts = cmd.split(maxsplit=1)
         c = parts[0].lower()
         arg = parts[1] if len(parts) > 1 else ""
 
         if c in ("q","exit","quit","выход"):
-            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}")); break
-        if c == "clear": continue
+            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+        if c == "clear":
+            continue
 
         if c == "new":
             if not arg:
                 console.print(Text("  ❌ new <заголовок> | <тело> #тег", style=RED))
-                time.sleep(1); continue
+                time.sleep(1)
+                continue
             p = parse_new(arg)
             if not p["title"]:
-                console.print(Text("  ❌ Пустой заголовок", style=RED)); time.sleep(1); continue
+                console.print(Text("  ❌ Пустой заголовок", style=RED))
+                time.sleep(1)
+                continue
             note = {
                 "id": data["next_id"],
                 "title": p["title"],
@@ -315,15 +371,20 @@ def main():
             data["notes"].append(note)
             save_notes(data)
             console.print(Text(f"  ✔ Заметка #{note['id']} создана", style=GREEN_BRIGHT))
-            time.sleep(0.8); continue
+            time.sleep(0.8)
+            continue
 
         if c == "show":
             if not arg.isdigit():
-                console.print(Text("  ❌ show <id>", style=RED)); time.sleep(1); continue
+                console.print(Text("  ❌ show <id>", style=RED))
+                time.sleep(1)
+                continue
             tid = int(arg)
             note = next((n for n in data["notes"] if n["id"] == tid), None)
             if not note:
-                console.print(Text(f"  ❌ #{tid} не найдена", style=RED)); time.sleep(1); continue
+                console.print(Text(f"  ❌ #{tid} не найдена", style=RED))
+                time.sleep(1)
+                continue
             clear()
             console.print()
             console.print(title_block(f"#{note['id']}  {note['title']}"))
@@ -340,25 +401,34 @@ def main():
             console.print(Text(f"📅 Создано: {note.get('created','—')}", style=GRAY))
             console.print(Text(f"🕐 Обновлено: {note.get('updated','—')}", style=GRAY))
             console.print()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
             continue
 
         if c in ("edit","del"):
             if not arg.isdigit():
-                console.print(Text(f"  ❌ {c} <id>", style=RED)); time.sleep(1); continue
+                console.print(Text(f"  ❌ {c} <id>", style=RED))
+                time.sleep(1)
+                continue
             tid = int(arg)
             note = next((n for n in data["notes"] if n["id"] == tid), None)
             if not note:
-                console.print(Text(f"  ❌ #{tid} не найдена", style=RED)); time.sleep(1); continue
+                console.print(Text(f"  ❌ #{tid} не найдена", style=RED))
+                time.sleep(1)
+                continue
             if c == "edit":
                 if edit_note_interactive(note):
                     save_notes(data)
                     console.print(Text(f"  ✔ Заметка #{tid} обновлена", style=GREEN_BRIGHT))
-                time.sleep(1); continue
+                time.sleep(1)
+                continue
             if c == "del":
                 try:
-                    ans = console.input(f"[bold red]Удалить #{tid} «{note['title'][:40]}»? (y/N)> [/]").strip().lower()
+                    ans = console.input(
+                        f"[bold red]Удалить #{tid} «{note['title'][:40]}»? (y/N)> [/]"
+                    ).strip().lower()
                     if ans == "y":
                         data["notes"] = [n for n in data["notes"] if n["id"] != tid]
                         save_notes(data)
@@ -367,21 +437,28 @@ def main():
                         console.print(Text("  Отменено", style=YELLOW))
                 except (EOFError, KeyboardInterrupt):
                     console.print(Text("  Отменено", style=YELLOW))
-                time.sleep(0.8); continue
+                time.sleep(0.8)
+                continue
 
         if c == "tag":
             if not arg:
-                console.print(Text("  ❌ tag <тег>", style=RED)); time.sleep(1); continue
+                console.print(Text("  ❌ tag <тег>", style=RED))
+                time.sleep(1)
+                continue
             current_filter = f"tag:{arg.lstrip('#')}"
             console.print(Text(f"  🏷 Фильтр по тегу: {arg}", style=GREEN_BRIGHT))
-            time.sleep(0.5); continue
+            time.sleep(0.5)
+            continue
 
         if c == "search":
             if not arg:
-                console.print(Text("  ❌ search <текст>", style=RED)); time.sleep(1); continue
+                console.print(Text("  ❌ search <текст>", style=RED))
+                time.sleep(1)
+                continue
             current_filter = arg
             console.print(Text(f"  🔍 Поиск: {arg}", style=GREEN_BRIGHT))
-            time.sleep(0.5); continue
+            time.sleep(0.5)
+            continue
 
         if c == "tags":
             tags_count = {}
@@ -389,38 +466,50 @@ def main():
                 for t in n.get("tags", []):
                     tags_count[t] = tags_count.get(t, 0) + 1
             if not tags_count:
-                console.print(Text("  ⚠ Тегов нет", style=YELLOW)); time.sleep(1); continue
+                console.print(Text("  ⚠ Тегов нет", style=YELLOW))
+                time.sleep(1)
+                continue
             clear()
-            console.print(); console.print(title_block("🏷 ВСЕ ТЕГИ")); console.print()
+            console.print()
+            console.print(title_block("🏷 ВСЕ ТЕГИ"))
+            console.print()
             t = Table(box=box.SIMPLE_HEAD, border_style=MAGENTA,
                       header_style=f"bold {MAGENTA}", padding=(0, 2))
             t.add_column("Тег", style=MAGENTA)
             t.add_column("Заметок", style=CYAN, justify="right", width=10)
             for tg, cnt in sorted(tags_count.items(), key=lambda x: -x[1]):
                 t.add_row(f"#{tg}", str(cnt))
-            console.print(t); console.print()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
+            console.print(t)
+            console.print()
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
             continue
 
         if c == "reset":
             current_filter = None
             console.print(Text("  ↩ Фильтр сброшен", style=GREEN_BRIGHT))
-            time.sleep(0.5); continue
+            time.sleep(0.5)
+            continue
 
         if c == "export":
             fmt = (arg or "md").lower()
             export_notes(fmt)
-            time.sleep(1.2); continue
+            time.sleep(1.2)
+            continue
 
         if c in ("help","h","?"):
-            console.print(Text("  Tab — автодополнение. Пример: new Рецепт блинов | 2 яйца, мука, молоко #кухня", style=CYAN))
-            time.sleep(2); continue
+            console.print(Text("  Tab — автодополнение. Пример: new Рецепт блинов | 2 яйца, мука #кухня", style=CYAN))
+            time.sleep(2)
+            continue
 
         console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
         time.sleep(0.6)
 
+
 if __name__ == "__main__":
-    try: main()
+    try:
+        main()
     except KeyboardInterrupt:
         console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))

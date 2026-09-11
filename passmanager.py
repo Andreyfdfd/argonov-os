@@ -1,15 +1,56 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""PassManager — зашифрованное хранилище паролей (AES-256 + PBKDF2)"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Password Manager
+#  Зашифрованное хранилище паролей (AES-256 + PBKDF2)
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Зашифрованное хранилище паролей: AES-256-GCM + PBKDF2-HMAC-SHA256
+(480k итераций). Мастер-пароль не хранится, только производный ключ
+используется для расшифровки хранилища ~/.pm.vault.
 
-import os, sys, json, time, base64, getpass, secrets, string, hashlib
+Использование:
+    pm                   # через argonov
+    argonov pm           # то же
+
+Первый запуск — создание мастер-пароля.
+Мастер-пароль НЕЛЬЗЯ восстановить. Запиши его.
+
+Команды:
+    add              добавить запись
+    get <№>          показать пароль
+    copy <№>         скопировать в буфер
+    gen [длина]      сгенерировать пароль
+    edit <№>         редактировать
+    del <№>          удалить
+    cat <категория>  фильтр по категории
+    search <текст>   поиск
+    reset            сбросить фильтры
+    backup           резервная копия
+    passwd           сменить мастер-пароль
+    lock             заблокировать и выйти
+
+Зависимости:
+    - rich, prompt_toolkit, cryptography
+"""
+
+import os
+import sys
+import json
+import time
+import string
+import secrets
+import getpass
 from datetime import datetime
+
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.align import Align
 from rich import box
+
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion
 from prompt_toolkit.styles import Style
@@ -25,20 +66,20 @@ except ImportError:
     print("❌ Установи: pip install cryptography")
     sys.exit(1)
 
+# ═══ КОНСТАНТЫ ═══
 console = Console()
 VAULT_FILE = os.path.expanduser("~/.pm.vault")
 BACKUP_DIR = os.path.expanduser("~/pm_backups")
 
-# ANSI/rich цвета
 GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
 CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
 RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
 
-# ═══════════ КРИПТО ═══════════
 PBKDF2_ITERS = 480_000
 SALT_SIZE    = 16
 NONCE_SIZE   = 12
 
+# ═══ КРИПТО ═══
 def derive_key(password: str, salt: bytes) -> bytes:
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -48,14 +89,16 @@ def derive_key(password: str, salt: bytes) -> bytes:
     )
     return kdf.derive(password.encode())
 
+
 def encrypt_vault(data: dict, password: str) -> bytes:
-    """Возвращает salt + nonce + ciphertext"""
+    """Возвращает salt + nonce + ciphertext."""
     salt = os.urandom(SALT_SIZE)
     nonce = os.urandom(NONCE_SIZE)
     key = derive_key(password, salt)
     plaintext = json.dumps(data, ensure_ascii=False).encode()
     ct = AESGCM(key).encrypt(nonce, plaintext, None)
     return salt + nonce + ct
+
 
 def decrypt_vault(blob: bytes, password: str) -> dict:
     """Расшифровывает. Бросает InvalidTag при неверном пароле."""
@@ -68,24 +111,33 @@ def decrypt_vault(blob: bytes, password: str) -> dict:
     pt = AESGCM(key).decrypt(nonce, ct, None)
     return json.loads(pt.decode())
 
-# ═══════════ ГЕНЕРАЦИЯ ═══════════
+# ═══ ГЕНЕРАЦИЯ ═══
 def gen_password(length=20, symbols=True, digits=True, upper=True, lower=True) -> str:
     pool = ""
-    if lower:  pool += string.ascii_lowercase
-    if upper:  pool += string.ascii_uppercase
-    if digits: pool += string.digits
-    if symbols: pool += "!@#$%^&*()-_=+[]{};:,.<>?"
-    if not pool: pool = string.ascii_letters
+    if lower:
+        pool += string.ascii_lowercase
+    if upper:
+        pool += string.ascii_uppercase
+    if digits:
+        pool += string.digits
+    if symbols:
+        pool += "!@#$%^&*()-_=+[]{};:,.<>?"
+    if not pool:
+        pool = string.ascii_letters
     return "".join(secrets.choice(pool) for _ in range(length))
 
-# ═══════════ РИСОВКА ═══════════
-def clear(): os.system("clear")
+# ═══ РИСОВКА ═══
+def clear():
+    os.system("clear")
+
 
 def title_block(main, sub=""):
     lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
     lines.append(Text("═" * 60, style=GREEN_DIM))
     return Group(*lines)
+
 
 def stats_panel(entries):
     total = len(entries)
@@ -95,18 +147,20 @@ def stats_panel(entries):
         categories[c] = categories.get(c, 0) + 1
     cats = " ".join(f"{c}({n})" for c, n in sorted(categories.items(), key=lambda x: -x[1])[:5]) or "[dim]—[/]"
     t = Table(box=None, show_header=False, padding=(0, 3))
-    t.add_column(""); t.add_column("")
+    t.add_column("")
+    t.add_column("")
     t.add_row(f"🔑 Записей: [bold]{total}[/]", f"📁 Категории: {cats}")
     return t
+
 
 def entries_table(entries, filter_cat=None, filter_search=None):
     shown = []
     for name, e in entries.items():
-        if filter_cat and e.get("category","").lower() != filter_cat.lower():
+        if filter_cat and e.get("category", "").lower() != filter_cat.lower():
             continue
         if filter_search:
             q = filter_search.lower()
-            if q not in name.lower() and q not in e.get("url","").lower() and q not in e.get("notes","").lower():
+            if q not in name.lower() and q not in e.get("url", "").lower() and q not in e.get("notes", "").lower():
                 continue
         shown.append((name, e))
     shown.sort(key=lambda x: x[0].lower())
@@ -126,12 +180,13 @@ def entries_table(entries, filter_cat=None, filter_search=None):
 
     for i, (name, e) in enumerate(shown, 1):
         t.add_row(str(i), name[:40],
-                  (e.get("category","—") or "—")[:14],
-                  (e.get("login","—") or "—")[:22],
-                  (e.get("url","—") or "—")[:28])
+                  (e.get("category", "—") or "—")[:14],
+                  (e.get("login", "—") or "—")[:22],
+                  (e.get("url", "—") or "—")[:28])
     console.print(t)
     console.print()
     return shown
+
 
 def commands_panel():
     t = Table(box=box.DOUBLE_EDGE, border_style="black",
@@ -154,7 +209,7 @@ def commands_panel():
                         border_style="black"))
     console.print()
 
-# ═══════════ TAB-COMPLETER ═══════════
+# ═══ TAB-COMPLETER ═══
 class PMCompleter(Completer):
     def __init__(self, get_entries, get_shown):
         self.get_entries = get_entries
@@ -163,6 +218,7 @@ class PMCompleter(Completer):
     def get_completions(self, document, complete_event):
         text = document.text_before_cursor
         words = text.split()
+
         if not words or (len(words) == 1 and not text.endswith(" ")):
             partial = words[0] if words else ""
             commands = ["add","get","copy","gen","edit","del","cat","search",
@@ -188,17 +244,17 @@ class PMCompleter(Completer):
             entries = self.get_entries()
             cats = set()
             for e in entries.values():
-                if e.get("category"): cats.add(e["category"])
+                if e.get("category"):
+                    cats.add(e["category"])
             for c in sorted(cats):
                 if c.lower().startswith(partial.lower()):
                     yield Completion(c, start_position=-len(partial))
             return
 
-# ═══════════ МАСТЕР-ПАРОЛЬ ═══════════
+# ═══ МАСТЕР-ПАРОЛЬ ═══
 def unlock_vault():
-    """Возвращает (vault_data, master_password) или (None, None)"""
+    """Возвращает (vault_data, master_password) или (None, None)."""
     if not os.path.exists(VAULT_FILE):
-        # Первый запуск — создаём
         clear()
         console.print()
         console.print(Align.center(Panel.fit(
@@ -212,23 +268,28 @@ def unlock_vault():
         try:
             p1 = getpass.getpass("🔑 Новый мастер-пароль: ")
             if len(p1) < 6:
-                console.print("[red]❌ Минимум 6 символов[/]"); return None, None
+                console.print("[red]❌ Минимум 6 символов[/]")
+                return None, None
             p2 = getpass.getpass("🔑 Повтори: ")
             if p1 != p2:
-                console.print("[red]❌ Пароли не совпадают[/]"); return None, None
+                console.print("[red]❌ Пароли не совпадают[/]")
+                return None, None
         except (KeyboardInterrupt, EOFError):
-            console.print("\n[yellow]Отменено[/]"); return None, None
+            console.print("\n[yellow]Отменено[/]")
+            return None, None
 
         vault = {"entries": {}, "created": datetime.now().strftime("%Y-%m-%d %H:%M")}
         blob = encrypt_vault(vault, p1)
-        with open(VAULT_FILE, "wb") as f: f.write(blob)
-        try: os.chmod(VAULT_FILE, 0o600)
-        except Exception: pass
+        with open(VAULT_FILE, "wb") as f:
+            f.write(blob)
+        try:
+            os.chmod(VAULT_FILE, 0o600)
+        except Exception:
+            pass
         console.print("[green]✔ Хранилище создано[/]")
         time.sleep(1)
         return vault, p1
 
-    # Разблокировка
     clear()
     console.print()
     console.print(Align.center(Panel.fit(
@@ -240,9 +301,11 @@ def unlock_vault():
         try:
             pwd = getpass.getpass("🔑 Мастер-пароль: ")
         except (KeyboardInterrupt, EOFError):
-            console.print("\n[yellow]Отменено[/]"); return None, None
+            console.print("\n[yellow]Отменено[/]")
+            return None, None
         try:
-            with open(VAULT_FILE, "rb") as f: blob = f.read()
+            with open(VAULT_FILE, "rb") as f:
+                blob = f.read()
             vault = decrypt_vault(blob, pwd)
             console.print("[green]✔ Разблокировано[/]")
             time.sleep(0.5)
@@ -250,18 +313,23 @@ def unlock_vault():
         except (InvalidTag, ValueError):
             console.print(f"[red]❌ Неверный пароль ({attempt+1}/3)[/]")
         except Exception as e:
-            console.print(f"[red]❌ {e}[/]"); return None, None
+            console.print(f"[red]❌ {e}[/]")
+            return None, None
     return None, None
+
 
 def save_vault(vault, password):
     blob = encrypt_vault(vault, password)
     tmp = VAULT_FILE + ".tmp"
-    with open(tmp, "wb") as f: f.write(blob)
-    try: os.chmod(tmp, 0o600)
-    except Exception: pass
+    with open(tmp, "wb") as f:
+        f.write(blob)
+    try:
+        os.chmod(tmp, 0o600)
+    except Exception:
+        pass
     os.replace(tmp, VAULT_FILE)
 
-# ═══════════ MAIN ═══════════
+# ═══ MAIN ═══
 def main():
     vault, master_pwd = unlock_vault()
     if vault is None:
@@ -286,8 +354,10 @@ def main():
         console.print()
 
         filters = []
-        if current_filter_cat: filters.append(f"категория: [magenta]{current_filter_cat}[/]")
-        if current_search:     filters.append(f"поиск: [yellow]{current_search}[/]")
+        if current_filter_cat:
+            filters.append(f"категория: [magenta]{current_filter_cat}[/]")
+        if current_search:
+            filters.append(f"поиск: [yellow]{current_search}[/]")
         if filters:
             console.print("[bold]🔎 Фильтр:[/] " + "  •  ".join(filters))
             console.print()
@@ -304,7 +374,8 @@ def main():
             console.print(Text("\n 🔒 Хранилище заблокировано. 🖖", style=f"dim {GREEN_DIM}"))
             break
 
-        if not cmd: continue
+        if not cmd:
+            continue
         parts = cmd.split(maxsplit=1)
         c = parts[0].lower()
         arg = parts[1] if len(parts) > 1 else ""
@@ -312,18 +383,20 @@ def main():
         if c in ("lock","q","exit","quit","выход"):
             console.print(Text(" 🔒 Заблокировано. 🖖", style=f"dim {GREEN_DIM}"))
             break
-        if c == "clear": continue
+        if c == "clear":
+            continue
 
         if c == "add":
             console.print()
             try:
                 name = console.input("[bold cyan]📝 Название (Google, VK, банк)> [/]").strip()
-                if not name: raise KeyboardInterrupt
+                if not name:
+                    raise KeyboardInterrupt
                 if name in entries:
                     console.print(f"[yellow]⚠ Уже есть «{name}». Будет перезаписано.[/]")
-                url   = console.input("[bold cyan]🌐 URL (Enter — нет)> [/]").strip()
+                url = console.input("[bold cyan]🌐 URL (Enter — нет)> [/]").strip()
                 login = console.input("[bold cyan]👤 Логин (Enter — нет)> [/]").strip()
-                cat   = console.input("[bold cyan]📁 Категория (Enter — «личное»)> [/]").strip() or "личное"
+                cat = console.input("[bold cyan]📁 Категория (Enter — «личное»)> [/]").strip() or "личное"
                 notes = console.input("[bold cyan]📄 Заметки (Enter — нет)> [/]").strip()
 
                 console.print("[bold cyan]🔐 Пароль: (Enter — сгенерировать)[/]")
@@ -350,10 +423,14 @@ def main():
 
         if c in ("get","copy","edit","del"):
             if not arg.isdigit():
-                console.print(f"[red]❌ {c} <№>[/]"); time.sleep(1); continue
+                console.print(f"[red]❌ {c} <№>[/]")
+                time.sleep(1)
+                continue
             idx = int(arg)
             if not (1 <= idx <= len(last_shown)):
-                console.print(f"[red]❌ № от 1 до {len(last_shown)}[/]"); time.sleep(1); continue
+                console.print(f"[red]❌ № от 1 до {len(last_shown)}[/]")
+                time.sleep(1)
+                continue
             name, e = last_shown[idx - 1]
 
             if c == "get":
@@ -370,21 +447,25 @@ def main():
                 t.add_row("🔐 Пароль", f"[bold {GREEN_BRIGHT}]{e.get('password','—')}[/]")
                 t.add_row("📁 Категория", e.get("category") or "—")
                 t.add_row("📄 Заметки", e.get("notes") or "—")
-                t.add_row("📅 Создано", e.get("created","—"))
-                t.add_row("🕐 Обновлено", e.get("updated","—"))
-                console.print(t); console.print()
-                try: console.input("[dim]Enter — назад[/] ")
-                except (KeyboardInterrupt, EOFError): pass
+                t.add_row("📅 Создано", e.get("created", "—"))
+                t.add_row("🕐 Обновлено", e.get("updated", "—"))
+                console.print(t)
+                console.print()
+                try:
+                    console.input("[dim]Enter — назад[/] ")
+                except (KeyboardInterrupt, EOFError):
+                    pass
                 continue
 
             if c == "copy":
                 try:
                     import pyperclip
-                    pyperclip.copy(e.get("password",""))
+                    pyperclip.copy(e.get("password", ""))
                     console.print(f"[green]✔ Пароль скопирован в буфер[/]")
                 except Exception:
                     console.print(f"[yellow]⚠ pyperclip не сработал. Пароль: {e.get('password')}[/]")
-                time.sleep(1); continue
+                time.sleep(1)
+                continue
 
             if c == "del":
                 try:
@@ -397,20 +478,25 @@ def main():
                         console.print("[yellow]Отменено[/]")
                 except (KeyboardInterrupt, EOFError):
                     console.print("[yellow]Отменено[/]")
-                time.sleep(0.8); continue
+                time.sleep(0.8)
+                continue
 
             if c == "edit":
                 console.print()
                 console.print(f"[bold]Редактирование «{name}»[/] [dim](Enter — оставить)[/]")
                 try:
                     url = console.input(f"[cyan]URL ({e.get('url','')})> [/]").strip()
-                    if url: e["url"] = url
+                    if url:
+                        e["url"] = url
                     login = console.input(f"[cyan]Логин ({e.get('login','')})> [/]").strip()
-                    if login: e["login"] = login
+                    if login:
+                        e["login"] = login
                     cat = console.input(f"[cyan]Категория ({e.get('category','')})> [/]").strip()
-                    if cat: e["category"] = cat
+                    if cat:
+                        e["category"] = cat
                     notes = console.input(f"[cyan]Заметки ({e.get('notes','')})> [/]").strip()
-                    if notes: e["notes"] = notes
+                    if notes:
+                        e["notes"] = notes
                     console.print("[cyan]Новый пароль (Enter — оставить, !gen — сгенерировать)[/]")
                     pwd = getpass.getpass("   > ").strip()
                     if pwd == "!gen":
@@ -424,23 +510,31 @@ def main():
                     console.print(f"[green]✔ Обновлено[/]")
                 except (KeyboardInterrupt, EOFError):
                     console.print("[yellow]Отменено[/]")
-                time.sleep(1); continue
+                time.sleep(1)
+                continue
 
         if c == "gen":
-            try: length = int(arg) if arg else 20
-            except ValueError: length = 20
-            if not 4 <= length <= 128: length = 20
+            try:
+                length = int(arg) if arg else 20
+            except ValueError:
+                length = 20
+            if not 4 <= length <= 128:
+                length = 20
             pwd = gen_password(length)
             console.print()
             console.print(Panel(f"[bold {GREEN_BRIGHT}]{pwd}[/]",
                                 title=f"🎲 {length} символов", border_style=GREEN_DIM))
             try:
-                import pyperclip; pyperclip.copy(pwd)
+                import pyperclip
+                pyperclip.copy(pwd)
                 console.print("[dim]✔ Скопировано в буфер[/]")
-            except Exception: pass
+            except Exception:
+                pass
             console.print()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (KeyboardInterrupt, EOFError): pass
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (KeyboardInterrupt, EOFError):
+                pass
             continue
 
         if c == "cat":
@@ -450,30 +544,36 @@ def main():
             else:
                 current_filter_cat = arg
                 console.print(f"[green]📁 Фильтр: {arg}[/]")
-            time.sleep(0.5); continue
+            time.sleep(0.5)
+            continue
 
         if c == "search":
             current_search = arg or None
             console.print(f"[green]🔍 Поиск: {arg or 'сброшен'}[/]")
-            time.sleep(0.5); continue
+            time.sleep(0.5)
+            continue
 
         if c == "reset":
             current_filter_cat = None
             current_search = None
             console.print("[green]↩ Фильтры сброшены[/]")
-            time.sleep(0.5); continue
+            time.sleep(0.5)
+            continue
 
         if c == "backup":
             os.makedirs(BACKUP_DIR, exist_ok=True)
             path = os.path.join(BACKUP_DIR,
                 f"pm_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.vault")
             try:
-                with open(VAULT_FILE, "rb") as f: data = f.read()
-                with open(path, "wb") as f: f.write(data)
+                with open(VAULT_FILE, "rb") as f:
+                    data = f.read()
+                with open(path, "wb") as f:
+                    f.write(data)
                 console.print(f"[green]💾 Резервная копия: {path}[/]")
             except Exception as e:
                 console.print(f"[red]❌ {e}[/]")
-            time.sleep(1.2); continue
+            time.sleep(1.2)
+            continue
 
         if c == "passwd":
             console.print()
@@ -481,26 +581,36 @@ def main():
             try:
                 old = getpass.getpass("🔑 Текущий мастер-пароль: ")
                 try:
-                    with open(VAULT_FILE,"rb") as f: decrypt_vault(f.read(), old)
+                    with open(VAULT_FILE, "rb") as f:
+                        decrypt_vault(f.read(), old)
                 except Exception:
-                    console.print("[red]❌ Неверный пароль[/]"); time.sleep(1); continue
+                    console.print("[red]❌ Неверный пароль[/]")
+                    time.sleep(1)
+                    continue
                 new1 = getpass.getpass("🔑 Новый мастер-пароль: ")
                 if len(new1) < 6:
-                    console.print("[red]❌ Минимум 6 символов[/]"); time.sleep(1); continue
+                    console.print("[red]❌ Минимум 6 символов[/]")
+                    time.sleep(1)
+                    continue
                 new2 = getpass.getpass("🔑 Повтори: ")
                 if new1 != new2:
-                    console.print("[red]❌ Не совпадают[/]"); time.sleep(1); continue
+                    console.print("[red]❌ Не совпадают[/]")
+                    time.sleep(1)
+                    continue
                 save_vault(vault, new1)
                 master_pwd = new1
                 console.print("[green]✔ Мастер-пароль изменён[/]")
             except (KeyboardInterrupt, EOFError):
                 console.print("[yellow]Отменено[/]")
-            time.sleep(1); continue
+            time.sleep(1)
+            continue
 
         console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
         time.sleep(0.6)
 
+
 if __name__ == "__main__":
-    try: main()
+    try:
+        main()
     except KeyboardInterrupt:
         console.print(Text("\n 🔒 Заблокировано.", style=f"dim {GREEN_DIM}"))

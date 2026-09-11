@@ -1,18 +1,40 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Crypto Informer v6 — простой вывод + опциональный watch"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Crypto Informer
+#  Курсы крипты + фиатных валют (multi-source)
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Курсы криптовалют и валют с индикатором свежести LIVE/КЭШ.
 
-import os, sys, time, subprocess
+Использование:
+    crypto                       # один показ + подсказка
+    crypto --watch [N]           # watch-режим, интервал N сек
+    crypto -w 30                 # то же, короче
+
+Зависимости:
+    - rich
+    - net_helper (локальный)
+"""
+
+import os
+import sys
+import time
+import subprocess
 from datetime import datetime
+
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.box import SIMPLE_HEAD
 
+# локальные
 sys.path.insert(0, os.path.expanduser("~"))
 from net_helper import get_crypto_prices, get_fx_rates, freshness_badge
 
+# ═══ КОНСТАНТЫ ═══
 console = Console()
 
 GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
@@ -29,22 +51,31 @@ COIN_ICONS = {
 
 DEFAULT_INTERVAL = 60
 
+# ═══ УТИЛИТЫ ═══
 def clear():
     subprocess.run("clear", shell=True)
 
+
 def fmt_price(p):
-    if p is None: return "—"
-    if p < 0.01: return f"${p:.8f}"
-    if p < 1:    return f"${p:.4f}"
-    if p < 1000: return f"${p:,.2f}"
+    if p is None:
+        return "—"
+    if p < 0.01:
+        return f"${p:.8f}"
+    if p < 1:
+        return f"${p:.4f}"
+    if p < 1000:
+        return f"${p:,.2f}"
     return f"${p:,.0f}"
 
+
 def fmt_change(pct):
-    if pct is None: return "—"
+    if pct is None:
+        return "—"
     color = GREEN_BRIGHT if pct >= 0 else RED
     arrow = "▲" if pct >= 0 else "▼"
     return f"[{color}]{arrow}{abs(pct):.2f}%[/]"
 
+# ═══ РИСОВКА ═══
 def print_header(watch=False):
     line = Text()
     line.append("▓▒░ ", style=f"bold {GREEN_BRIGHT}")
@@ -57,6 +88,7 @@ def print_header(watch=False):
     console.print(Text("─" * 50, style=GREEN_DIM))
     console.print()
 
+
 def print_freshness(crypto_meta, fx_meta):
     line = Text()
     line.append("  ", style="")
@@ -67,6 +99,7 @@ def print_freshness(crypto_meta, fx_meta):
     line.append(f"🕐 {datetime.now().strftime('%H:%M:%S')}", style=f"dim {GRAY}")
     console.print(line)
     console.print()
+
 
 def print_fx(fx):
     if not fx:
@@ -79,6 +112,7 @@ def print_fx(fx):
     if fx.get("USD_EUR"):
         console.print(f"  [dim]💵 1 USD ≈ [/][bold {CYAN}]{fx['USD_EUR']:.4f}€[/]")
     console.print()
+
 
 def print_prices(prices, fx, source):
     if not prices:
@@ -105,14 +139,15 @@ def print_prices(prices, fx, source):
     console.print(f"  [dim]📊 {source}[/]")
     console.print()
 
+# ═══ ЯДРО ═══
 def fetch_all(force=False):
     """Возвращает (prices, source, crypto_meta, fx, fx_src, fx_meta)."""
-    p, s, m  = get_crypto_prices(with_meta=True, force=force)
+    p, s, m = get_crypto_prices(with_meta=True, force=force)
     f, fs, fm = get_fx_rates(with_meta=True, force=force)
     return p, s, m, f, fs, fm
 
+
 def show_once(force=False):
-    """Один показ."""
     with console.status(f"[bold {GREEN_BRIGHT}]📡 Загружаю...[/]", spinner="dots"):
         prices, source, crypto_meta, fx, fx_src, fx_meta = fetch_all(force=force)
 
@@ -121,9 +156,6 @@ def show_once(force=False):
     print_fx(fx)
     print_prices(prices, fx, source)
 
-def show_watch_footer(interval):
-    console.print(f"  [dim]⏱ обновление каждые {interval}с  ·  [/][bold {YELLOW}]Ctrl+C[/][dim] — выход[/]")
-    console.print()
 
 def watch_loop(interval):
     """Простой цикл: clear → показать → sleep."""
@@ -136,7 +168,8 @@ def watch_loop(interval):
             print_freshness(crypto_meta, fx_meta)
             print_fx(fx)
             print_prices(prices, fx, source)
-            show_watch_footer(interval)
+            console.print(f"  [dim]⏱ обновление каждые {interval}с  ·  [/][bold {YELLOW}]Ctrl+C[/][dim] — выход[/]")
+            console.print()
 
             time.sleep(interval)
     except KeyboardInterrupt:
@@ -144,12 +177,11 @@ def watch_loop(interval):
         console.print("[dim]⏹ Watch остановлен.[/]")
         console.print()
 
+# ═══ MAIN ═══
 def one_shot():
-    """Обычный режим: показать один раз + подсказки."""
     clear()
     show_once(force=False)
 
-    # Подсказки
     hint = Table(box=None, show_header=False, padding=(0, 2))
     hint.add_column("", style=f"bold {YELLOW}", width=14, justify="right")
     hint.add_column("", style=f"{CYAN}")
@@ -178,6 +210,7 @@ def one_shot():
     elif cmd == "":
         one_shot()
 
+
 def main():
     args = sys.argv[1:]
     watch = False
@@ -198,6 +231,7 @@ def main():
     except KeyboardInterrupt:
         console.print()
         console.print("[dim]Выход.[/]")
+
 
 if __name__ == "__main__":
     try:

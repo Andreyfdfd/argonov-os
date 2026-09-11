@@ -1,0 +1,255 @@
+{
+ "version": 1,
+ "created": "2026-09-11 16:38:22",
+ "scripts": {
+  "argonov": {
+   "file": "argonov",
+   "short": "argonov",
+   "type": "bash",
+   "version": "2.0",
+   "desc": "⚡ Меню системы",
+   "group": "core",
+   "interactive": true,
+   "deps": []
+  },
+  "argonov-core": {
+   "file": "argonov-core.py",
+   "short": "core",
+   "type": "python",
+   "version": "1.0",
+   "desc": "🗂  Реестр скриптов",
+   "group": "core",
+   "interactive": false,
+   "deps": [
+    "rich"
+   ]
+  },
+  "argonov-dump": {
+   "file": "argonov-dump",
+   "short": "dump",
+   "type": "python",
+   "version": "2.0",
+   "desc": "📦 Дамп + push",
+   "group": "core",
+   "interactive": false,
+   "deps": []
+  },
+  "doctor": {
+   "file": "doctor.py",
+   "short": "doctor",
+   "type": "python",
+   "version": "2.0",
+   "desc": "🩺 Диагностика",
+   "group": "core",
+   "interactive": false,
+   "deps": [
+    "rich"
+   ]
+  },
+  "net_helper": {
+   "file": "net_helper.py",
+   "short": "net",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🌐 Fallback API + кэш",
+   "group": "core",
+   "interactive": false,
+   "deps": []
+  },
+  "ai": {
+   "file": "ai.py",
+   "short": "ai",
+   "type": "python",
+   "version": "16",
+   "desc": "🧠 AI-ассистент",
+   "group": "ai",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "llama-server"
+   ]
+  },
+  "music": {
+   "file": "randomaudio.py",
+   "short": "music",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎵 Музыкальный плеер",
+   "group": "media",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "chafa"
+   ]
+  },
+  "music-meta": {
+   "file": "music_meta.py",
+   "short": "meta",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎼 Метаданные треков",
+   "group": "media",
+   "interactive": false,
+   "deps": [
+    "rich",
+    "requests",
+    "mutagen"
+   ]
+  },
+  "art": {
+   "file": "art.py",
+   "short": "art",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎨 Картинки",
+   "group": "media",
+   "interactive": false,
+   "deps": [
+    "rich",
+    "viu"
+   ]
+  },
+  "todo": {
+   "file": "todo.py",
+   "short": "todo",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📌 Задачи",
+   "group": "data",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "notes": {
+   "file": "notes.py",
+   "short": "notes",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📝 Заметки",
+   "group": "data",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "pm": {
+   "file": "passmanager.py",
+   "short": "pm",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🔒 Пароли (AES-256)",
+   "group": "security",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "cryptography"
+   ]
+  },
+  "passgen": {
+   "file": "passgen.py",
+   "short": "passgen",
+   "type": "python",
+   "version": "2.0",
+   "desc": "🔐 Генератор паролей",
+   "group": "security",
+   "interactive": false,
+   "deps": []
+  },
+  "hack": {
+   "file": "hacktool.py",
+   "short": "hack",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎮 OSINT мультитул",
+   "group": "security",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "crypto": {
+   "file": "crypto_informer.py",
+   "short": "crypto",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📈 Курсы крипты и валют",
+   "group": "data",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "net_helper"
+   ]
+  },
+  "sysinfo": {
+   "file": "sysinfo.py",
+   "short": "s",
+   "type": "python",
+   "version": "5.0",
+   "desc": "⚡ Центр управления",
+   "group": "tools",
+   "interactive": false,
+   "deps": [
+    "net_helper"
+   ]
+  },
+  "utils": {
+   "file": "utils.py",
+   "short": "util",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📦 Сканер пакетов",
+   "group": "tools",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "rpg": {
+   "file": "hacker_rpg.py",
+   "short": "rpg",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🕹  Симулятор хакера",
+   "group": "games",
+   "interactive": true,
+   "deps": [
+    "rich"
+   ]
+  },
+  "matrix": {
+   "file": "matrix.py",
+   "short": "m",
+   "type": "python",
+   "version": "2.0",
+   "desc": "🌧  Цифровой дождь",
+   "group": "games",
+   "interactive": true,
+   "deps": [
+    "curses"
+   ]
+  },
+  "download": {
+   "file": "download_zone.py",
+   "short": "d",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📥 Загрузчик (aria2c)",
+   "group": "network",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "aria2c"
+   ]
+  }
+ },
+ "updated": "2026-09-11 16:38:22"
+}

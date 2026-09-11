@@ -1,251 +1,459 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS · Main Entry
-#  Единая точка входа для всех скриптов
-#  Версия: 1.5  ·  Обновлён: 2026-09-11
+#  ARGONOV OS · Main Entry v2
+#  Единая точка входа — читает реестр скриптов
+#  Версия: 2.0  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
+"""
+Единая точка входа для всех скриптов ARGONOV OS.
+Меню генерируется автоматически из ~/.argonov_registry.json
 
-ARGONOV_VERSION="1.5.0"
-REPO_DIR="$HOME/argonov-os"
-BACKUP_DIR="$HOME/argonov_backups"
+Использование:
+    argonov              # меню
+    argonov <short>      # запуск скрипта по короткому имени
+    argonov help         # справка
+    argonov version      # версия
 
-G="\033[92m";  DG="\033[32m";  C="\033[96m";  B="\033[94m"
-M="\033[95m";  Y="\033[93m";   R="\033[91m";  W="\033[97m"
-DIM="\033[2m"; BLD="\033[1m";  RST="\033[0m"
+Git / backup:
+    argonov push         # git push
+    argonov pull         # git pull
+    argonov status       # git status
+    argonov backup       # архивный бэкап
+    argonov restore      # восстановить из бэкапа
+    argonov doctor       # диагностика
 
-# ═══ ЗАГОЛОВОК / СПРАВКА / МЕНЮ ═══
-header() {
-    echo ""
-    echo -e "${C}┌─────────────────────────────────────────────────┐${RST}"
-    echo -e "${C}│${RST}          ${BLD}${W}⚡  A R G O N O V   O S  ⚡${RST}          ${C}│${RST}"
-    echo -e "${C}│${RST}       ${DIM}Кастомная оболочка для Termux${RST}          ${C}│${RST}"
-    echo -e "${C}│${RST}                ${DIM}v${ARGONOV_VERSION}${RST}                       ${C}│${RST}"
-    echo -e "${C}└─────────────────────────────────────────────────┘${RST}"
-    echo ""
+Зависимости:
+    - rich
+    - ~/.argonov_registry.json (создать: argonov-core init)
+"""
+
+import os
+import sys
+import json
+import time
+import subprocess
+from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.align import Align
+from rich.box import SIMPLE_HEAD
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+HOME = os.path.expanduser("~")
+
+ARGONOV_VERSION = "2.0.0"
+REGISTRY_FILE = os.path.join(HOME, ".argonov_registry.json")
+REPO_DIR = os.path.join(HOME, "argonov-os")
+BACKUP_DIR = os.path.join(HOME, "argonov_backups")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+GROUP_TITLES = {
+    "core":     "⚡ СИСТЕМА",
+    "ai":       "🧠 AI",
+    "media":    "🎵 МЕДИА",
+    "data":     "📊 ДАННЫЕ",
+    "security": "🔒 БЕЗОПАСНОСТЬ",
+    "games":    "🎮 ИГРЫ",
+    "network":  "🌐 СЕТЬ",
+    "tools":    "🛠  ИНСТРУМЕНТЫ",
+    "other":    "📦 ПРОЧЕЕ",
 }
 
-show_help() {
-    header
-    echo -e "${M}[ КОМАНДЫ ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${Y}🧠 ${C}ai${RST}      · ${Y}📈 ${C}crypto${RST}    · ${Y}🎵 ${C}music${RST}"
-    echo -e "  ${Y}📌 ${C}todo${RST}    · ${Y}📝 ${C}notes${RST}     · ${Y}🔒 ${C}pm${RST}"
-    echo -e "  ${Y}🎮 ${C}hack${RST}    · ${Y}🕹  ${C}rpg${RST}       · ${Y}📥 ${C}d${RST}"
-    echo -e "  ${Y}🌧  ${C}m${RST}       · ${Y}🔐 ${C}p${RST}         · ${Y}⚡ ${C}s${RST}"
-    echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}       · ${Y}🩺 ${C}doctor${RST}"
-    echo ""
-    echo -e "${M}[ GIT / БЭКАПЫ ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${C}push · pull · status · backup · restore · doctor${RST}"
-    echo -e "  ${DIM}doctor --full — с проверкой сети${RST}"
-    echo ""
-    echo -e "${M}[ СЛУЖЕБНОЕ ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${C}python ~/argonov-dump${RST}  — дамп скриптов + push"
-    echo ""
-}
+# ═══ УТИЛИТЫ ═══
+def run(cmd, timeout=60):
+    try:
+        return subprocess.run(cmd, shell=True, capture_output=True,
+                              text=True, timeout=timeout)
+    except Exception:
+        return None
 
-show_menu() {
-    while true; do
-        header
-        echo -e "  ${C}1${RST})  🧠  ai          ${C}2${RST})  📈  crypto"
-        echo -e "  ${C}3${RST})  🎵  music       ${C}4${RST})  📌  todo"
-        echo -e "  ${C}5${RST})  📝  notes       ${C}6${RST})  🔒  pm"
-        echo -e "  ${C}7${RST})  🎮  hack        ${C}8${RST})  🕹   rpg"
-        echo -e "  ${C}9${RST})  📥  d           ${C}10${RST}) 🌧   m"
-        echo -e "  ${C}11${RST}) 🔐  p           ${C}12${RST}) ⚡  s"
-        echo -e "  ${C}13${RST}) 📦  util        ${C}14${RST}) 🎨  art"
-        echo -e "  ${C}15${RST}) 🩺  doctor"
-        echo ""
-        echo -e "  ${C}p${RST})   🚀  push    ${C}l${RST})   ⬇️   pull"
-        echo -e "  ${C}st${RST})  📊  status  ${C}b${RST})   💾  backup"
-        echo ""
-        echo -e "  ${C}h${RST})   ❓  Справка  ${C}q${RST})   🚪  Выход"
-        echo ""
-        echo -ne "${BLD}${M}╰─❯ ${RST}"
-        read -r c
-        case "$c" in
-            1) run_ai ;;
-            2) run_crypto ;;
-            3) run_music ;;
-            4) run_todo ;;
-            5) run_notes ;;
-            6) run_pm ;;
-            7) run_hack ;;
-            8) run_rpg ;;
-            9) run_d ;;
-            10) run_m ;;
-            11) run_p ;;
-            12) run_s ;;
-            13) run_util ;;
-            14) run_art ;;
-            15) run_doctor ;;
-            p|push) do_push; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            l|pull) do_pull; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            st|status) do_status; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            b|backup) do_backup ;;
-            h|help) show_help; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            q|exit|quit) echo -e "${DIM}До связи! 🖖${RST}"; exit 0 ;;
-            *) echo -e "${R}❌ Неизвестно${RST}"; sleep 1 ;;
-        esac
-    done
-}
+# ═══ РЕЕСТР ═══
+def load_registry():
+    if not os.path.exists(REGISTRY_FILE):
+        return None
+    try:
+        with open(REGISTRY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+# ═══ UI ═══
+def header():
+    console.print()
+    console.print(Panel(
+        Align.center(Group(
+            Text("⚡  A R G O N O V   O S  ⚡", style=f"bold {WHITE}"),
+            Text("Кастомная оболочка для Termux", style=f"dim {GRAY}"),
+            Text(f"v{ARGONOV_VERSION}", style=f"dim {GRAY}"),
+        )),
+        border_style=CYAN, padding=(0, 2)))
+    console.print()
+
+# ═══ МЕНЮ ═══
+def show_help():
+    header()
+    console.print(f"[bold {MAGENTA}][ КОМАНДЫ ][/]")
+    console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
+    console.print()
+    console.print(f"  [{YELLOW}]🧠 ai[/]      · [{YELLOW}]📈 crypto[/]    · [{YELLOW}]🎵 music[/]")
+    console.print(f"  [{YELLOW}]📌 todo[/]    · [{YELLOW}]📝 notes[/]     · [{YELLOW}]🔒 pm[/]")
+    console.print(f"  [{YELLOW}]🎮 hack[/]    · [{YELLOW}]🕹  rpg[/]       · [{YELLOW}]📥 d[/]")
+    console.print(f"  [{YELLOW}]🌧  m[/]       · [{YELLOW}]🔐 passgen[/]   · [{YELLOW}]⚡ s[/]")
+    console.print(f"  [{YELLOW}]📦 util[/]    · [{YELLOW}]🎨 art[/]       · [{YELLOW}]🩺 doctor[/]")
+    console.print()
+    console.print(f"[bold {MAGENTA}][ GIT / БЭКАПЫ ][/]")
+    console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
+    console.print()
+    console.print(f"  [{CYAN}]push · pull · status · backup · restore · doctor[/]")
+    console.print(f"  [{GRAY}]doctor --full — с проверкой сети[/]")
+    console.print()
+    console.print(f"[bold {MAGENTA}][ РЕЕСТР ][/]")
+    console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
+    console.print()
+    console.print(f"  [{CYAN}]argonov-core list[/]              — все скрипты")
+    console.print(f"  [{CYAN}]argonov-core info <name>[/]       — инфо")
+    console.print(f"  [{CYAN}]argonov-core edit <name>[/]       — открыть в nano")
+    console.print(f"  [{CYAN}]argonov-core check[/]            — проверить всё")
+    console.print()
+
+
+def build_menu_table(scripts):
+    """Генерирует таблицу с командами по группам."""
+    grouped = {}
+    for name, info in scripts.items():
+        if name in ("argonov",):
+            continue
+        g = info.get("group", "other")
+        grouped.setdefault(g, []).append((name, info))
+
+    for g in GROUP_TITLES:
+        if g not in grouped:
+            continue
+        items = sorted(grouped[g], key=lambda x: x[1].get("short", x[0]))
+        t = Table(box=None, show_header=False, padding=(0, 1))
+        t.add_column("", style=f"bold {YELLOW}", width=12, justify="right")
+        t.add_column("", style=CYAN, width=28)
+        t.add_column("", style=f"bold {YELLOW}", width=12, justify="right")
+        t.add_column("", style=CYAN, width=28)
+
+        half = (len(items) + 1) // 2
+        for i in range(half):
+            L = items[i]
+            R = items[i + half] if i + half < len(items) else None
+            Ls = L[1].get("short", L[0])
+            Ld = L[1].get("desc", "")
+            if R:
+                Rs = R[1].get("short", R[0])
+                Rd = R[1].get("desc", "")
+                t.add_row(Ls, Ld, Rs, Rd)
+            else:
+                t.add_row(Ls, Ld, "", "")
+        console.print(f"  [bold {MAGENTA}]{GROUP_TITLES[g]}[/]")
+        console.print(t)
+        console.print()
+
+
+def show_menu():
+    reg = load_registry()
+    if not reg:
+        console.clear()
+        console.print(Panel(
+            f"[red]❌ Реестр не найден[/]\n"
+            f"[yellow]Создай:[/] [cyan]python ~/argonov-core.py init[/]",
+            border_style="red"))
+        return None
+
+    scripts = reg.get("scripts", {})
+
+    while True:
+        console.clear()
+        header()
+        build_menu_table(scripts)
+
+        console.print(f"  [{YELLOW}]p[/]  push      [{YELLOW}]l[/]   pull     [{YELLOW}]st[/]  status     [{YELLOW}]b[/]  backup")
+        console.print(f"  [{YELLOW}]h[/]  Справка   [{YELLOW}]v[/]   версия   [{YELLOW}]q[/]   Выход")
+        console.print()
+
+        try:
+            c = console.input(f"[bold {MAGENTA}]╰─❯ [/]").strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(f"\n[dim]До связи! 🖖[/]")
+            return None
+        if not c:
+            continue
+
+        cl = c.lower()
+
+        if cl in ("q", "exit", "quit", "выход"):
+            console.print(f"[dim]До связи! 🖖[/]")
+            return None
+        if cl in ("h", "help", "?"):
+            show_help()
+            console.input("[dim]Enter — назад[/] ")
+            continue
+        if cl in ("v", "version"):
+            console.print(f"[green]Argonov OS v{ARGONOV_VERSION}[/]")
+            time.sleep(1)
+            continue
+
+        if cl in ("p", "push"):
+            do_push()
+            console.input("[dim]Enter...[/] ")
+            continue
+        if cl in ("l", "pull"):
+            do_pull()
+            console.input("[dim]Enter...[/] ")
+            continue
+        if cl in ("st", "status"):
+            do_status()
+            console.input("[dim]Enter...[/] ")
+            continue
+        if cl in ("b", "backup"):
+            do_backup()
+            continue
+
+        # Ищем скрипт в реестре
+        found = None
+        for name, info in scripts.items():
+            if name == c or info.get("short") == c:
+                found = (name, info)
+                break
+
+        if found:
+            name, info = found
+            run_script(info, args=[])
+        else:
+            console.print(f"[red]❌ Неизвестно: {c}[/]")
+            time.sleep(1)
 
 # ═══ ЗАПУСК СКРИПТОВ ═══
-check_py() {
-    if [ ! -f "$1" ]; then
-        echo -e "${R}❌ Не найден: $1${RST}"; sleep 2; return 1
-    fi
-    return 0
-}
+def run_script(info, args=None):
+    args = args or []
+    fp = os.path.join(HOME, info["file"])
+    if not os.path.isfile(fp):
+        console.print(f"[red]❌ Не найден: {fp}[/]")
+        time.sleep(2)
+        return
+    typ = info.get("type", "python")
+    try:
+        if typ == "python":
+            subprocess.run(["python", fp] + args)
+        elif typ == "bash":
+            subprocess.run(["bash", fp] + args)
+        else:
+            subprocess.run([fp] + args)
+    except KeyboardInterrupt:
+        pass
 
-run_ai()      { check_py ~/ai.py && python ~/ai.py ; }
-run_crypto()  { check_py ~/crypto_informer.py && python ~/crypto_informer.py ; }
-run_music()   { check_py ~/randomaudio.py && python ~/randomaudio.py ; }
-run_todo()    { check_py ~/todo.py && python ~/todo.py ; }
-run_notes()   { check_py ~/notes.py && python ~/notes.py ; }
-run_pm()      { check_py ~/passmanager.py && python ~/passmanager.py ; }
-run_hack()    { check_py ~/hacktool.py && python ~/hacktool.py ; }
-run_rpg()     { check_py ~/hacker_rpg.py && python ~/hacker_rpg.py ; }
-run_d()       { check_py ~/download_zone.py && python ~/download_zone.py ; }
-run_m()       { check_py ~/matrix.py && python ~/matrix.py ; }
-run_p()       { check_py ~/passgen.py && python ~/passgen.py ; }
-run_s()       { check_py ~/sysinfo.py && python ~/sysinfo.py ; }
-run_util()    { check_py ~/utils.py && python ~/utils.py ; }
-run_art()     { check_py ~/art.py && python ~/art.py ; }
-run_doctor()  { check_py ~/doctor.py && python ~/doctor.py "$@" ; }
+# ═══ GIT / БЭКАП ═══
+def do_push():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        console.print(f"[red]❌ {REPO_DIR} не git-репозиторий[/]")
+        return
 
-# ═══ GIT ═══
-do_push() {
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
-    fi
-    echo -e "${Y}⚙ Копирую актуальные файлы...${RST}"
-    cp ~/argonov "$REPO_DIR/" 2>/dev/null
-    cp ~/argonov-dump "$REPO_DIR/" 2>/dev/null
-    for f in ai.py crypto_informer.py download_zone.py hacktool.py matrix.py \
-             music_meta.py notes.py passmanager.py passgen.py randomaudio.py \
-             sysinfo.py todo.py utils.py hacker_rpg.py art.py \
-             net_helper.py doctor.py; do
-        cp ~/"$f" "$REPO_DIR/" 2>/dev/null
-    done
-    [ -f ~/.config/fish/config.fish ] && cp ~/.config/fish/config.fish "$REPO_DIR/fish-config/config.fish" 2>/dev/null
-    [ -f ~/ARGONOV_FULL_DUMP.md ] && cp ~/ARGONOV_FULL_DUMP.md "$REPO_DIR/" 2>/dev/null
+    reg = load_registry()
+    scripts = reg.get("scripts", {}) if reg else {}
 
-    cd "$REPO_DIR" || return 1
-    git add .
-    if git diff --cached --quiet; then
-        echo -e "${DIM}Нет изменений${RST}"; return 0
-    fi
-    ts=$(date +"%Y-%m-%d %H:%M")
-    git commit -m "Update $ts" >/dev/null
-    echo -e "${Y}⚙ Отправляю на GitHub...${RST}"
-    git push origin main 2>&1 | tail -3
-    echo -e "${G}✔ Готово${RST}"
-}
+    console.print(f"[yellow]⚙ Копирую файлы по реестру...[/]")
+    for name, info in scripts.items():
+        src = os.path.join(HOME, info["file"])
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
+    # Дамп и правила
+    for extra in ("ARGONOV_FULL_DUMP.md", "ARGONOV_RULES.md", ".argonov_registry.json"):
+        src = os.path.join(HOME, extra)
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
-do_pull() {
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ $REPO_DIR не git${RST}"; return 1
-    fi
-    cd "$REPO_DIR" || return 1
-    git pull origin main 2>&1 | tail -5
-    cp *.py argonov argonov-dump "$HOME/" 2>/dev/null
-    chmod +x "$HOME/argonov" "$HOME/argonov-dump" "$HOME/doctor.py" 2>/dev/null
-    echo -e "${G}✔ Готово${RST}"
-}
+    fish = os.path.join(HOME, ".config/fish/config.fish")
+    if os.path.isfile(fish):
+        os.makedirs(os.path.join(REPO_DIR, "fish-config"), exist_ok=True)
+        subprocess.run(f'cp "{fish}" "{REPO_DIR}/fish-config/config.fish"', shell=True)
 
-do_status() {
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ Нет репо${RST}"; return 1
-    fi
-    cd "$REPO_DIR" || return 1
-    echo -e "${C}═══ GIT STATUS ═══${RST}"
-    git status -s
-    echo ""
-    echo -e "${C}═══ КОММИТЫ ═══${RST}"
-    git log --oneline -5
-    echo ""
-    echo -e "${C}═══ REMOTE ═══${RST}"
-    git remote -v
-}
+    os.chdir(REPO_DIR)
+    subprocess.run("git add .", shell=True)
+    r = run("git diff --cached --quiet")
+    if r and r.returncode == 0:
+        console.print(f"[dim]Нет изменений[/]")
+        return
 
-# ═══ БЭКАПЫ ═══
-do_backup() {
-    mkdir -p "$BACKUP_DIR"
-    ts=$(date +%Y%m%d_%H%M%S)
-    file="$BACKUP_DIR/argonov_backup_${ts}.tar.gz"
-    echo -e "${Y}⚙ Бэкап...${RST}"
-    cd "$HOME" || exit 1
-    tar -czf "$file" \
-        --exclude='argonov_backups' --exclude='.cache' --exclude='.cargo' \
-        --exclude='storage' \
-        ai.py crypto_informer.py randomaudio.py todo.py notes.py \
-        passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
-        passgen.py sysinfo.py utils.py music_meta.py art.py argonov \
-        argonov-dump doctor.py net_helper.py \
-        .ai_config.json .ai_context.json .crypto_watchlist.json \
-        .todo.json .notes.json .pm.vault .music_favorites.json \
-        .hacker_rpg_save.json .argonov_welcome_image \
-        .config/fish .termux \
-        music_cache ai_chats ARGONOV_FULL_DUMP.md 2>/dev/null
-    if [ -f "$file" ]; then
-        size=$(du -h "$file" | cut -f1)
-        echo -e "${G}✔ $file ${DIM}($size)${RST}"
-    fi
-    sleep 2
-}
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    subprocess.run(f'git commit -m "Update {ts}"', shell=True, capture_output=True)
+    console.print(f"[yellow]⚙ Отправляю на GitHub...[/]")
+    r = run("git push origin main 2>&1", timeout=120)
+    if r and r.returncode == 0:
+        console.print(f"[green]✔ Готово[/]")
+    else:
+        console.print(f"[red]✘ Push вернул {r.returncode if r else '?'}[/]")
 
-do_restore() {
-    mkdir -p "$BACKUP_DIR"
-    if [ -z "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
-        echo -e "${R}❌ Нет бэкапов${RST}"; sleep 2; return
-    fi
-    echo -e "${Y}Доступные бэкапы:${RST}"
-    ls -lh "$BACKUP_DIR"/*.tar.gz 2>/dev/null | awk '{print "  " $NF " (" $5 ")"}'
-    echo ""
-    echo -ne "${M}Путь к бэкапу> ${RST}"; read -r bf
-    if [ -f "$bf" ]; then
-        cd "$HOME" && tar -xzf "$bf"
-        echo -e "${G}✔ Восстановлено${RST}"
-    else
-        echo -e "${R}❌ Не найден${RST}"
-    fi
-    sleep 2
-}
+
+def do_pull():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        console.print(f"[red]❌ {REPO_DIR} не git[/]")
+        return
+    os.chdir(REPO_DIR)
+    r = run("git pull origin main 2>&1", timeout=120)
+    if r:
+        for ln in (r.stdout or "").strip().split("\n")[-5:]:
+            console.print(f"  [dim]{ln}[/]")
+    # Копируем .py и исполняемые
+    for f in os.listdir(REPO_DIR):
+        if f.endswith(".py") or f in ("argonov", "argonov-dump"):
+            subprocess.run(f'cp "{REPO_DIR}/{f}" "{HOME}/"', shell=True)
+    console.print(f"[green]✔ Готово[/]")
+
+
+def do_status():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        console.print(f"[red]❌ Нет репо[/]")
+        return
+    os.chdir(REPO_DIR)
+    console.print(f"[{CYAN}]═══ GIT STATUS ═══[/]")
+    subprocess.run("git status -s", shell=True)
+    console.print()
+    console.print(f"[{CYAN}]═══ КОММИТЫ ═══[/]")
+    subprocess.run("git log --oneline -5", shell=True)
+    console.print()
+    console.print(f"[{CYAN}]═══ REMOTE ═══[/]")
+    subprocess.run("git remote -v", shell=True)
+
+
+def do_backup():
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    file = os.path.join(BACKUP_DIR, f"argonov_backup_{ts}.tar.gz")
+    console.print(f"[yellow]⚙ Бэкап...[/]")
+    os.chdir(HOME)
+
+    reg = load_registry()
+    scripts = reg.get("scripts", {}) if reg else {}
+    script_files = [info["file"] for info in scripts.values()]
+    script_files.append("argonov")
+
+    extras = [
+        ".argonov_registry.json",
+        "ARGONOV_FULL_DUMP.md",
+        "ARGONOV_RULES.md",
+        ".ai_config.json", ".todo.json", ".notes.json", ".pm.vault",
+        ".music_favorites.json", ".hacker_rpg_save.json",
+        ".argonov_welcome_image",
+        ".config/fish", ".termux",
+        "music_cache", "ai_chats",
+    ]
+
+    all_items = " ".join(f'"{x}"' for x in script_files + extras if os.path.exists(os.path.join(HOME, x)))
+    cmd = (f'tar -czf "{file}" '
+           f'--exclude="argonov_backups" --exclude=".cache" --exclude=".cargo" '
+           f'--exclude="storage" {all_items} 2>/dev/null')
+    subprocess.run(cmd, shell=True)
+    if os.path.isfile(file):
+        size = os.path.getsize(file) // 1024
+        console.print(f"[green]✔ {file} ({size} КБ)[/]")
+    time.sleep(2)
+
+
+def do_restore():
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    files = [f for f in os.listdir(BACKUP_DIR) if f.endswith(".tar.gz")]
+    if not files:
+        console.print(f"[red]❌ Нет бэкапов в {BACKUP_DIR}[/]")
+        time.sleep(2)
+        return
+    files.sort(reverse=True)
+    console.print(f"[yellow]Доступные бэкапы:[/]")
+    for f in files[:10]:
+        fp = os.path.join(BACKUP_DIR, f)
+        sz = os.path.getsize(fp) // 1024
+        console.print(f"  [cyan]•[/] {f}  [dim]({sz} КБ)[/]")
+    console.print()
+    try:
+        bf = console.input(f"[bold {MAGENTA}]Путь к бэкапу> [/]").strip()
+    except (EOFError, KeyboardInterrupt):
+        return
+    if os.path.isfile(bf):
+        os.chdir(HOME)
+        subprocess.run(f'tar -xzf "{bf}"', shell=True)
+        console.print(f"[green]✔ Восстановлено[/]")
+    else:
+        console.print(f"[red]❌ Не найден[/]")
+    time.sleep(2)
 
 # ═══ DISPATCH ═══
-case "$1" in
-    "")              show_menu ;;
-    ai)              run_ai ;;
-    crypto)          run_crypto ;;
-    music)           run_music ;;
-    todo)            shift; python ~/todo.py "$@" ;;
-    notes)           run_notes ;;
-    pm)              run_pm ;;
-    hack)            run_hack ;;
-    rpg|game)        run_rpg ;;
-    d|download)      run_d ;;
-    m|matrix)        run_m ;;
-    p|pass)          run_p ;;
-    s|sysinfo)       run_s ;;
-    util)            run_util ;;
-    art)             shift; python ~/art.py "$@" ;;
-    doctor)          shift; python ~/doctor.py "$@" ;;
-    plate)           python ~/sysinfo.py; echo "" ;;
-    push)            do_push ;;
-    pull)            do_pull ;;
-    status)          do_status ;;
-    backup)          do_backup ;;
-    restore)         do_restore ;;
-    help|-h|--help)  show_help ;;
-    version|-v)      echo -e "${G}Argonov OS v${ARGONOV_VERSION}${RST}" ;;
-    *)
-        echo -e "${R}❌ Неизвестно: $1${RST}"
-        echo -e "${DIM}Используй: ${C}argonov help${RST}"
-        exit 1
-        ;;
-esac
+def main():
+    args = sys.argv[1:]
+
+    if not args:
+        show_menu()
+        return
+
+    cmd = args[0].lower()
+    rest = args[1:]
+
+    if cmd in ("help", "-h", "--help", "?"):
+        show_help()
+        return
+    if cmd in ("version", "-v", "--version"):
+        console.print(f"[green]Argonov OS v{ARGONOV_VERSION}[/]")
+        return
+
+    if cmd == "push":
+        do_push()
+        return
+    if cmd == "pull":
+        do_pull()
+        return
+    if cmd == "status":
+        do_status()
+        return
+    if cmd == "backup":
+        do_backup()
+        return
+    if cmd == "restore":
+        do_restore()
+        return
+    if cmd == "plate":
+        # алиас: показать sysinfo
+        reg = load_registry()
+        if reg:
+            scripts = reg.get("scripts", {})
+            for name, info in scripts.items():
+                if info.get("short") == "s":
+                    run_script(info, rest)
+                    return
+        console.print("[red]❌ sysinfo не найден в реестре[/]")
+        return
+
+    # Ищем в реестре
+    reg = load_registry()
+    if not reg:
+        console.print(f"[red]❌ Реестр не найден. Запусти: python ~/argonov-core.py init[/]")
+        sys.exit(1)
+    scripts = reg.get("scripts", {})
+
+    found = None
+    for name, info in scripts.items():
+        if name == cmd or info.get("short") == cmd:
+            found = (name, info)
+            break
+
+    if found:
+        run_script(found[1], args=rest)
+    else:
+        console.print(f"[red]❌ Неизвестно: {cmd}[/]")
+        console.print(f"[dim]Используй: [cyan]argonov help[/][/]")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print(f"\n[dim]Прервано.[/]")

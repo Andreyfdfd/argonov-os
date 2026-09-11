@@ -1,7 +1,8 @@
 # ARGONOV OS — Полный дамп всех скриптов
 
-Дата: Fri Sep 11 16:22:21  2026
+Дата: Fri Sep 11 16:40:48  2026
 Устройство: RMX5090 / Android 16
+Записей в реестре: 20
 
 ---
 
@@ -231,315 +232,1276 @@ _Обновляется при крупных изменениях._
 ---
 
 
+# 🗂  РЕЕСТР СКРИПТОВ
+
+*Файл: ~/.argonov_registry.json · обновлён: 2026-09-11 16:38:22*
+
+```json
+{
+ "version": 1,
+ "created": "2026-09-11 16:38:22",
+ "scripts": {
+  "argonov": {
+   "file": "argonov",
+   "short": "argonov",
+   "type": "bash",
+   "version": "2.0",
+   "desc": "⚡ Меню системы",
+   "group": "core",
+   "interactive": true,
+   "deps": []
+  },
+  "argonov-core": {
+   "file": "argonov-core.py",
+   "short": "core",
+   "type": "python",
+   "version": "1.0",
+   "desc": "🗂  Реестр скриптов",
+   "group": "core",
+   "interactive": false,
+   "deps": [
+    "rich"
+   ]
+  },
+  "argonov-dump": {
+   "file": "argonov-dump",
+   "short": "dump",
+   "type": "python",
+   "version": "2.0",
+   "desc": "📦 Дамп + push",
+   "group": "core",
+   "interactive": false,
+   "deps": []
+  },
+  "doctor": {
+   "file": "doctor.py",
+   "short": "doctor",
+   "type": "python",
+   "version": "2.0",
+   "desc": "🩺 Диагностика",
+   "group": "core",
+   "interactive": false,
+   "deps": [
+    "rich"
+   ]
+  },
+  "net_helper": {
+   "file": "net_helper.py",
+   "short": "net",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🌐 Fallback API + кэш",
+   "group": "core",
+   "interactive": false,
+   "deps": []
+  },
+  "ai": {
+   "file": "ai.py",
+   "short": "ai",
+   "type": "python",
+   "version": "16",
+   "desc": "🧠 AI-ассистент",
+   "group": "ai",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "llama-server"
+   ]
+  },
+  "music": {
+   "file": "randomaudio.py",
+   "short": "music",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎵 Музыкальный плеер",
+   "group": "media",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "chafa"
+   ]
+  },
+  "music-meta": {
+   "file": "music_meta.py",
+   "short": "meta",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎼 Метаданные треков",
+   "group": "media",
+   "interactive": false,
+   "deps": [
+    "rich",
+    "requests",
+    "mutagen"
+   ]
+  },
+  "art": {
+   "file": "art.py",
+   "short": "art",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎨 Картинки",
+   "group": "media",
+   "interactive": false,
+   "deps": [
+    "rich",
+    "viu"
+   ]
+  },
+  "todo": {
+   "file": "todo.py",
+   "short": "todo",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📌 Задачи",
+   "group": "data",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "notes": {
+   "file": "notes.py",
+   "short": "notes",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📝 Заметки",
+   "group": "data",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "pm": {
+   "file": "passmanager.py",
+   "short": "pm",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🔒 Пароли (AES-256)",
+   "group": "security",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "cryptography"
+   ]
+  },
+  "passgen": {
+   "file": "passgen.py",
+   "short": "passgen",
+   "type": "python",
+   "version": "2.0",
+   "desc": "🔐 Генератор паролей",
+   "group": "security",
+   "interactive": false,
+   "deps": []
+  },
+  "hack": {
+   "file": "hacktool.py",
+   "short": "hack",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🎮 OSINT мультитул",
+   "group": "security",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "crypto": {
+   "file": "crypto_informer.py",
+   "short": "crypto",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📈 Курсы крипты и валют",
+   "group": "data",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "net_helper"
+   ]
+  },
+  "sysinfo": {
+   "file": "sysinfo.py",
+   "short": "s",
+   "type": "python",
+   "version": "5.0",
+   "desc": "⚡ Центр управления",
+   "group": "tools",
+   "interactive": false,
+   "deps": [
+    "net_helper"
+   ]
+  },
+  "utils": {
+   "file": "utils.py",
+   "short": "util",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📦 Сканер пакетов",
+   "group": "tools",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit"
+   ]
+  },
+  "rpg": {
+   "file": "hacker_rpg.py",
+   "short": "rpg",
+   "type": "python",
+   "version": "3.0",
+   "desc": "🕹  Симулятор хакера",
+   "group": "games",
+   "interactive": true,
+   "deps": [
+    "rich"
+   ]
+  },
+  "matrix": {
+   "file": "matrix.py",
+   "short": "m",
+   "type": "python",
+   "version": "2.0",
+   "desc": "🌧  Цифровой дождь",
+   "group": "games",
+   "interactive": true,
+   "deps": [
+    "curses"
+   ]
+  },
+  "download": {
+   "file": "download_zone.py",
+   "short": "d",
+   "type": "python",
+   "version": "3.0",
+   "desc": "📥 Загрузчик (aria2c)",
+   "group": "network",
+   "interactive": true,
+   "deps": [
+    "rich",
+    "prompt_toolkit",
+    "aria2c"
+   ]
+  }
+ },
+ "updated": "2026-09-11 16:38:22"
+}
+```
+
+---
+
+
 # 💻 ДАМП СКРИПТОВ
 
 ---
 
 ## 📄 argonov
 
-*10992 байт · 252 строк*
+*16158 байт · 460 строк*
 
 ```bash
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS · Main Entry
-#  Единая точка входа для всех скриптов
-#  Версия: 1.5  ·  Обновлён: 2026-09-11
+#  ARGONOV OS · Main Entry v2
+#  Единая точка входа — читает реестр скриптов
+#  Версия: 2.0  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
+"""
+Единая точка входа для всех скриптов ARGONOV OS.
+Меню генерируется автоматически из ~/.argonov_registry.json
 
-ARGONOV_VERSION="1.5.0"
-REPO_DIR="$HOME/argonov-os"
-BACKUP_DIR="$HOME/argonov_backups"
+Использование:
+    argonov              # меню
+    argonov <short>      # запуск скрипта по короткому имени
+    argonov help         # справка
+    argonov version      # версия
 
-G="\033[92m";  DG="\033[32m";  C="\033[96m";  B="\033[94m"
-M="\033[95m";  Y="\033[93m";   R="\033[91m";  W="\033[97m"
-DIM="\033[2m"; BLD="\033[1m";  RST="\033[0m"
+Git / backup:
+    argonov push         # git push
+    argonov pull         # git pull
+    argonov status       # git status
+    argonov backup       # архивный бэкап
+    argonov restore      # восстановить из бэкапа
+    argonov doctor       # диагностика
 
-# ═══ ЗАГОЛОВОК / СПРАВКА / МЕНЮ ═══
-header() {
-    echo ""
-    echo -e "${C}┌─────────────────────────────────────────────────┐${RST}"
-    echo -e "${C}│${RST}          ${BLD}${W}⚡  A R G O N O V   O S  ⚡${RST}          ${C}│${RST}"
-    echo -e "${C}│${RST}       ${DIM}Кастомная оболочка для Termux${RST}          ${C}│${RST}"
-    echo -e "${C}│${RST}                ${DIM}v${ARGONOV_VERSION}${RST}                       ${C}│${RST}"
-    echo -e "${C}└─────────────────────────────────────────────────┘${RST}"
-    echo ""
+Зависимости:
+    - rich
+    - ~/.argonov_registry.json (создать: argonov-core init)
+"""
+
+import os
+import sys
+import json
+import time
+import subprocess
+from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.align import Align
+from rich.box import SIMPLE_HEAD
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+HOME = os.path.expanduser("~")
+
+ARGONOV_VERSION = "2.0.0"
+REGISTRY_FILE = os.path.join(HOME, ".argonov_registry.json")
+REPO_DIR = os.path.join(HOME, "argonov-os")
+BACKUP_DIR = os.path.join(HOME, "argonov_backups")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+GROUP_TITLES = {
+    "core":     "⚡ СИСТЕМА",
+    "ai":       "🧠 AI",
+    "media":    "🎵 МЕДИА",
+    "data":     "📊 ДАННЫЕ",
+    "security": "🔒 БЕЗОПАСНОСТЬ",
+    "games":    "🎮 ИГРЫ",
+    "network":  "🌐 СЕТЬ",
+    "tools":    "🛠  ИНСТРУМЕНТЫ",
+    "other":    "📦 ПРОЧЕЕ",
 }
 
-show_help() {
-    header
-    echo -e "${M}[ КОМАНДЫ ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${Y}🧠 ${C}ai${RST}      · ${Y}📈 ${C}crypto${RST}    · ${Y}🎵 ${C}music${RST}"
-    echo -e "  ${Y}📌 ${C}todo${RST}    · ${Y}📝 ${C}notes${RST}     · ${Y}🔒 ${C}pm${RST}"
-    echo -e "  ${Y}🎮 ${C}hack${RST}    · ${Y}🕹  ${C}rpg${RST}       · ${Y}📥 ${C}d${RST}"
-    echo -e "  ${Y}🌧  ${C}m${RST}       · ${Y}🔐 ${C}p${RST}         · ${Y}⚡ ${C}s${RST}"
-    echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}       · ${Y}🩺 ${C}doctor${RST}"
-    echo ""
-    echo -e "${M}[ GIT / БЭКАПЫ ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${C}push · pull · status · backup · restore · doctor${RST}"
-    echo -e "  ${DIM}doctor --full — с проверкой сети${RST}"
-    echo ""
-    echo -e "${M}[ СЛУЖЕБНОЕ ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    echo -e "  ${C}python ~/argonov-dump${RST}  — дамп скриптов + push"
-    echo ""
-}
+# ═══ УТИЛИТЫ ═══
+def run(cmd, timeout=60):
+    try:
+        return subprocess.run(cmd, shell=True, capture_output=True,
+                              text=True, timeout=timeout)
+    except Exception:
+        return None
 
-show_menu() {
-    while true; do
-        header
-        echo -e "  ${C}1${RST})  🧠  ai          ${C}2${RST})  📈  crypto"
-        echo -e "  ${C}3${RST})  🎵  music       ${C}4${RST})  📌  todo"
-        echo -e "  ${C}5${RST})  📝  notes       ${C}6${RST})  🔒  pm"
-        echo -e "  ${C}7${RST})  🎮  hack        ${C}8${RST})  🕹   rpg"
-        echo -e "  ${C}9${RST})  📥  d           ${C}10${RST}) 🌧   m"
-        echo -e "  ${C}11${RST}) 🔐  p           ${C}12${RST}) ⚡  s"
-        echo -e "  ${C}13${RST}) 📦  util        ${C}14${RST}) 🎨  art"
-        echo -e "  ${C}15${RST}) 🩺  doctor"
-        echo ""
-        echo -e "  ${C}p${RST})   🚀  push    ${C}l${RST})   ⬇️   pull"
-        echo -e "  ${C}st${RST})  📊  status  ${C}b${RST})   💾  backup"
-        echo ""
-        echo -e "  ${C}h${RST})   ❓  Справка  ${C}q${RST})   🚪  Выход"
-        echo ""
-        echo -ne "${BLD}${M}╰─❯ ${RST}"
-        read -r c
-        case "$c" in
-            1) run_ai ;;
-            2) run_crypto ;;
-            3) run_music ;;
-            4) run_todo ;;
-            5) run_notes ;;
-            6) run_pm ;;
-            7) run_hack ;;
-            8) run_rpg ;;
-            9) run_d ;;
-            10) run_m ;;
-            11) run_p ;;
-            12) run_s ;;
-            13) run_util ;;
-            14) run_art ;;
-            15) run_doctor ;;
-            p|push) do_push; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            l|pull) do_pull; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            st|status) do_status; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            b|backup) do_backup ;;
-            h|help) show_help; echo -ne "${DIM}Enter...${RST}"; read -r ;;
-            q|exit|quit) echo -e "${DIM}До связи! 🖖${RST}"; exit 0 ;;
-            *) echo -e "${R}❌ Неизвестно${RST}"; sleep 1 ;;
-        esac
-    done
-}
+# ═══ РЕЕСТР ═══
+def load_registry():
+    if not os.path.exists(REGISTRY_FILE):
+        return None
+    try:
+        with open(REGISTRY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+# ═══ UI ═══
+def header():
+    console.print()
+    console.print(Panel(
+        Align.center(Group(
+            Text("⚡  A R G O N O V   O S  ⚡", style=f"bold {WHITE}"),
+            Text("Кастомная оболочка для Termux", style=f"dim {GRAY}"),
+            Text(f"v{ARGONOV_VERSION}", style=f"dim {GRAY}"),
+        )),
+        border_style=CYAN, padding=(0, 2)))
+    console.print()
+
+# ═══ МЕНЮ ═══
+def show_help():
+    header()
+    console.print(f"[bold {MAGENTA}][ КОМАНДЫ ][/]")
+    console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
+    console.print()
+    console.print(f"  [{YELLOW}]🧠 ai[/]      · [{YELLOW}]📈 crypto[/]    · [{YELLOW}]🎵 music[/]")
+    console.print(f"  [{YELLOW}]📌 todo[/]    · [{YELLOW}]📝 notes[/]     · [{YELLOW}]🔒 pm[/]")
+    console.print(f"  [{YELLOW}]🎮 hack[/]    · [{YELLOW}]🕹  rpg[/]       · [{YELLOW}]📥 d[/]")
+    console.print(f"  [{YELLOW}]🌧  m[/]       · [{YELLOW}]🔐 passgen[/]   · [{YELLOW}]⚡ s[/]")
+    console.print(f"  [{YELLOW}]📦 util[/]    · [{YELLOW}]🎨 art[/]       · [{YELLOW}]🩺 doctor[/]")
+    console.print()
+    console.print(f"[bold {MAGENTA}][ GIT / БЭКАПЫ ][/]")
+    console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
+    console.print()
+    console.print(f"  [{CYAN}]push · pull · status · backup · restore · doctor[/]")
+    console.print(f"  [{GRAY}]doctor --full — с проверкой сети[/]")
+    console.print()
+    console.print(f"[bold {MAGENTA}][ РЕЕСТР ][/]")
+    console.print(f"[{GREEN_DIM}]{'═' * 55}[/]")
+    console.print()
+    console.print(f"  [{CYAN}]argonov-core list[/]              — все скрипты")
+    console.print(f"  [{CYAN}]argonov-core info <name>[/]       — инфо")
+    console.print(f"  [{CYAN}]argonov-core edit <name>[/]       — открыть в nano")
+    console.print(f"  [{CYAN}]argonov-core check[/]            — проверить всё")
+    console.print()
+
+
+def build_menu_table(scripts):
+    """Генерирует таблицу с командами по группам."""
+    grouped = {}
+    for name, info in scripts.items():
+        if name in ("argonov",):
+            continue
+        g = info.get("group", "other")
+        grouped.setdefault(g, []).append((name, info))
+
+    for g in GROUP_TITLES:
+        if g not in grouped:
+            continue
+        items = sorted(grouped[g], key=lambda x: x[1].get("short", x[0]))
+        t = Table(box=None, show_header=False, padding=(0, 1))
+        t.add_column("", style=f"bold {YELLOW}", width=12, justify="right")
+        t.add_column("", style=CYAN, width=28)
+        t.add_column("", style=f"bold {YELLOW}", width=12, justify="right")
+        t.add_column("", style=CYAN, width=28)
+
+        half = (len(items) + 1) // 2
+        for i in range(half):
+            L = items[i]
+            R = items[i + half] if i + half < len(items) else None
+            Ls = L[1].get("short", L[0])
+            Ld = L[1].get("desc", "")
+            if R:
+                Rs = R[1].get("short", R[0])
+                Rd = R[1].get("desc", "")
+                t.add_row(Ls, Ld, Rs, Rd)
+            else:
+                t.add_row(Ls, Ld, "", "")
+        console.print(f"  [bold {MAGENTA}]{GROUP_TITLES[g]}[/]")
+        console.print(t)
+        console.print()
+
+
+def show_menu():
+    reg = load_registry()
+    if not reg:
+        console.clear()
+        console.print(Panel(
+            f"[red]❌ Реестр не найден[/]\n"
+            f"[yellow]Создай:[/] [cyan]python ~/argonov-core.py init[/]",
+            border_style="red"))
+        return None
+
+    scripts = reg.get("scripts", {})
+
+    while True:
+        console.clear()
+        header()
+        build_menu_table(scripts)
+
+        console.print(f"  [{YELLOW}]p[/]  push      [{YELLOW}]l[/]   pull     [{YELLOW}]st[/]  status     [{YELLOW}]b[/]  backup")
+        console.print(f"  [{YELLOW}]h[/]  Справка   [{YELLOW}]v[/]   версия   [{YELLOW}]q[/]   Выход")
+        console.print()
+
+        try:
+            c = console.input(f"[bold {MAGENTA}]╰─❯ [/]").strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(f"\n[dim]До связи! 🖖[/]")
+            return None
+        if not c:
+            continue
+
+        cl = c.lower()
+
+        if cl in ("q", "exit", "quit", "выход"):
+            console.print(f"[dim]До связи! 🖖[/]")
+            return None
+        if cl in ("h", "help", "?"):
+            show_help()
+            console.input("[dim]Enter — назад[/] ")
+            continue
+        if cl in ("v", "version"):
+            console.print(f"[green]Argonov OS v{ARGONOV_VERSION}[/]")
+            time.sleep(1)
+            continue
+
+        if cl in ("p", "push"):
+            do_push()
+            console.input("[dim]Enter...[/] ")
+            continue
+        if cl in ("l", "pull"):
+            do_pull()
+            console.input("[dim]Enter...[/] ")
+            continue
+        if cl in ("st", "status"):
+            do_status()
+            console.input("[dim]Enter...[/] ")
+            continue
+        if cl in ("b", "backup"):
+            do_backup()
+            continue
+
+        # Ищем скрипт в реестре
+        found = None
+        for name, info in scripts.items():
+            if name == c or info.get("short") == c:
+                found = (name, info)
+                break
+
+        if found:
+            name, info = found
+            run_script(info, args=[])
+        else:
+            console.print(f"[red]❌ Неизвестно: {c}[/]")
+            time.sleep(1)
 
 # ═══ ЗАПУСК СКРИПТОВ ═══
-check_py() {
-    if [ ! -f "$1" ]; then
-        echo -e "${R}❌ Не найден: $1${RST}"; sleep 2; return 1
-    fi
-    return 0
-}
+def run_script(info, args=None):
+    args = args or []
+    fp = os.path.join(HOME, info["file"])
+    if not os.path.isfile(fp):
+        console.print(f"[red]❌ Не найден: {fp}[/]")
+        time.sleep(2)
+        return
+    typ = info.get("type", "python")
+    try:
+        if typ == "python":
+            subprocess.run(["python", fp] + args)
+        elif typ == "bash":
+            subprocess.run(["bash", fp] + args)
+        else:
+            subprocess.run([fp] + args)
+    except KeyboardInterrupt:
+        pass
 
-run_ai()      { check_py ~/ai.py && python ~/ai.py ; }
-run_crypto()  { check_py ~/crypto_informer.py && python ~/crypto_informer.py ; }
-run_music()   { check_py ~/randomaudio.py && python ~/randomaudio.py ; }
-run_todo()    { check_py ~/todo.py && python ~/todo.py ; }
-run_notes()   { check_py ~/notes.py && python ~/notes.py ; }
-run_pm()      { check_py ~/passmanager.py && python ~/passmanager.py ; }
-run_hack()    { check_py ~/hacktool.py && python ~/hacktool.py ; }
-run_rpg()     { check_py ~/hacker_rpg.py && python ~/hacker_rpg.py ; }
-run_d()       { check_py ~/download_zone.py && python ~/download_zone.py ; }
-run_m()       { check_py ~/matrix.py && python ~/matrix.py ; }
-run_p()       { check_py ~/passgen.py && python ~/passgen.py ; }
-run_s()       { check_py ~/sysinfo.py && python ~/sysinfo.py ; }
-run_util()    { check_py ~/utils.py && python ~/utils.py ; }
-run_art()     { check_py ~/art.py && python ~/art.py ; }
-run_doctor()  { check_py ~/doctor.py && python ~/doctor.py "$@" ; }
+# ═══ GIT / БЭКАП ═══
+def do_push():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        console.print(f"[red]❌ {REPO_DIR} не git-репозиторий[/]")
+        return
 
-# ═══ GIT ═══
-do_push() {
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ $REPO_DIR не git-репозиторий${RST}"; return 1
-    fi
-    echo -e "${Y}⚙ Копирую актуальные файлы...${RST}"
-    cp ~/argonov "$REPO_DIR/" 2>/dev/null
-    cp ~/argonov-dump "$REPO_DIR/" 2>/dev/null
-    for f in ai.py crypto_informer.py download_zone.py hacktool.py matrix.py \
-             music_meta.py notes.py passmanager.py passgen.py randomaudio.py \
-             sysinfo.py todo.py utils.py hacker_rpg.py art.py \
-             net_helper.py doctor.py; do
-        cp ~/"$f" "$REPO_DIR/" 2>/dev/null
-    done
-    [ -f ~/.config/fish/config.fish ] && cp ~/.config/fish/config.fish "$REPO_DIR/fish-config/config.fish" 2>/dev/null
-    [ -f ~/ARGONOV_FULL_DUMP.md ] && cp ~/ARGONOV_FULL_DUMP.md "$REPO_DIR/" 2>/dev/null
+    reg = load_registry()
+    scripts = reg.get("scripts", {}) if reg else {}
 
-    cd "$REPO_DIR" || return 1
-    git add .
-    if git diff --cached --quiet; then
-        echo -e "${DIM}Нет изменений${RST}"; return 0
-    fi
-    ts=$(date +"%Y-%m-%d %H:%M")
-    git commit -m "Update $ts" >/dev/null
-    echo -e "${Y}⚙ Отправляю на GitHub...${RST}"
-    git push origin main 2>&1 | tail -3
-    echo -e "${G}✔ Готово${RST}"
-}
+    console.print(f"[yellow]⚙ Копирую файлы по реестру...[/]")
+    for name, info in scripts.items():
+        src = os.path.join(HOME, info["file"])
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
+    # Дамп и правила
+    for extra in ("ARGONOV_FULL_DUMP.md", "ARGONOV_RULES.md", ".argonov_registry.json"):
+        src = os.path.join(HOME, extra)
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
-do_pull() {
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ $REPO_DIR не git${RST}"; return 1
-    fi
-    cd "$REPO_DIR" || return 1
-    git pull origin main 2>&1 | tail -5
-    cp *.py argonov argonov-dump "$HOME/" 2>/dev/null
-    chmod +x "$HOME/argonov" "$HOME/argonov-dump" "$HOME/doctor.py" 2>/dev/null
-    echo -e "${G}✔ Готово${RST}"
-}
+    fish = os.path.join(HOME, ".config/fish/config.fish")
+    if os.path.isfile(fish):
+        os.makedirs(os.path.join(REPO_DIR, "fish-config"), exist_ok=True)
+        subprocess.run(f'cp "{fish}" "{REPO_DIR}/fish-config/config.fish"', shell=True)
 
-do_status() {
-    if [ ! -d "$REPO_DIR/.git" ]; then
-        echo -e "${R}❌ Нет репо${RST}"; return 1
-    fi
-    cd "$REPO_DIR" || return 1
-    echo -e "${C}═══ GIT STATUS ═══${RST}"
-    git status -s
-    echo ""
-    echo -e "${C}═══ КОММИТЫ ═══${RST}"
-    git log --oneline -5
-    echo ""
-    echo -e "${C}═══ REMOTE ═══${RST}"
-    git remote -v
-}
+    os.chdir(REPO_DIR)
+    subprocess.run("git add .", shell=True)
+    r = run("git diff --cached --quiet")
+    if r and r.returncode == 0:
+        console.print(f"[dim]Нет изменений[/]")
+        return
 
-# ═══ БЭКАПЫ ═══
-do_backup() {
-    mkdir -p "$BACKUP_DIR"
-    ts=$(date +%Y%m%d_%H%M%S)
-    file="$BACKUP_DIR/argonov_backup_${ts}.tar.gz"
-    echo -e "${Y}⚙ Бэкап...${RST}"
-    cd "$HOME" || exit 1
-    tar -czf "$file" \
-        --exclude='argonov_backups' --exclude='.cache' --exclude='.cargo' \
-        --exclude='storage' \
-        ai.py crypto_informer.py randomaudio.py todo.py notes.py \
-        passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
-        passgen.py sysinfo.py utils.py music_meta.py art.py argonov \
-        argonov-dump doctor.py net_helper.py \
-        .ai_config.json .ai_context.json .crypto_watchlist.json \
-        .todo.json .notes.json .pm.vault .music_favorites.json \
-        .hacker_rpg_save.json .argonov_welcome_image \
-        .config/fish .termux \
-        music_cache ai_chats ARGONOV_FULL_DUMP.md 2>/dev/null
-    if [ -f "$file" ]; then
-        size=$(du -h "$file" | cut -f1)
-        echo -e "${G}✔ $file ${DIM}($size)${RST}"
-    fi
-    sleep 2
-}
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+    subprocess.run(f'git commit -m "Update {ts}"', shell=True, capture_output=True)
+    console.print(f"[yellow]⚙ Отправляю на GitHub...[/]")
+    r = run("git push origin main 2>&1", timeout=120)
+    if r and r.returncode == 0:
+        console.print(f"[green]✔ Готово[/]")
+    else:
+        console.print(f"[red]✘ Push вернул {r.returncode if r else '?'}[/]")
 
-do_restore() {
-    mkdir -p "$BACKUP_DIR"
-    if [ -z "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]; then
-        echo -e "${R}❌ Нет бэкапов${RST}"; sleep 2; return
-    fi
-    echo -e "${Y}Доступные бэкапы:${RST}"
-    ls -lh "$BACKUP_DIR"/*.tar.gz 2>/dev/null | awk '{print "  " $NF " (" $5 ")"}'
-    echo ""
-    echo -ne "${M}Путь к бэкапу> ${RST}"; read -r bf
-    if [ -f "$bf" ]; then
-        cd "$HOME" && tar -xzf "$bf"
-        echo -e "${G}✔ Восстановлено${RST}"
-    else
-        echo -e "${R}❌ Не найден${RST}"
-    fi
-    sleep 2
-}
+
+def do_pull():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        console.print(f"[red]❌ {REPO_DIR} не git[/]")
+        return
+    os.chdir(REPO_DIR)
+    r = run("git pull origin main 2>&1", timeout=120)
+    if r:
+        for ln in (r.stdout or "").strip().split("\n")[-5:]:
+            console.print(f"  [dim]{ln}[/]")
+    # Копируем .py и исполняемые
+    for f in os.listdir(REPO_DIR):
+        if f.endswith(".py") or f in ("argonov", "argonov-dump"):
+            subprocess.run(f'cp "{REPO_DIR}/{f}" "{HOME}/"', shell=True)
+    console.print(f"[green]✔ Готово[/]")
+
+
+def do_status():
+    if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
+        console.print(f"[red]❌ Нет репо[/]")
+        return
+    os.chdir(REPO_DIR)
+    console.print(f"[{CYAN}]═══ GIT STATUS ═══[/]")
+    subprocess.run("git status -s", shell=True)
+    console.print()
+    console.print(f"[{CYAN}]═══ КОММИТЫ ═══[/]")
+    subprocess.run("git log --oneline -5", shell=True)
+    console.print()
+    console.print(f"[{CYAN}]═══ REMOTE ═══[/]")
+    subprocess.run("git remote -v", shell=True)
+
+
+def do_backup():
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    file = os.path.join(BACKUP_DIR, f"argonov_backup_{ts}.tar.gz")
+    console.print(f"[yellow]⚙ Бэкап...[/]")
+    os.chdir(HOME)
+
+    reg = load_registry()
+    scripts = reg.get("scripts", {}) if reg else {}
+    script_files = [info["file"] for info in scripts.values()]
+    script_files.append("argonov")
+
+    extras = [
+        ".argonov_registry.json",
+        "ARGONOV_FULL_DUMP.md",
+        "ARGONOV_RULES.md",
+        ".ai_config.json", ".todo.json", ".notes.json", ".pm.vault",
+        ".music_favorites.json", ".hacker_rpg_save.json",
+        ".argonov_welcome_image",
+        ".config/fish", ".termux",
+        "music_cache", "ai_chats",
+    ]
+
+    all_items = " ".join(f'"{x}"' for x in script_files + extras if os.path.exists(os.path.join(HOME, x)))
+    cmd = (f'tar -czf "{file}" '
+           f'--exclude="argonov_backups" --exclude=".cache" --exclude=".cargo" '
+           f'--exclude="storage" {all_items} 2>/dev/null')
+    subprocess.run(cmd, shell=True)
+    if os.path.isfile(file):
+        size = os.path.getsize(file) // 1024
+        console.print(f"[green]✔ {file} ({size} КБ)[/]")
+    time.sleep(2)
+
+
+def do_restore():
+    os.makedirs(BACKUP_DIR, exist_ok=True)
+    files = [f for f in os.listdir(BACKUP_DIR) if f.endswith(".tar.gz")]
+    if not files:
+        console.print(f"[red]❌ Нет бэкапов в {BACKUP_DIR}[/]")
+        time.sleep(2)
+        return
+    files.sort(reverse=True)
+    console.print(f"[yellow]Доступные бэкапы:[/]")
+    for f in files[:10]:
+        fp = os.path.join(BACKUP_DIR, f)
+        sz = os.path.getsize(fp) // 1024
+        console.print(f"  [cyan]•[/] {f}  [dim]({sz} КБ)[/]")
+    console.print()
+    try:
+        bf = console.input(f"[bold {MAGENTA}]Путь к бэкапу> [/]").strip()
+    except (EOFError, KeyboardInterrupt):
+        return
+    if os.path.isfile(bf):
+        os.chdir(HOME)
+        subprocess.run(f'tar -xzf "{bf}"', shell=True)
+        console.print(f"[green]✔ Восстановлено[/]")
+    else:
+        console.print(f"[red]❌ Не найден[/]")
+    time.sleep(2)
 
 # ═══ DISPATCH ═══
-case "$1" in
-    "")              show_menu ;;
-    ai)              run_ai ;;
-    crypto)          run_crypto ;;
-    music)           run_music ;;
-    todo)            shift; python ~/todo.py "$@" ;;
-    notes)           run_notes ;;
-    pm)              run_pm ;;
-    hack)            run_hack ;;
-    rpg|game)        run_rpg ;;
-    d|download)      run_d ;;
-    m|matrix)        run_m ;;
-    p|pass)          run_p ;;
-    s|sysinfo)       run_s ;;
-    util)            run_util ;;
-    art)             shift; python ~/art.py "$@" ;;
-    doctor)          shift; python ~/doctor.py "$@" ;;
-    plate)           python ~/sysinfo.py; echo "" ;;
-    push)            do_push ;;
-    pull)            do_pull ;;
-    status)          do_status ;;
-    backup)          do_backup ;;
-    restore)         do_restore ;;
-    help|-h|--help)  show_help ;;
-    version|-v)      echo -e "${G}Argonov OS v${ARGONOV_VERSION}${RST}" ;;
-    *)
-        echo -e "${R}❌ Неизвестно: $1${RST}"
-        echo -e "${DIM}Используй: ${C}argonov help${RST}"
-        exit 1
-        ;;
-esac
+def main():
+    args = sys.argv[1:]
+
+    if not args:
+        show_menu()
+        return
+
+    cmd = args[0].lower()
+    rest = args[1:]
+
+    if cmd in ("help", "-h", "--help", "?"):
+        show_help()
+        return
+    if cmd in ("version", "-v", "--version"):
+        console.print(f"[green]Argonov OS v{ARGONOV_VERSION}[/]")
+        return
+
+    if cmd == "push":
+        do_push()
+        return
+    if cmd == "pull":
+        do_pull()
+        return
+    if cmd == "status":
+        do_status()
+        return
+    if cmd == "backup":
+        do_backup()
+        return
+    if cmd == "restore":
+        do_restore()
+        return
+    if cmd == "plate":
+        # алиас: показать sysinfo
+        reg = load_registry()
+        if reg:
+            scripts = reg.get("scripts", {})
+            for name, info in scripts.items():
+                if info.get("short") == "s":
+                    run_script(info, rest)
+                    return
+        console.print("[red]❌ sysinfo не найден в реестре[/]")
+        return
+
+    # Ищем в реестре
+    reg = load_registry()
+    if not reg:
+        console.print(f"[red]❌ Реестр не найден. Запусти: python ~/argonov-core.py init[/]")
+        sys.exit(1)
+    scripts = reg.get("scripts", {})
+
+    found = None
+    for name, info in scripts.items():
+        if name == cmd or info.get("short") == cmd:
+            found = (name, info)
+            break
+
+    if found:
+        run_script(found[1], args=rest)
+    else:
+        console.print(f"[red]❌ Неизвестно: {cmd}[/]")
+        console.print(f"[dim]Используй: [cyan]argonov help[/][/]")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print(f"\n[dim]Прервано.[/]")
+```
+
+---
+
+## 📄 argonov-core.py
+
+*20723 байт · 479 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Core Registry
+#  Менеджер реестра скриптов
+#  Версия: 1.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Управляет реестром всех скриптов ARGONOV OS.
+
+Использование:
+    argonov-core list              # все скрипты
+    argonov-core info <name>       # инфо о скрипте
+    argonov-core edit <name>       # открыть в nano для правки
+    argonov-core run <name>        # запустить
+    argonov-core check             # проверить целостность
+    argonov-core add <name> <file> <short> [group]
+    argonov-core rm <name>         # убрать из реестра
+    argonov-core init              # создать реестр из текущих скриптов
+    argonov-core show              # показать сырой JSON
+
+Зависимости:
+    - rich
+"""
+
+import os
+import sys
+import json
+import time
+import shutil
+import subprocess
+from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.box import SIMPLE_HEAD
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+HOME = os.path.expanduser("~")
+REGISTRY_FILE = os.path.join(HOME, ".argonov_registry.json")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+GROUP_ORDER = ["core", "ai", "media", "data", "security",
+               "games", "network", "tools", "other"]
+
+# Дефолтный реестр — создаётся при `init`
+DEFAULT_SCRIPTS = {
+    "argonov":      {"file": "argonov",           "short": "argonov",  "type": "bash",   "version": "2.0", "desc": "⚡ Меню системы",                "group": "core",     "interactive": True,  "deps": []},
+    "argonov-core": {"file": "argonov-core.py",   "short": "core",     "type": "python", "version": "1.0", "desc": "🗂  Реестр скриптов",              "group": "core",     "interactive": False, "deps": ["rich"]},
+    "argonov-dump": {"file": "argonov-dump",      "short": "dump",     "type": "python", "version": "2.0", "desc": "📦 Дамп + push",                   "group": "core",     "interactive": False, "deps": []},
+    "doctor":       {"file": "doctor.py",         "short": "doctor",   "type": "python", "version": "2.0", "desc": "🩺 Диагностика",                    "group": "core",     "interactive": False, "deps": ["rich"]},
+    "net_helper":   {"file": "net_helper.py",     "short": "net",      "type": "python", "version": "3.0", "desc": "🌐 Fallback API + кэш",             "group": "core",     "interactive": False, "deps": []},
+    "ai":           {"file": "ai.py",             "short": "ai",       "type": "python", "version": "16",  "desc": "🧠 AI-ассистент",                  "group": "ai",       "interactive": True,  "deps": ["rich", "prompt_toolkit", "llama-server"]},
+    "music":        {"file": "randomaudio.py",    "short": "music",    "type": "python", "version": "3.0", "desc": "🎵 Музыкальный плеер",              "group": "media",    "interactive": True,  "deps": ["rich", "prompt_toolkit", "chafa"]},
+    "music-meta":   {"file": "music_meta.py",     "short": "meta",     "type": "python", "version": "3.0", "desc": "🎼 Метаданные треков",              "group": "media",    "interactive": False, "deps": ["rich", "requests", "mutagen"]},
+    "art":          {"file": "art.py",            "short": "art",      "type": "python", "version": "3.0", "desc": "🎨 Картинки",                        "group": "media",    "interactive": False, "deps": ["rich", "viu"]},
+    "todo":         {"file": "todo.py",           "short": "todo",     "type": "python", "version": "3.0", "desc": "📌 Задачи",                          "group": "data",     "interactive": True,  "deps": ["rich", "prompt_toolkit"]},
+    "notes":        {"file": "notes.py",          "short": "notes",    "type": "python", "version": "3.0", "desc": "📝 Заметки",                         "group": "data",     "interactive": True,  "deps": ["rich", "prompt_toolkit"]},
+    "pm":           {"file": "passmanager.py",    "short": "pm",       "type": "python", "version": "3.0", "desc": "🔒 Пароли (AES-256)",                "group": "security", "interactive": True,  "deps": ["rich", "prompt_toolkit", "cryptography"]},
+    "passgen":      {"file": "passgen.py",        "short": "passgen",  "type": "python", "version": "2.0", "desc": "🔐 Генератор паролей",               "group": "security", "interactive": False, "deps": []},
+    "hack":         {"file": "hacktool.py",       "short": "hack",     "type": "python", "version": "3.0", "desc": "🎮 OSINT мультитул",                 "group": "security", "interactive": True,  "deps": ["rich", "prompt_toolkit"]},
+    "crypto":       {"file": "crypto_informer.py","short": "crypto",   "type": "python", "version": "3.0", "desc": "📈 Курсы крипты и валют",           "group": "data",     "interactive": True,  "deps": ["rich", "net_helper"]},
+    "sysinfo":      {"file": "sysinfo.py",        "short": "s",        "type": "python", "version": "5.0", "desc": "⚡ Центр управления",                "group": "tools",    "interactive": False, "deps": ["net_helper"]},
+    "utils":        {"file": "utils.py",          "short": "util",     "type": "python", "version": "3.0", "desc": "📦 Сканер пакетов",                  "group": "tools",    "interactive": True,  "deps": ["rich", "prompt_toolkit"]},
+    "rpg":          {"file": "hacker_rpg.py",     "short": "rpg",      "type": "python", "version": "3.0", "desc": "🕹  Симулятор хакера",                "group": "games",    "interactive": True,  "deps": ["rich"]},
+    "matrix":       {"file": "matrix.py",         "short": "m",        "type": "python", "version": "2.0", "desc": "🌧  Цифровой дождь",                 "group": "games",    "interactive": True,  "deps": ["curses"]},
+    "download":     {"file": "download_zone.py",  "short": "d",        "type": "python", "version": "3.0", "desc": "📥 Загрузчик (aria2c)",              "group": "network",  "interactive": True,  "deps": ["rich", "prompt_toolkit", "aria2c"]},
+}
+
+# ═══ РЕЕСТР ═══
+def load_registry():
+    if not os.path.exists(REGISTRY_FILE):
+        return None
+    try:
+        with open(REGISTRY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        console.print(f"[red]❌ Ошибка чтения реестра: {e}[/]")
+        return None
+
+
+def save_registry(reg):
+    reg["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    tmp = REGISTRY_FILE + ".tmp"
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(reg, f, ensure_ascii=False, indent=1)
+        os.replace(tmp, REGISTRY_FILE)
+        return True
+    except Exception as e:
+        console.print(f"[red]❌ Ошибка записи: {e}[/]")
+        return False
+
+
+def get_scripts(reg):
+    return reg.get("scripts", {}) if reg else {}
+
+# ═══ РИСОВКА ═══
+def title_block(main, sub=""):
+    lines = [Text("▓▒░ " + main.upper() + " ░▒░ ", style=f"bold {GREEN_BRIGHT}")]
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    lines.append(Text("─" * 55, style=GREEN_DIM))
+    return Group(*lines)
+
+# ═══ КОМАНДЫ ═══
+def cmd_init():
+    """Создаёт реестр из текущих скриптов."""
+    if os.path.exists(REGISTRY_FILE):
+        console.print(f"[yellow]⚠ Реестр уже существует: {REGISTRY_FILE}[/]")
+        try:
+            a = console.input("[bold magenta]Перезаписать? (y/N)> [/]").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            return
+        if a != "y":
+            console.print("[dim]Отменено[/]")
+            return
+
+    reg = {"version": 1, "created": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+           "scripts": dict(DEFAULT_SCRIPTS)}
+
+    # Проверяем что файлы на месте
+    missing = []
+    for name, info in reg["scripts"].items():
+        fp = os.path.join(HOME, info["file"])
+        if not os.path.isfile(fp):
+            missing.append((name, info["file"]))
+
+    if save_registry(reg):
+        console.print(f"[green]✔ Реестр создан: {REGISTRY_FILE}[/]")
+        console.print(f"   Записей: [cyan]{len(reg['scripts'])}[/]")
+        if missing:
+            console.print(f"   [yellow]⚠ Файлы не найдены:[/]")
+            for name, fp in missing:
+                console.print(f"     [dim]• {name} → {fp}[/]")
+
+
+def cmd_list():
+    reg = load_registry()
+    if not reg:
+        console.print("[red]❌ Реестр не найден. Запусти: argonov-core init[/]")
+        return
+    scripts = get_scripts(reg)
+
+    # Группируем
+    grouped = {}
+    for name, info in scripts.items():
+        g = info.get("group", "other")
+        grouped.setdefault(g, []).append((name, info))
+
+    console.print()
+    console.print(title_block("ARGONOV REGISTRY",
+                              f"{len(scripts)} скриптов  ·  обновлён {reg.get('updated','?')}"))
+    console.print()
+
+    for g in GROUP_ORDER:
+        if g not in grouped:
+            continue
+        items = sorted(grouped[g], key=lambda x: x[0])
+        t = Table(box=SIMPLE_HEAD, border_style="black",
+                  header_style=f"bold {GREEN_BRIGHT}", padding=(0,1), expand=True)
+        t.add_column("short", style=f"bold {YELLOW}", width=12)
+        t.add_column("Файл", style=CYAN, width=22)
+        t.add_column("Версия", style=GREEN_DIM, width=8)
+        t.add_column("Описание", style=WHITE)
+        t.add_column("Есть?", width=6, justify="center")
+
+        for name, info in items:
+            fp = os.path.join(HOME, info["file"])
+            mark = "[green]✔[/]" if os.path.isfile(fp) else "[red]✘[/]"
+            t.add_row(info.get("short", name), info["file"],
+                      str(info.get("version", "?")), info.get("desc", ""), mark)
+
+        console.print(f"[bold {MAGENTA}]{g.upper()}[/]")
+        console.print(t)
+        console.print()
+
+
+def cmd_info(name):
+    reg = load_registry()
+    if not reg:
+        console.print("[red]❌ Реестр не найден[/]")
+        return
+    scripts = get_scripts(reg)
+
+    # Ищем по имени или short
+    found = None
+    for n, info in scripts.items():
+        if n == name or info.get("short") == name:
+            found = (n, info)
+            break
+    if not found:
+        console.print(f"[red]❌ Не найдено: {name}[/]")
+        return
+
+    n, info = found
+    fp = os.path.join(HOME, info["file"])
+    exists = os.path.isfile(fp)
+    size = os.path.getsize(fp) if exists else 0
+
+    console.print()
+    console.print(title_block(f"🔍 {n}"))
+    console.print()
+
+    t = Table(box=SIMPLE_HEAD, border_style="black",
+              show_header=False, padding=(0, 2))
+    t.add_column("", style=f"bold {YELLOW}", width=16)
+    t.add_column("", style=WHITE)
+    t.add_row("Имя", n)
+    t.add_row("Файл", info["file"])
+    t.add_row("Short", info.get("short", "—"))
+    t.add_row("Тип", info.get("type", "—"))
+    t.add_row("Версия", str(info.get("version", "—")))
+    t.add_row("Группа", info.get("group", "—"))
+    t.add_row("Описание", info.get("desc", "—"))
+    t.add_row("Интерактивный", "да" if info.get("interactive") else "нет")
+    t.add_row("Зависимости", ", ".join(info.get("deps", [])) or "—")
+    t.add_row("Файл на месте", f"[green]✔[/] ({size} б)" if exists else "[red]✘ нет[/]")
+    t.add_row("Путь", fp)
+    console.print(t)
+    console.print()
+
+
+def cmd_edit(name):
+    reg = load_registry()
+    if not reg:
+        console.print("[red]❌ Реестр не найден[/]")
+        return
+    scripts = get_scripts(reg)
+
+    found = None
+    for n, info in scripts.items():
+        if n == name or info.get("short") == name:
+            found = (n, info)
+            break
+    if not found:
+        console.print(f"[red]❌ Не найдено: {name}[/]")
+        return
+
+    n, info = found
+    fp = os.path.join(HOME, info["file"])
+    if not os.path.isfile(fp):
+        console.print(f"[red]❌ Файл не найден: {fp}[/]")
+        return
+
+    console.print(f"[yellow]⚙ Открываю в nano: {info['file']}[/]")
+    console.print(f"[dim]   Не забудь Ctrl+O → Enter → Ctrl+X для сохранения[/]")
+    time.sleep(0.7)
+    try:
+        subprocess.run(["nano", fp])
+    except KeyboardInterrupt:
+        pass
+    except FileNotFoundError:
+        console.print("[red]❌ nano не найден, используй: nano ~/" + info["file"] + "[/]")
+
+
+def cmd_run(name):
+    reg = load_registry()
+    if not reg:
+        console.print("[red]❌ Реестр не найден[/]")
+        return
+    scripts = get_scripts(reg)
+
+    found = None
+    for n, info in scripts.items():
+        if n == name or info.get("short") == name:
+            found = (n, info)
+            break
+    if not found:
+        console.print(f"[red]❌ Не найдено: {name}[/]")
+        return
+
+    n, info = found
+    fp = os.path.join(HOME, info["file"])
+    if not os.path.isfile(fp):
+        console.print(f"[red]❌ Файл не найден: {fp}[/]")
+        return
+
+    typ = info.get("type", "python")
+    if typ == "python":
+        subprocess.run(["python", fp])
+    elif typ == "bash":
+        subprocess.run(["bash", fp])
+    else:
+        subprocess.run([fp])
+
+
+def cmd_check():
+    reg = load_registry()
+    if not reg:
+        console.print("[red]❌ Реестр не найден[/]")
+        return
+    scripts = get_scripts(reg)
+
+    console.print()
+    console.print(title_block("ПРОВЕРКА РЕЕСТРА"))
+    console.print()
+
+    ok_count = 0
+    missing = []
+    syntax_errors = []
+
+    for name, info in scripts.items():
+        fp = os.path.join(HOME, info["file"])
+        typ = info.get("type", "python")
+
+        if not os.path.isfile(fp):
+            missing.append((name, info["file"]))
+            console.print(f"  [red]✘[/] {name:20} {info['file']:25} [dim]не найден[/]")
+            continue
+
+        if typ == "python":
+            r = subprocess.run(["python", "-m", "py_compile", fp],
+                               capture_output=True, timeout=10)
+            if r.returncode != 0:
+                syntax_errors.append((name, info["file"]))
+                console.print(f"  [red]✘[/] {name:20} {info['file']:25} [red]syntax error[/]")
+                continue
+
+        size = os.path.getsize(fp)
+        console.print(f"  [green]✔[/] {name:20} {info['file']:25} {size:>6} б")
+        ok_count += 1
+
+    console.print()
+    console.print(f"  Всего: [bold]{len(scripts)}[/]  ·  "
+                  f"OK: [green]{ok_count}[/]  ·  "
+                  f"Нет файла: [red]{len(missing)}[/]  ·  "
+                  f"Синтаксис: [red]{len(syntax_errors)}[/]")
+    console.print()
+
+
+def cmd_add(name, fname, short, group="other"):
+    if not name or not fname or not short:
+        console.print("[red]❌ argonov-core add <name> <file> <short> [group][/]")
+        return
+    reg = load_registry()
+    if not reg:
+        reg = {"version": 1, "scripts": {}}
+    scripts = reg.setdefault("scripts", {})
+
+    if name in scripts:
+        console.print(f"[yellow]⚠ {name} уже в реестре. Перезапишется.[/]")
+
+    scripts[name] = {
+        "file": fname,
+        "short": short,
+        "type": "python" if fname.endswith(".py") else "bash",
+        "version": "1.0",
+        "desc": f"➕ {name}",
+        "group": group,
+        "interactive": False,
+        "deps": [],
+    }
+    if save_registry(reg):
+        console.print(f"[green]✔ Добавлено: {name} → {fname}[/]")
+
+
+def cmd_rm(name):
+    reg = load_registry()
+    if not reg:
+        console.print("[red]❌ Реестр не найден[/]")
+        return
+    scripts = reg.get("scripts", {})
+    if name not in scripts:
+        # может это short?
+        found = None
+        for n, info in scripts.items():
+            if info.get("short") == name:
+                found = n
+                break
+        if found:
+            name = found
+        else:
+            console.print(f"[red]❌ Не найдено: {name}[/]")
+            return
+
+    del scripts[name]
+    if save_registry(reg):
+        console.print(f"[green]✔ Удалено из реестра: {name}[/]")
+        console.print(f"[dim]   (сам файл не тронут)[/]")
+
+
+def cmd_show():
+    if not os.path.exists(REGISTRY_FILE):
+        console.print("[red]❌ Реестр не найден[/]")
+        return
+    try:
+        with open(REGISTRY_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+        console.print_json(data=data)
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+
+# ═══ СПРАВКА ═══
+def show_help():
+    console.print()
+    console.print(title_block("ARGONOV CORE", "менеджер реестра скриптов"))
+    console.print()
+
+    t = Table(box=SIMPLE_HEAD, border_style="black",
+              header_style=f"bold {GREEN_BRIGHT}", padding=(0, 2))
+    t.add_column("Команда", style=f"bold {YELLOW}", width=36)
+    t.add_column("Действие", style=WHITE)
+    t.add_row("list",                          "📋 Показать все скрипты")
+    t.add_row("info <name>",                   "🔍 Инфо о скрипте (имя или short)")
+    t.add_row("edit <name>",                   "✏ Открыть в nano для правки")
+    t.add_row("run <name>",                    "🚀 Запустить скрипт")
+    t.add_row("check",                         "✅ Проверить все файлы + синтаксис")
+    t.add_row("add <name> <file> <short> [gr]", "➕ Добавить в реестр")
+    t.add_row("rm <name>",                     "🗑 Убрать из реестра (файл не трогается)")
+    t.add_row("init",                          "⚙ Создать реестр с базовыми скриптами")
+    t.add_row("show",                          "📄 Сырой JSON реестра")
+    console.print(t)
+    console.print()
+    console.print(f"  [dim]Реестр: {REGISTRY_FILE}[/]")
+    console.print()
+
+# ═══ MAIN ═══
+def main():
+    args = sys.argv[1:]
+
+    if not args or args[0] in ("-h", "--help", "help", "?"):
+        show_help()
+        return
+
+    cmd = args[0].lower()
+    rest = args[1:]
+
+    if cmd == "list":
+        cmd_list()
+    elif cmd == "info":
+        if not rest:
+            console.print("[red]❌ info <name>[/]")
+            return
+        cmd_info(rest[0])
+    elif cmd == "edit":
+        if not rest:
+            console.print("[red]❌ edit <name>[/]")
+            return
+        cmd_edit(rest[0])
+    elif cmd == "run":
+        if not rest:
+            console.print("[red]❌ run <name>[/]")
+            return
+        cmd_run(rest[0])
+    elif cmd == "check":
+        cmd_check()
+    elif cmd == "add":
+        if len(rest) < 3:
+            console.print("[red]❌ add <name> <file> <short> [group][/]")
+            return
+        group = rest[3] if len(rest) > 3 else "other"
+        cmd_add(rest[0], rest[1], rest[2], group)
+    elif cmd == "rm":
+        if not rest:
+            console.print("[red]❌ rm <name>[/]")
+            return
+        cmd_rm(rest[0])
+    elif cmd == "init":
+        cmd_init()
+    elif cmd == "show":
+        cmd_show()
+    else:
+        console.print(f"[red]❌ Неизвестная команда: {cmd}[/]")
+        console.print("[dim]Используй: argonov-core help[/]")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print("\n[dim]Прервано.[/]")
 ```
 
 ---
 
 ## 📄 argonov-dump
 
-*8858 байт · 234 строк*
+*11447 байт · 306 строк*
 
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS · Dump + Push
-#  Сборка дампа всех скриптов + push в GitHub
-#  Версия: 2.0  ·  Обновлён: 2026-09-11
+#  ARGONOV OS · Dump + Push v3
+#  Сборка дампа по реестру + push в GitHub
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
 # ═══════════════════════════════════════════════════════
-"""Собирает все скрипты в ARGONOV_FULL_DUMP.md (с правилами) и пушит на GitHub."""
+"""
+Собирает дамп всех скриптов (по ~/.argonov_registry.json) и пушит на GitHub.
+
+Использование:
+    argonov-dump           # дамп + push
+    python ~/argonov-dump  # то же
+
+Что делает:
+    1. Читает реестр ~/.argonov_registry.json
+    2. Собирает все скрипты в ~/ARGONOV_FULL_DUMP.md
+    3. В начало дампа вставляет ~/ARGONOV_RULES.md
+    4. Копирует свежие скрипты в ~/argonov-os/
+    5. git add + commit + push
+
+Зависимости:
+    - ~/.argonov_registry.json (создать: argonov-core init)
+"""
 
 import os
 import sys
+import json
 import subprocess
 from datetime import datetime
 
 # ═══ КОНСТАНТЫ ═══
 HOME = os.path.expanduser("~")
+REGISTRY_FILE = os.path.join(HOME, ".argonov_registry.json")
 DUMP_FILE = os.path.join(HOME, "ARGONOV_FULL_DUMP.md")
 RULES_FILE = os.path.join(HOME, "ARGONOV_RULES.md")
 REPO_DIR = os.path.join(HOME, "argonov-os")
 
-SCRIPTS = [
-    ("argonov",           "bash"),
-    ("argonov-dump",      "python"),
-    ("doctor.py",         "python"),
-    ("net_helper.py",     "python"),
-    ("ai.py",             "python"),
-    ("hacktool.py",       "python"),
-    ("randomaudio.py",    "python"),
-    ("music_meta.py",     "python"),
-    ("todo.py",           "python"),
-    ("notes.py",          "python"),
-    ("passmanager.py",    "python"),
-    ("crypto_informer.py","python"),
-    ("hacker_rpg.py",     "python"),
-    ("download_zone.py",  "python"),
-    ("matrix.py",         "python"),
-    ("passgen.py",        "python"),
-    ("sysinfo.py",        "python"),
-    ("utils.py",          "python"),
-    ("art.py",            "python"),
+# Порядок файлов в дампе — сначала служебные, потом всё остальное по алфавиту
+CORE_ORDER = [
+    "argonov", "argonov-core.py", "argonov-dump", "doctor.py", "net_helper.py",
 ]
 
 G = "\033[92m"; C = "\033[96m"; Y = "\033[93m"; R = "\033[91m"
@@ -566,11 +1528,59 @@ def read_file(path):
     except Exception:
         return None
 
+# ═══ РЕЕСТР ═══
+def load_registry():
+    if not os.path.exists(REGISTRY_FILE):
+        print(f"{R}❌ Реестр не найден: {REGISTRY_FILE}{RST}")
+        print(f"{Y}Создай: python ~/argonov-core.py init{RST}")
+        return None
+    try:
+        with open(REGISTRY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"{R}❌ Ошибка чтения реестра: {e}{RST}")
+        return None
+
+
+def registry_to_scripts(reg):
+    """Возвращает [(filename, lang)] в правильном порядке."""
+    scripts = reg.get("scripts", {})
+
+    # Собираем файлы с lang
+    items = {}
+    for name, info in scripts.items():
+        fname = info.get("file")
+        if not fname:
+            continue
+        typ = info.get("type", "python")
+        lang = "bash" if typ == "bash" else "python"
+        items[fname] = lang
+
+    # Сортируем: сначала CORE_ORDER, потом по алфавиту
+    ordered = []
+    for f in CORE_ORDER:
+        if f in items:
+            ordered.append((f, items[f]))
+            del items[f]
+    for f in sorted(items.keys()):
+        ordered.append((f, items[f]))
+
+    # Плюс сам argonov-dump если его нет в реестре
+    if "argonov-dump" not in [x[0] for x in ordered]:
+        ordered.append(("argonov-dump", "python"))
+
+    return ordered
 
 # ═══ СБОРКА ДАМПА ═══
 def build_dump():
-    print(f"{C}📦 Сборка дампа...{RST}")
+    reg = load_registry()
+    if not reg:
+        return 0
+
+    print(f"{C}📦 Сборка дампа (по реестру)...{RST}")
     print()
+
+    SCRIPTS = registry_to_scripts(reg)
 
     lines = []
 
@@ -579,11 +1589,12 @@ def build_dump():
     lines.append("")
     lines.append(f"Дата: {datetime.now().strftime('%a %b %d %H:%M:%S %Z %Y')}")
     lines.append(f"Устройство: {getprop('ro.product.model')} / Android {getprop('ro.build.version.release')}")
+    lines.append(f"Записей в реестре: {len(reg.get('scripts', {}))}")
     lines.append("")
     lines.append("---")
     lines.append("")
 
-    # ПРАВИЛА в начале дампа
+    # ПРАВИЛА в начале
     rules = read_file(RULES_FILE)
     if rules:
         lines.append("# 📋 ПРАВИЛА РАЗРАБОТКИ ARGONOV OS")
@@ -598,13 +1609,27 @@ def build_dump():
     else:
         print(f"  {Y}⚠{RST}  ARGONOV_RULES.md {DIM}[не найден — пропущен]{RST}")
 
+    # РЕЕСТР
+    lines.append("")
+    lines.append("# 🗂  РЕЕСТР СКРИПТОВ")
+    lines.append("")
+    lines.append(f"*Файл: ~/.argonov_registry.json · обновлён: {reg.get('updated','?')}*")
+    lines.append("")
+    lines.append("```json")
+    lines.append(json.dumps(reg, ensure_ascii=False, indent=1))
+    lines.append("```")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    print(f"  {G}✔{RST}  .argonov_registry.json")
+
+    # СКРИПТЫ
     lines.append("")
     lines.append("# 💻 ДАМП СКРИПТОВ")
     lines.append("")
     lines.append("---")
     lines.append("")
 
-    # Скрипты
     included = 0
     skipped = []
 
@@ -648,23 +1673,31 @@ def build_dump():
     print()
     return included
 
-
 # ═══ PUSH ═══
 def do_push():
+    reg = load_registry()
+    if not reg:
+        return False
+
     if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
         print(f"{R}❌ {REPO_DIR} — не git-репозиторий{RST}")
         return False
 
+    SCRIPTS = [f for f, _ in registry_to_scripts(reg)]
+
     print(f"{C}⚙ Копирую свежие скрипты в репо...{RST}")
-    for fname, _ in SCRIPTS:
+    for fname in SCRIPTS:
         src = os.path.join(HOME, fname)
         if os.path.isfile(src):
             subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
-    subprocess.run(f'cp "{DUMP_FILE}" "{REPO_DIR}/"', shell=True)
-    if os.path.isfile(RULES_FILE):
-        subprocess.run(f'cp "{RULES_FILE}" "{REPO_DIR}/"', shell=True)
+    # Дамп, правила, реестр
+    for extra in ("ARGONOV_FULL_DUMP.md", "ARGONOV_RULES.md", ".argonov_registry.json"):
+        src = os.path.join(HOME, extra)
+        if os.path.isfile(src):
+            subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
+    # Fish config
     fish_src = os.path.join(HOME, ".config/fish/config.fish")
     fish_dst = os.path.join(REPO_DIR, "fish-config/config.fish")
     if os.path.isfile(fish_src):
@@ -696,12 +1729,12 @@ def do_push():
         print(f"{R}✘ Push вернул код {r.returncode if r else '?'}{RST}")
         return False
 
-
 # ═══ MAIN ═══
 def main():
     print()
     print(f"{C}┌─────────────────────────────────────────────────┐{RST}")
-    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH v2{RST}                    {C}│{RST}")
+    print(f"{C}│{RST}      {BLD}ARGONOV DUMP + PUSH v3{RST}                    {C}│{RST}")
+    print(f"{C}│{RST}      {DIM}по реестру ~/.argonov_registry.json{RST}          {C}│{RST}")
     print(f"{C}└─────────────────────────────────────────────────┘{RST}")
     print()
 
@@ -717,7 +1750,7 @@ def main():
 
     if ok:
         print(f"{G}═══════════════════════════════════════════════════{RST}")
-        print(f"{G}  ✅ ГОТОВО  ·  дамп + правила + push{RST}")
+        print(f"{G}  ✅ ГОТОВО  ·  дамп + реестр + правила + push{RST}")
         print(f"{G}═══════════════════════════════════════════════════{RST}")
     else:
         print(f"{Y}═══════════════════════════════════════════════════{RST}")
@@ -1237,34 +2270,78 @@ if __name__ == "__main__":
 
 ## 📄 net_helper.py
 
-*24789 байт · 617 строк*
+*27697 байт · 780 строк*
 
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Net Helper v2.2 — fallback + кэш + force-refresh"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Net Helper
+#  Multi-source fallback API + дисковый кэш
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Fallback источники для API с дисковым кэшем и метаданными свежести.
 
-import json, time, os, sys, hashlib
-import urllib.request, urllib.error, urllib.parse
+Использование:
+    from net_helper import get_crypto_prices, get_fx_rates, freshness_badge
 
+    # Простой вызов (обратная совместимость)
+    data, source = get_crypto_prices()
+
+    # С метаданными кэша
+    data, source, meta = get_crypto_prices(with_meta=True)
+    # meta = {"fresh": bool, "stale": bool, "age": float, "ts": float}
+
+    # Форс-обновление (обход кэша)
+    data, source = get_crypto_prices(force=True)
+
+CLI:
+    python ~/net_helper.py --selftest        # полный тест источников
+    python ~/net_helper.py --cache-info      # инфо о кэше
+    python ~/net_helper.py --cache-clear     # очистить кэш
+    python ~/net_helper.py --cache-cleanup   # удалить старое (>24ч)
+
+Переменные окружения:
+    ARGONOV_NO_CACHE=1                       # отключить кэш
+
+Зависимости:
+    - stdlib (json, time, os, sys, hashlib, urllib)
+"""
+
+import json
+import time
+import os
+import sys
+import hashlib
+import urllib.request
+import urllib.error
+import urllib.parse
+
+# ═══ КОНСТАНТЫ ═══
 DEFAULT_UA = "Mozilla/5.0 (Linux; Android 10; Termux) AppleWebKit/537.36"
 
 CACHE_DIR         = os.path.expanduser("~/.cache/argonov")
-CACHE_DEFAULT_TTL = 300
-CACHE_MAX_AGE     = 86400
+CACHE_DEFAULT_TTL = 300      # 5 минут
+CACHE_MAX_AGE     = 86400    # 24 часа
 CACHE_DISABLED    = os.environ.get("ARGONOV_NO_CACHE") == "1"
 
 _set_counter = 0
 
+# ═══ КЭШ ═══
 def _cache_path(key):
     safe  = hashlib.md5(key.encode("utf-8")).hexdigest()[:16]
     clean = "".join(c if c.isalnum() or c in "-_" else "_" for c in key)[:32]
     return os.path.join(CACHE_DIR, f"{clean}_{safe}.json")
 
+
 def cache_get_meta(key, ttl=CACHE_DEFAULT_TTL, allow_stale=False):
-    if CACHE_DISABLED: return None, None
+    """Возвращает (data, meta) или (None, None)."""
+    if CACHE_DISABLED:
+        return None, None
     p = _cache_path(key)
-    if not os.path.exists(p): return None, None
+    if not os.path.exists(p):
+        return None, None
     try:
         with open(p, encoding="utf-8") as f:
             obj = json.load(f)
@@ -1278,96 +2355,127 @@ def cache_get_meta(key, ttl=CACHE_DEFAULT_TTL, allow_stale=False):
         return obj.get("data"), {"ts": ts, "age": age, "fresh": False, "stale": True}
     return None, None
 
+
 def cache_get(key, ttl=CACHE_DEFAULT_TTL):
     data, _ = cache_get_meta(key, ttl)
     return data
 
+
 def cache_set(key, data):
     global _set_counter
-    if CACHE_DISABLED: return
+    if CACHE_DISABLED:
+        return
     try:
         os.makedirs(CACHE_DIR, exist_ok=True)
-        p   = _cache_path(key)
+        p = _cache_path(key)
         tmp = p + ".tmp"
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump({"ts": time.time(), "data": data}, f, ensure_ascii=False)
         os.replace(tmp, p)
         _set_counter += 1
-        if _set_counter % 50 == 0: cache_cleanup()
+        if _set_counter % 50 == 0:
+            cache_cleanup()
     except Exception:
         pass
 
+
 def cache_clear():
-    if not os.path.isdir(CACHE_DIR): return 0
+    if not os.path.isdir(CACHE_DIR):
+        return 0
     n = 0
     for f in os.listdir(CACHE_DIR):
-        try: os.remove(os.path.join(CACHE_DIR, f)); n += 1
-        except Exception: pass
+        try:
+            os.remove(os.path.join(CACHE_DIR, f))
+            n += 1
+        except Exception:
+            pass
     return n
 
+
 def cache_cleanup(max_age=CACHE_MAX_AGE):
-    if not os.path.isdir(CACHE_DIR): return 0
-    now = time.time(); n = 0
+    if not os.path.isdir(CACHE_DIR):
+        return 0
+    now = time.time()
+    n = 0
     for f in os.listdir(CACHE_DIR):
         p = os.path.join(CACHE_DIR, f)
         try:
             if now - os.path.getmtime(p) > max_age:
-                os.remove(p); n += 1
-        except Exception: pass
+                os.remove(p)
+                n += 1
+        except Exception:
+            pass
     return n
+
 
 def cache_info():
     if not os.path.isdir(CACHE_DIR):
         return {"files": 0, "size": 0, "dir": CACHE_DIR}
     files = [os.path.join(CACHE_DIR, f) for f in os.listdir(CACHE_DIR)]
-    size  = sum(os.path.getsize(f) for f in files if os.path.isfile(f))
+    size = sum(os.path.getsize(f) for f in files if os.path.isfile(f))
     return {"files": len(files), "size": size, "dir": CACHE_DIR}
 
-# ═══════════════════════════════════════════════════════
+# ═══ FETCH ═══
 def fetch(url, timeout=10, headers=None, parse="json"):
+    """Универсальный fetch. parse: 'json' | 'text'. Возвращает данные или None."""
     h = {"User-Agent": DEFAULT_UA, "Accept": "*/*"}
-    if headers: h.update(headers)
+    if headers:
+        h.update(headers)
     try:
         req = urllib.request.Request(url, headers=h)
         with urllib.request.urlopen(req, timeout=timeout) as r:
             data = r.read().decode("utf-8", errors="ignore")
         if parse == "json":
-            try: return json.loads(data)
-            except Exception: return None
+            try:
+                return json.loads(data)
+            except Exception:
+                return None
         return data
     except Exception:
         return None
 
+
 def get_json_cached(url, ttl=CACHE_DEFAULT_TTL, cache_key=None, timeout=10, headers=None):
     key = cache_key or f"json:{url}"
     cached = cache_get(key, ttl)
-    if cached is not None: return cached
+    if cached is not None:
+        return cached
     data = fetch(url, timeout=timeout, headers=headers, parse="json")
-    if data is not None: cache_set(key, data)
+    if data is not None:
+        cache_set(key, data)
     return data
+
 
 def get_text_cached(url, ttl=CACHE_DEFAULT_TTL, cache_key=None, timeout=10, headers=None):
     key = cache_key or f"text:{url}"
     cached = cache_get(key, ttl)
-    if cached is not None: return cached
+    if cached is not None:
+        return cached
     data = fetch(url, timeout=timeout, headers=headers, parse="text")
-    if data is not None: cache_set(key, data)
+    if data is not None:
+        cache_set(key, data)
     return data
 
+
 def try_sources(sources, timeout=8):
+    """sources: [(name, func), ...]. Возвращает (data, source_name)."""
     for name, fn in sources:
         try:
             data = fn(timeout)
-            if data: return data, name
+            if data:
+                return data, name
         except Exception:
             continue
     return None, None
 
 # ═══ КРИПТА ═══
 def crypto_coingecko(timeout=8):
-    url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,cardano&vs_currencies=usd,rub&include_24hr_change=true"
+    url = ("https://api.coingecko.com/api/v3/simple/price"
+           "?ids=bitcoin,ethereum,solana,binancecoin,cardano"
+           "&vs_currencies=usd,rub&include_24hr_change=true")
     data = fetch(url, timeout=timeout)
-    if not data: return None
+    if not data:
+        return None
     out = {}
     for cid, d in data.items():
         out[cid] = {
@@ -1375,15 +2483,18 @@ def crypto_coingecko(timeout=8):
                        "binancecoin":"BNB","cardano":"ADA"}.get(cid, cid.upper()[:4]),
             "name": {"bitcoin":"Bitcoin","ethereum":"Ethereum","solana":"Solana",
                      "binancecoin":"BNB","cardano":"Cardano"}.get(cid, cid.title()),
-            "usd": d.get("usd", 0), "rub": d.get("rub", 0),
+            "usd": d.get("usd", 0),
+            "rub": d.get("rub", 0),
             "change_24h": d.get("usd_24h_change", 0),
         }
     return out if out else None
 
+
 def crypto_coincap(timeout=8):
     url = "https://api.coincap.io/v2/assets?ids=bitcoin,ethereum,solana,binance-coin,cardano"
     data = fetch(url, timeout=timeout)
-    if not data or "data" not in data: return None
+    if not data or "data" not in data:
+        return None
     out = {}
     for a in data["data"]:
         cid = a["id"]
@@ -1395,10 +2506,12 @@ def crypto_coincap(timeout=8):
         }
     return out if out else None
 
+
 def crypto_paprika(timeout=8):
     url = "https://api.coinpaprika.com/v1/tickers?quotes=USD,RUB"
     data = fetch(url, timeout=timeout)
-    if not data: return None
+    if not data:
+        return None
     targets = {"btc-bitcoin":"bitcoin","eth-ethereum":"ethereum",
                "sol-solana":"solana","bnb-binance-coin":"binancecoin",
                "ada-cardano":"cardano"}
@@ -1415,6 +2528,7 @@ def crypto_paprika(timeout=8):
             }
     return out if out else None
 
+
 def crypto_binance(timeout=8):
     symbols = {"BTCUSDT":"bitcoin","ETHUSDT":"ethereum","SOLUSDT":"solana",
                "BNBUSDT":"binancecoin","ADAUSDT":"cardano"}
@@ -1430,18 +2544,17 @@ def crypto_binance(timeout=8):
             }
     return out if out else None
 
+
 def get_crypto_prices(ttl=CACHE_DEFAULT_TTL, with_meta=False, force=False):
-    """
-    force=True → игнорирует свежий кэш, делает live fetch.
-    При падении сети всё равно берёт stale кэш.
-    """
+    """Fallback: CoinGecko → CoinPaprika → CoinCap → Binance."""
     key = "prices:crypto"
     if not force:
         cached, meta = cache_get_meta(key, ttl, allow_stale=True)
         if cached:
             src = cached.get("source", "кэш")
             label = f"{src} (STALE)" if meta["stale"] else f"{src} (кэш)"
-            if with_meta: return cached.get("data"), label, meta
+            if with_meta:
+                return cached.get("data"), label, meta
             return cached.get("data"), label
 
     sources = [
@@ -1454,39 +2567,48 @@ def get_crypto_prices(ttl=CACHE_DEFAULT_TTL, with_meta=False, force=False):
     if data:
         cache_set(key, {"data": data, "source": source})
         live_meta = {"fresh": True, "stale": False, "age": 0.0, "ts": time.time()}
-        if with_meta: return data, source, live_meta
+        if with_meta:
+            return data, source, live_meta
         return data, source
 
     stale = cache_get(key, ttl=CACHE_MAX_AGE)
     if stale:
         label = f"{stale.get('source','?')} (STALE)"
         stale_meta = {"fresh": False, "stale": True, "age": CACHE_MAX_AGE, "ts": 0}
-        if with_meta: return stale.get("data"), label, stale_meta
+        if with_meta:
+            return stale.get("data"), label, stale_meta
         return stale.get("data"), label
 
-    if with_meta: return None, None, None
+    if with_meta:
+        return None, None, None
     return None, None
 
 # ═══ КУРС ВАЛЮТ ═══
 def fx_cbr_xml(timeout=8):
     data = fetch("https://www.cbr-xml-daily.ru/daily_json.js", timeout=timeout)
-    if not data or "Valute" not in data: return None
+    if not data or "Valute" not in data:
+        return None
     v = data["Valute"]
     usd_rub = v.get("USD", {}).get("Value")
     eur_rub = v.get("EUR", {}).get("Value")
-    if not usd_rub: return None
+    if not usd_rub:
+        return None
     return {
         "USD_RUB": usd_rub, "EUR_RUB": eur_rub,
         "USD_EUR": (usd_rub / eur_rub) if eur_rub else None,
         "updated": data.get("Date", "")[:10], "source": "ЦБ РФ",
     }
 
+
 def fx_erapi(timeout=8):
     data = fetch("https://open.er-api.com/v6/latest/USD", timeout=timeout)
-    if not data or data.get("result") != "success": return None
+    if not data or data.get("result") != "success":
+        return None
     rates = data.get("rates", {})
-    usd_rub = rates.get("RUB"); usd_eur = rates.get("EUR")
-    if not usd_rub: return None
+    usd_rub = rates.get("RUB")
+    usd_eur = rates.get("EUR")
+    if not usd_rub:
+        return None
     return {
         "USD_RUB": usd_rub,
         "EUR_RUB": (usd_rub / usd_eur) if usd_eur else None,
@@ -1495,98 +2617,124 @@ def fx_erapi(timeout=8):
         "source": "open.er-api.com",
     }
 
+
 def fx_frankfurter(timeout=8):
     data = fetch("https://api.frankfurter.app/latest?from=USD&to=RUB,EUR", timeout=timeout)
-    if not data or "rates" not in data: return None
+    if not data or "rates" not in data:
+        return None
     rates = data["rates"]
-    usd_rub = rates.get("RUB"); usd_eur = rates.get("EUR")
-    if not usd_rub: return None
+    usd_rub = rates.get("RUB")
+    usd_eur = rates.get("EUR")
+    if not usd_rub:
+        return None
     return {
         "USD_RUB": usd_rub,
         "EUR_RUB": (usd_rub / usd_eur) if usd_eur else None,
         "USD_EUR": usd_eur,
-        "updated": data.get("date", ""), "source": "ECB (Frankfurter)",
+        "updated": data.get("date", ""),
+        "source": "ECB (Frankfurter)",
     }
+
 
 def fx_exhost(timeout=8):
     data = fetch("https://api.exchangerate.host/latest?base=USD&symbols=RUB,EUR", timeout=timeout)
-    if not data or "rates" not in data: return None
+    if not data or "rates" not in data:
+        return None
     rates = data["rates"]
-    usd_rub = rates.get("RUB"); usd_eur = rates.get("EUR")
-    if not usd_rub: return None
+    usd_rub = rates.get("RUB")
+    usd_eur = rates.get("EUR")
+    if not usd_rub:
+        return None
     return {
         "USD_RUB": usd_rub,
         "EUR_RUB": (usd_rub / usd_eur) if usd_eur else None,
         "USD_EUR": usd_eur,
-        "updated": data.get("date", ""), "source": "exchangerate.host",
+        "updated": data.get("date", ""),
+        "source": "exchangerate.host",
     }
 
+
 def get_fx_rates(ttl=1800, with_meta=False, force=False):
+    """Fallback: ЦБ РФ → open.er-api → Frankfurter → exchangerate.host."""
     key = "prices:fx"
     if not force:
         cached, meta = cache_get_meta(key, ttl, allow_stale=True)
         if cached:
             src = cached.get("source", "кэш")
             label = f"{src} (STALE)" if meta["stale"] else f"{src} (кэш)"
-            if with_meta: return cached.get("data"), label, meta
+            if with_meta:
+                return cached.get("data"), label, meta
             return cached.get("data"), label
 
     sources = [
         ("ЦБ РФ",            fx_cbr_xml),
         ("open.er-api",      fx_erapi),
         ("Frankfurter",      fx_frankfurter),
-        ("exchangerate.host",fx_exhost),
+        ("exchangerate.host", fx_exhost),
     ]
     data, source = try_sources(sources)
     if data:
         cache_set(key, {"data": data, "source": source})
         live_meta = {"fresh": True, "stale": False, "age": 0.0, "ts": time.time()}
-        if with_meta: return data, source, live_meta
+        if with_meta:
+            return data, source, live_meta
         return data, source
 
     stale = cache_get(key, ttl=CACHE_MAX_AGE)
     if stale:
         label = f"{stale.get('source','?')} (STALE)"
         stale_meta = {"fresh": False, "stale": True, "age": CACHE_MAX_AGE, "ts": 0}
-        if with_meta: return stale.get("data"), label, stale_meta
+        if with_meta:
+            return stale.get("data"), label, stale_meta
         return stale.get("data"), label
 
-    if with_meta: return None, None, None
+    if with_meta:
+        return None, None, None
     return None, None
 
 # ═══ ГЕО IP ═══
 def ip_ipinfo(timeout=8):
     d = fetch("https://ipinfo.io/json", timeout=timeout)
-    if not d or "ip" not in d: return None
+    if not d or "ip" not in d:
+        return None
     return {"ip": d.get("ip"), "city": d.get("city"), "region": d.get("region"),
             "country": d.get("country"), "org": d.get("org"),
             "timezone": d.get("timezone"), "loc": d.get("loc"),
             "source": "ipinfo.io"}
 
+
 def ip_ipapi(timeout=8):
-    d = fetch("http://ip-api.com/json/?fields=status,country,regionName,city,isp,query,timezone", timeout=timeout)
-    if not d or d.get("status") != "success": return None
+    url = ("http://ip-api.com/json/"
+           "?fields=status,country,regionName,city,isp,query,timezone")
+    d = fetch(url, timeout=timeout)
+    if not d or d.get("status") != "success":
+        return None
     return {"ip": d.get("query"), "city": d.get("city"), "region": d.get("regionName"),
             "country": d.get("country"), "org": d.get("isp"),
             "timezone": d.get("timezone"), "loc": "", "source": "ip-api.com"}
 
+
 def ip_ipwhois(timeout=8):
     d = fetch("https://ipwhois.app/json/", timeout=timeout)
-    if not d or not d.get("ip"): return None
+    if not d or not d.get("ip"):
+        return None
     return {"ip": d.get("ip"), "city": d.get("city"), "region": d.get("region"),
             "country": d.get("country"), "org": d.get("org"),
             "timezone": d.get("timezone"),
             "loc": f"{d.get('latitude','')},{d.get('longitude','')}",
             "source": "ipwhois.app"}
 
+
 def get_ip_info(ttl=3600, with_meta=False, force=False):
+    """Fallback: ipinfo.io → ip-api.com → ipwhois.app."""
     key = "ip:info"
     if not force:
         cached, meta = cache_get_meta(key, ttl, allow_stale=True)
         if cached:
             src = cached.get("source", "кэш")
             label = f"{src} (STALE)" if meta["stale"] else f"{src} (кэш)"
-            if with_meta: return cached.get("data"), label, meta
+            if with_meta:
+                return cached.get("data"), label, meta
             return cached.get("data"), label
 
     sources = [("ipinfo.io", ip_ipinfo), ("ip-api.com", ip_ipapi), ("ipwhois.app", ip_ipwhois)]
@@ -1594,9 +2742,12 @@ def get_ip_info(ttl=3600, with_meta=False, force=False):
     if data:
         cache_set(key, {"data": data, "source": source})
         live_meta = {"fresh": True, "stale": False, "age": 0.0, "ts": time.time()}
-        if with_meta: return data, source, live_meta
+        if with_meta:
+            return data, source, live_meta
         return data, source
-    if with_meta: return None, None, None
+
+    if with_meta:
+        return None, None, None
     return None, None
 
 # ═══ НОВОСТИ ═══
@@ -1608,14 +2759,17 @@ NEWS_FEEDS_RU = [
     ("Ferra",        "https://www.ferra.ru/rss/"),
     ("Код Дурова",   "https://kod.ru/rss"),
 ]
+
 NEWS_FEEDS_GLOBAL = [
     ("TechCrunch",   "https://techcrunch.com/feed/"),
     ("MIT Tech",     "https://www.technologyreview.com/feed/"),
 ]
 
+
 def get_news_feeds(include_global=False):
     feeds = list(NEWS_FEEDS_RU)
-    if include_global: feeds += NEWS_FEEDS_GLOBAL
+    if include_global:
+        feeds += NEWS_FEEDS_GLOBAL
     return feeds
 
 # ═══ ОБЛОЖКИ ═══
@@ -1623,38 +2777,51 @@ def cover_itunes(artist, title, timeout=8):
     q = urllib.parse.quote(f"{artist} {title}")
     url = f"https://itunes.apple.com/search?term={q}&entity=song&limit=1"
     d = fetch(url, timeout=timeout)
-    if not d or not d.get("results"): return None
+    if not d or not d.get("results"):
+        return None
     art = d["results"][0].get("artworkUrl100", "")
-    if art: return art.replace("100x100", "600x600")
+    if art:
+        return art.replace("100x100", "600x600")
     return None
+
 
 def cover_deezer(artist, title, timeout=8):
     q = urllib.parse.quote(f"{artist} {title}")
     url = f"https://api.deezer.com/search?q={q}&limit=1"
     d = fetch(url, timeout=timeout)
-    if not d or not d.get("data"): return None
+    if not d or not d.get("data"):
+        return None
     first = d["data"][0]
     return first.get("album", {}).get("cover_xl") or first.get("album", {}).get("cover_big")
 
+
 def cover_lastfm(artist, title, timeout=8, api_key=None):
-    if not api_key: return None
+    if not api_key:
+        return None
     q = urllib.parse.quote(artist)
-    url = f"https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist={q}&api_key={api_key}&format=json"
+    url = ("https://ws.audioscrobbler.com/2.0/"
+           f"?method=artist.getinfo&artist={q}&api_key={api_key}&format=json")
     d = fetch(url, timeout=timeout)
-    if not d: return None
+    if not d:
+        return None
     imgs = d.get("artist", {}).get("image", [])
     for img in reversed(imgs):
-        if img.get("#text"): return img["#text"]
+        if img.get("#text"):
+            return img["#text"]
     return None
 
+
 def get_cover(artist, title, ttl=604800, with_meta=False, force=False):
+    """Fallback: iTunes → Deezer. Кэш 7 дней."""
     key = f"cover:{artist.lower()}|{title.lower()}"
     if not force:
         cached, meta = cache_get_meta(key, ttl)
         if cached:
             label = f"{cached.get('source','кэш')} (кэш)"
-            if with_meta: return cached.get("url"), label, meta
+            if with_meta:
+                return cached.get("url"), label, meta
             return cached.get("url"), label
+
     sources = [
         ("iTunes", lambda t: cover_itunes(artist, title, timeout=t)),
         ("Deezer", lambda t: cover_deezer(artist, title, timeout=t)),
@@ -1665,19 +2832,22 @@ def get_cover(artist, title, ttl=604800, with_meta=False, force=False):
             if url:
                 cache_set(key, {"url": url, "source": name})
                 live_meta = {"fresh": True, "stale": False, "age": 0.0, "ts": time.time()}
-                if with_meta: return url, name, live_meta
+                if with_meta:
+                    return url, name, live_meta
                 return url, name
         except Exception:
             continue
-    if with_meta: return None, None, None
+    if with_meta:
+        return None, None, None
     return None, None
 
-# ═══ МЕТАДАННЫЕ ═══
+# ═══ МЕТАДАННЫЕ ТРЕКОВ ═══
 def meta_itunes(title, artist, timeout=8):
     q = urllib.parse.quote(f"{artist} {title}" if artist else title)
     url = f"https://itunes.apple.com/search?term={q}&entity=song&limit=1"
     d = fetch(url, timeout=timeout)
-    if not d or not d.get("results"): return None
+    if not d or not d.get("results"):
+        return None
     r = d["results"][0]
     return {"title":  r.get("trackName","").strip(),
             "artist": r.get("artistName","").strip(),
@@ -1686,43 +2856,55 @@ def meta_itunes(title, artist, timeout=8):
             "year":   (r.get("releaseDate") or "")[:4],
             "source": "iTunes"}
 
+
 def meta_deezer(title, artist, timeout=8):
     q = urllib.parse.quote(f"{artist} {title}" if artist else title)
     url = f"https://api.deezer.com/search?q={q}&limit=1"
     d = fetch(url, timeout=timeout)
-    if not d or not d.get("data"): return None
+    if not d or not d.get("data"):
+        return None
     r = d["data"][0]
     return {"title":  r.get("title","").strip(),
             "artist": r.get("artist",{}).get("name","").strip(),
             "album":  r.get("album",{}).get("title","").strip(),
             "genre":  "", "year": "", "source": "Deezer"}
 
+
 def meta_musicbrainz(title, artist, timeout=10):
     q = urllib.parse.quote(f"{artist} {title}" if artist else title)
     url = f"https://musicbrainz.org/ws/2/recording?query={q}&fmt=json&limit=1"
     d = fetch(url, timeout=timeout)
-    if not d or not d.get("recordings"): return None
+    if not d or not d.get("recordings"):
+        return None
     rec = d["recordings"][0]
     credits = rec.get("artist-credit", [])
-    artist_name = "".join((c.get("name","") + (c.get("joinphrase","") or "")) for c in credits).strip()
+    artist_name = "".join(
+        (c.get("name","") + (c.get("joinphrase","") or "")) for c in credits
+    ).strip()
     releases = rec.get("releases", [])
     album = releases[0].get("title","").strip() if releases else ""
     year = ""
-    if releases and releases[0].get("date"): year = releases[0]["date"][:4]
+    if releases and releases[0].get("date"):
+        year = releases[0]["date"][:4]
     genre = ""
-    if rec.get("tags"): genre = rec["tags"][0].get("name","").capitalize()
+    if rec.get("tags"):
+        genre = rec["tags"][0].get("name","").capitalize()
     return {"title":  rec.get("title","").strip(),
             "artist": artist_name, "album": album,
             "genre":  genre, "year": year, "source": "MusicBrainz"}
 
+
 def get_track_meta(title, artist="", ttl=604800, with_meta=False, force=False):
+    """Fallback: iTunes → Deezer → MusicBrainz. Кэш 7 дней."""
     key = f"meta:{artist.lower()}|{title.lower()}"
     if not force:
         cached, meta = cache_get_meta(key, ttl)
         if cached:
             label = f"{cached.get('source','кэш')} (кэш)"
-            if with_meta: return cached.get("meta"), label, meta
+            if with_meta:
+                return cached.get("meta"), label, meta
             return cached.get("meta"), label
+
     sources = [
         ("iTunes",      lambda t: meta_itunes(title, artist, t)),
         ("Deezer",      lambda t: meta_deezer(title, artist, t)),
@@ -1734,15 +2916,18 @@ def get_track_meta(title, artist="", ttl=604800, with_meta=False, force=False):
             if meta_data and meta_data.get("title"):
                 cache_set(key, {"meta": meta_data, "source": name})
                 live_meta = {"fresh": True, "stale": False, "age": 0.0, "ts": time.time()}
-                if with_meta: return meta_data, name, live_meta
+                if with_meta:
+                    return meta_data, name, live_meta
                 return meta_data, name
         except Exception:
             continue
-    if with_meta: return None, None, None
+    if with_meta:
+        return None, None, None
     return None, None
 
-# ═══ БЕЙДЖ СВЕЖЕСТИ ═══
+# ═══ БЕЙДЖИ СВЕЖЕСТИ ═══
 def freshness_badge(meta):
+    """Rich-разметка индикатора свежести."""
     if not meta:
         return "[dim]· нет данных[/]"
     if meta.get("fresh"):
@@ -1759,21 +2944,27 @@ def freshness_badge(meta):
         return f"[bright_yellow]○ КЭШ {int(age/60)}мин[/]"
     return f"[bright_yellow]○ КЭШ {age/3600:.1f}ч[/]"
 
+
 def freshness_badge_plain(meta):
-    if not meta: return "· нет"
-    if meta.get("fresh"): return "● LIVE"
+    """То же без rich-разметки."""
+    if not meta:
+        return "· нет"
+    if meta.get("fresh"):
+        return "● LIVE"
     if meta.get("stale"):
         age = meta.get("age", 0)
         return f"⚠ STALE {int(age/60)}мин" if age < 3600 else f"⚠ STALE {age/3600:.1f}ч"
     age = meta.get("age", 0)
-    if age < 60: return "○ КЭШ <1мин"
-    if age < 3600: return f"○ КЭШ {int(age/60)}мин"
+    if age < 60:
+        return "○ КЭШ <1мин"
+    if age < 3600:
+        return f"○ КЭШ {int(age/60)}мин"
     return f"○ КЭШ {age/3600:.1f}ч"
 
-# ═══ SELFTEST + CLI ═══
+# ═══ SELFTEST ═══
 def selftest():
     print("=" * 55)
-    print("  net_helper v2.2 — self-test")
+    print("  net_helper v3.0 — self-test")
     print("=" * 55)
     print()
     info = cache_info()
@@ -1788,12 +2979,13 @@ def selftest():
     print(f"   {'✔' if d else '✘'} [{time.time()-t0:.2f}с] {d}")
     print()
 
-    print("🔍 2. get_fx_rates() — live...")
+    print("🔍 2. get_fx_rates() — live (force)...")
     t0 = time.time()
     fx, src, meta = get_fx_rates(with_meta=True, force=True)
     print(f"   {'✔' if fx else '✘'} [{time.time()-t0:.2f}с] {src}")
     print(f"     Бейдж: {freshness_badge_plain(meta)}")
-    if fx: print(f"     USD_RUB = {fx.get('USD_RUB')}")
+    if fx:
+        print(f"     USD_RUB = {fx.get('USD_RUB')}")
     print()
 
     print("🔍 3. get_fx_rates() — из кэша...")
@@ -1824,13 +3016,15 @@ def selftest():
     print(f"     {'✅ КЭШ РАБОТАЕТ' if dt < 0.5 else '⚠ Медленно'}")
     print()
 
-    print("🔍 6. get_crypto_prices(force=True) — обход кэша...")
+    print("🔍 6. get_cover() — обложка...")
     t0 = time.time()
-    cr3, src3, meta3 = get_crypto_prices(with_meta=True, force=True)
+    url, src, meta = get_cover("Linkin Park", "Numb", with_meta=True)
     dt = time.time() - t0
-    print(f"   ✔ [{dt:.2f}с] {src3}")
-    print(f"     Бейдж: {freshness_badge_plain(meta3)}")
-    print(f"     {'✅ FORCE РАБОТАЕТ (пошёл в сеть)' if dt > 0.2 else '⚠ Не пошёл в сеть'}")
+    if url:
+        print(f"   ✔ [{dt:.2f}с] {src}")
+        print(f"     {url[:80]}...")
+    else:
+        print(f"   ✘ [{dt:.2f}с] Не найдено")
     print()
 
     info = cache_info()
@@ -1838,8 +3032,10 @@ def selftest():
     print()
     print("=" * 55)
 
+# ═══ CLI ═══
 if __name__ == "__main__":
-    if "--selftest" in sys.argv:        selftest()
+    if "--selftest" in sys.argv:
+        selftest()
     elif "--cache-info" in sys.argv:
         i = cache_info()
         print(f"Dir:   {i['dir']}\nFiles: {i['files']}\nSize:  {i['size']} байт")
@@ -1848,7 +3044,7 @@ if __name__ == "__main__":
     elif "--cache-cleanup" in sys.argv:
         print(f"✔ Удалено старого: {cache_cleanup()}")
     else:
-        print("net_helper v2.2 — fallback + кэш + force")
+        print("net_helper v3.0 — fallback + кэш + метаданные")
         print()
         print("  python net_helper.py --selftest       — тест")
         print("  python net_helper.py --cache-info     — инфо")
@@ -2787,18 +3983,1778 @@ if __name__ == "__main__":
 
 ---
 
-## 📄 hacktool.py
+## 📄 art.py
 
-*34574 байт · 733 строк*
+*8497 байт · 235 строк*
 
 ```python
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""HackTool v2 — расширенный OSINT-мультитул с 28 командами"""
+"""Art — поиск картинки по телефону и показ через viu"""
 
-import os, sys, time, random, subprocess, socket, secrets, string, json, re
-import urllib.request, urllib.error, urllib.parse
+import os, sys, subprocess, time
+from rich.console import Console
+from rich.prompt import Prompt
+
+console = Console()
+
+HOME = os.path.expanduser("~")
+WELCOME_FILE = os.path.join(HOME, ".argonov_welcome_image")
+STORAGE = os.path.join(HOME, "storage")
+SEARCH_DIRS = [
+    os.path.join(STORAGE, "shared"),
+    os.path.join(HOME, "storage"),
+    HOME,
+    "/sdcard",
+    "/storage/emulated/0",
+]
+
+IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".bmp", ".gif", ".tiff"}
+
+def has_cmd(c): 
+    return subprocess.run(f"which {c}", shell=True, capture_output=True).returncode == 0
+
+def find_image(name):
+    """
+    Ищет файл по имени в SEARCH_DIRS.
+    name может быть:
+      - полный путь
+      - имя с расширением (fantasy.png)
+      - имя без (fantasy)
+    """
+    # 1. Если полный путь
+    if os.path.isfile(name): return name
+
+    # 2. Если с расширением
+    if os.path.splitext(name)[1].lower() in IMAGE_EXTS:
+        target = name.lower()
+    else:
+        target_exts = IMAGE_EXTS
+        target = name.lower()
+
+    results = []
+    for base in SEARCH_DIRS:
+        if not os.path.isdir(base): continue
+        for root, dirs, files in os.walk(base):
+            # Пропускаем системные
+            dirs[:] = [d for d in dirs if d not in
+                       ("Android/data", "Android/obb", ".thumbnails", ".cache", "Termux")]
+            for f in files:
+                ext = os.path.splitext(f)[1].lower()
+                if ext not in IMAGE_EXTS: continue
+                f_lower = f.lower()
+                if name.lower() in f_lower:
+                    results.append(os.path.join(root, f))
+            if len(results) > 50: break
+        if len(results) > 50: break
+
+    if not results: return None
+    if len(results) == 1: return results[0]
+
+    # Несколько результатов — показать выбор
+    console.print()
+    console.print(f"[bold yellow]🔍 Найдено {len(results)} файлов:[/]")
+    console.print()
+    for i, r in enumerate(results[:20], 1):
+        sz = os.path.getsize(r)
+        short = r.replace(STORAGE + "/", "").replace(HOME, "~")
+        console.print(f"  [cyan]{i:2}.[/] {short}  [dim]({sz//1024} КБ)[/]")
+    console.print()
+    try:
+        ch = console.input("[bold magenta]Номер (Enter = 1)> [/]").strip()
+        n = int(ch) if ch.isdigit() else 1
+        if 1 <= n <= len(results):
+            return results[n-1]
+    except: pass
+    return results[0]
+
+def show_art(path):
+    if not path or not os.path.isfile(path):
+        console.print(f"[red]❌ Файл не найден: {path}[/]")
+        return False
+    if not has_cmd("viu"):
+        console.print("[red]❌ viu не установлен[/]")
+        return False
+
+    os.system("clear")
+    cols = int(subprocess.run("tput cols", shell=True, capture_output=True, text=True).stdout.strip() or 50)
+    rows = int(subprocess.run("tput lines", shell=True, capture_output=True, text=True).stdout.strip() or 40)
+    w = cols - 2
+    h = rows - 4
+
+    console.print()
+    console.print(f"[dim]🎨 {os.path.basename(path)}[/]")
+    console.print()
+    try:
+        subprocess.run(["viu", "-w", str(w), "-h", str(h), "-b", "-t", path])
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return False
+    console.print()
+    return True
+
+def set_welcome(path):
+    if not path or not os.path.isfile(path):
+        console.print(f"[red]❌ Файл не найден: {path}[/]")
+        return False
+    with open(WELCOME_FILE, "w") as f:
+        f.write(os.path.abspath(path))
+    console.print(f"[green]✔ Welcome-картинка установлена:[/] [cyan]{os.path.basename(path)}[/]")
+    console.print(f"[dim]   {os.path.abspath(path)}[/]")
+    console.print()
+    console.print(f"[dim]При следующем запуске Termux будет показана эта картинка.[/]")
+    return True
+
+def get_welcome():
+    if not os.path.exists(WELCOME_FILE): return None
+    try:
+        with open(WELCOME_FILE) as f:
+            p = f.read().strip()
+        return p if os.path.isfile(p) else None
+    except: return None
+
+def reset_welcome():
+    if os.path.exists(WELCOME_FILE):
+        os.remove(WELCOME_FILE)
+        console.print("[green]✔ Welcome-картинка сброшена[/]")
+    else:
+        console.print("[yellow]⚠ Welcome не был установлен[/]")
+
+def show_help():
+    console.print()
+    console.print("[bold bright_green]🎨 ART — показ картинок[/]")
+    console.print()
+    console.print("  [cyan]art[/]                     — показать welcome-картинку")
+    console.print("  [cyan]art <имя>[/]                — найти и показать файл")
+    console.print("  [cyan]art <имя> set[/]            — установить как welcome")
+    console.print("  [cyan]art set <имя>[/]            — то же самое")
+    console.print("  [cyan]art reset[/]                — сбросить welcome")
+    console.print("  [cyan]art list[/]                 — список найденных картинок")
+    console.print("  [cyan]art help[/]                 — эта справка")
+    console.print()
+
+def list_images():
+    console.print()
+    console.print("[bold yellow]🔍 Поиск изображений в памяти телефона...[/]")
+    console.print()
+    found = []
+    for base in SEARCH_DIRS[:2]:  # только shared/storage чтобы не долго
+        if not os.path.isdir(base): continue
+        for root, dirs, files in os.walk(base):
+            dirs[:] = [d for d in dirs if d not in
+                       ("Android/data", "Android/obb", ".thumbnails", ".cache", "Termux")]
+            for f in files:
+                if os.path.splitext(f)[1].lower() in IMAGE_EXTS:
+                    fp = os.path.join(root, f)
+                    try: sz = os.path.getsize(fp)
+                    except: sz = 0
+                    found.append((fp, sz))
+            if len(found) > 200: break
+        if len(found) > 200: break
+
+    found.sort(key=lambda x: -x[1])
+    for i, (fp, sz) in enumerate(found[:30], 1):
+        short = fp.replace(STORAGE + "/", "").replace(HOME, "~")
+        console.print(f"  [cyan]{i:2}.[/] {short[:60]}  [dim]({sz//1024} КБ)[/]")
+    console.print()
+    console.print(f"[dim]Всего найдено: {len(found)} (показаны 30 крупнейших)[/]")
+    console.print()
+
+def main():
+    args = sys.argv[1:]
+
+    if not args:
+        # Просто art — показать welcome
+        w = get_welcome()
+        if not w:
+            console.print("[yellow]⚠ Welcome-картинка не установлена. Используй: art <имя> set[/]")
+            console.print()
+            show_help()
+            return
+        show_art(w)
+        return
+
+    # art help
+    if args[0].lower() in ("help", "-h", "--help"):
+        show_help()
+        return
+
+    # art list
+    if args[0].lower() == "list":
+        list_images()
+        return
+
+    # art reset
+    if args[0].lower() == "reset":
+        reset_welcome()
+        return
+
+    # art set <имя>
+    if args[0].lower() == "set" and len(args) >= 2:
+        name = " ".join(args[1:])
+        console.print(f"[yellow]🔍 Ищу '{name}'...[/]")
+        path = find_image(name)
+        if path: set_welcome(path)
+        else: console.print(f"[red]❌ Не найдено: {name}[/]")
+        return
+
+    # art <имя> set
+    if len(args) >= 2 and args[-1].lower() == "set":
+        name = " ".join(args[:-1])
+        console.print(f"[yellow]🔍 Ищу '{name}'...[/]")
+        path = find_image(name)
+        if path: set_welcome(path)
+        else: console.print(f"[red]❌ Не найдено: {name}[/]")
+        return
+
+    # art <имя> — просто показать
+    name = " ".join(args)
+    console.print(f"[yellow]🔍 Ищу '{name}'...[/]")
+    path = find_image(name)
+    if not path:
+        console.print(f"[red]❌ Не найдено: {name}[/]")
+        return
+    console.print(f"[green]✔ {path}[/]")
+    time.sleep(0.5)
+    show_art(path)
+
+if __name__ == "__main__":
+    try: main()
+    except KeyboardInterrupt:
+        console.print("\n[dim]Прервано.[/]")
+```
+
+---
+
+## 📄 crypto_informer.py
+
+*8361 байт · 242 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Crypto Informer
+#  Курсы крипты + фиатных валют (multi-source)
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Курсы криптовалют и валют с индикатором свежести LIVE/КЭШ.
+
+Использование:
+    crypto                       # один показ + подсказка
+    crypto --watch [N]           # watch-режим, интервал N сек
+    crypto -w 30                 # то же, короче
+
+Зависимости:
+    - rich
+    - net_helper (локальный)
+"""
+
+import os
+import sys
+import time
+import subprocess
 from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.box import SIMPLE_HEAD
+
+# локальные
+sys.path.insert(0, os.path.expanduser("~"))
+from net_helper import get_crypto_prices, get_fx_rates, freshness_badge
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+COIN_ICONS = {
+    "bitcoin": "₿", "ethereum": "Ξ", "solana": "◎", "binancecoin": "🅑",
+    "cardano": "₳", "ripple": "✕", "dogecoin": "Ð", "polkadot": "●",
+    "tron": "◈", "litecoin": "Ł", "chainlink": "⬡", "matic-network": "⬢",
+    "avalanche-2": "▲", "uniswap": "🦄", "shiba-inu": "🐕",
+    "toncoin": "💎", "near": "Ⓝ", "cosmos": "⚛", "stellar": "✦",
+}
+
+DEFAULT_INTERVAL = 60
+
+# ═══ УТИЛИТЫ ═══
+def clear():
+    subprocess.run("clear", shell=True)
+
+
+def fmt_price(p):
+    if p is None:
+        return "—"
+    if p < 0.01:
+        return f"${p:.8f}"
+    if p < 1:
+        return f"${p:.4f}"
+    if p < 1000:
+        return f"${p:,.2f}"
+    return f"${p:,.0f}"
+
+
+def fmt_change(pct):
+    if pct is None:
+        return "—"
+    color = GREEN_BRIGHT if pct >= 0 else RED
+    arrow = "▲" if pct >= 0 else "▼"
+    return f"[{color}]{arrow}{abs(pct):.2f}%[/]"
+
+# ═══ РИСОВКА ═══
+def print_header(watch=False):
+    line = Text()
+    line.append("▓▒░ ", style=f"bold {GREEN_BRIGHT}")
+    line.append("CRYPTO INFORMER", style=f"bold {GREEN_BRIGHT}")
+    line.append(" ░▒▓", style=f"bold {GREEN_BRIGHT}")
+    if watch:
+        line.append("  ", style="")
+        line.append("[LIVE]", style=f"bold {MAGENTA}")
+    console.print(line)
+    console.print(Text("─" * 50, style=GREEN_DIM))
+    console.print()
+
+
+def print_freshness(crypto_meta, fx_meta):
+    line = Text()
+    line.append("  ", style="")
+    line.append_text(Text.from_markup(freshness_badge(crypto_meta)))
+    line.append(" крипта   ·   ", style=f"dim {GRAY}")
+    line.append_text(Text.from_markup(freshness_badge(fx_meta)))
+    line.append(" курс   ·   ", style=f"dim {GRAY}")
+    line.append(f"🕐 {datetime.now().strftime('%H:%M:%S')}", style=f"dim {GRAY}")
+    console.print(line)
+    console.print()
+
+
+def print_fx(fx):
+    if not fx:
+        console.print(Text("  ⚠ Курс валют недоступен", style=YELLOW))
+        console.print()
+        return
+    console.print(f"  [dim]💵 1 USD ≈ [/][bold {YELLOW}]{fx['USD_RUB']:.2f}₽[/]")
+    if fx.get("EUR_RUB"):
+        console.print(f"  [dim]💶 1 EUR ≈ [/][bold {YELLOW}]{fx['EUR_RUB']:.2f}₽[/]")
+    if fx.get("USD_EUR"):
+        console.print(f"  [dim]💵 1 USD ≈ [/][bold {CYAN}]{fx['USD_EUR']:.4f}€[/]")
+    console.print()
+
+
+def print_prices(prices, fx, source):
+    if not prices:
+        console.print("  [red]❌ Нет данных[/]")
+        console.print()
+        return
+    t = Table(box=SIMPLE_HEAD, border_style="black",
+              header_style=f"bold {CYAN}", padding=(0,1), expand=False)
+    t.add_column("Монета", style=WHITE, min_width=18)
+    t.add_column("USD", style=GREEN_BRIGHT, justify="right", min_width=12)
+    t.add_column("RUB", style=YELLOW, justify="right", min_width=12)
+    t.add_column("24ч", justify="right", min_width=8)
+    usd_rub = fx.get("USD_RUB", 0) if fx else 0
+    for cid, c in prices.items():
+        icon = COIN_ICONS.get(cid, "●")
+        name = f"{icon} {c['symbol']:<4} {c['name'][:10]}"
+        usd = c.get("usd", 0)
+        rub = c.get("rub") or (usd * usd_rub if usd_rub else 0)
+        t.add_row(name, fmt_price(usd),
+                  f"{rub:,.0f} ₽" if rub else "—",
+                  fmt_change(c.get("change_24h", 0)))
+    console.print(t)
+    console.print()
+    console.print(f"  [dim]📊 {source}[/]")
+    console.print()
+
+# ═══ ЯДРО ═══
+def fetch_all(force=False):
+    """Возвращает (prices, source, crypto_meta, fx, fx_src, fx_meta)."""
+    p, s, m = get_crypto_prices(with_meta=True, force=force)
+    f, fs, fm = get_fx_rates(with_meta=True, force=force)
+    return p, s, m, f, fs, fm
+
+
+def show_once(force=False):
+    with console.status(f"[bold {GREEN_BRIGHT}]📡 Загружаю...[/]", spinner="dots"):
+        prices, source, crypto_meta, fx, fx_src, fx_meta = fetch_all(force=force)
+
+    print_header(watch=False)
+    print_freshness(crypto_meta, fx_meta)
+    print_fx(fx)
+    print_prices(prices, fx, source)
+
+
+def watch_loop(interval):
+    """Простой цикл: clear → показать → sleep."""
+    try:
+        while True:
+            clear()
+            prices, source, crypto_meta, fx, fx_src, fx_meta = fetch_all(force=True)
+
+            print_header(watch=True)
+            print_freshness(crypto_meta, fx_meta)
+            print_fx(fx)
+            print_prices(prices, fx, source)
+            console.print(f"  [dim]⏱ обновление каждые {interval}с  ·  [/][bold {YELLOW}]Ctrl+C[/][dim] — выход[/]")
+            console.print()
+
+            time.sleep(interval)
+    except KeyboardInterrupt:
+        console.print()
+        console.print("[dim]⏹ Watch остановлен.[/]")
+        console.print()
+
+# ═══ MAIN ═══
+def one_shot():
+    clear()
+    show_once(force=False)
+
+    hint = Table(box=None, show_header=False, padding=(0, 2))
+    hint.add_column("", style=f"bold {YELLOW}", width=14, justify="right")
+    hint.add_column("", style=f"{CYAN}")
+    hint.add_row("[crypto -w 30]", "🚀 watch — автообновление каждые 30с")
+    hint.add_row("[crypto -w 60]", "🚀 watch — автообновление каждые 60с")
+    hint.add_row("[crypto -w 10]", "🚀 watch — автообновление каждые 10с")
+    hint.add_row("[crypto]", "🔄 просто показать (сейчас)")
+    hint.add_row("[q]", "🚪 выход")
+    console.print(Panel(hint, title=f"[bold {GREEN_BRIGHT}]⌨  ЧТО ДАЛЬШЕ[/]",
+                        border_style=GREEN_DIM, padding=(0, 1)))
+    console.print()
+
+    try:
+        cmd = console.input(f"[bold {MAGENTA}]╰─❯ [/]").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        return
+
+    if cmd in ("q", "exit", "quit", "выход"):
+        return
+    elif cmd.startswith("w"):
+        parts = cmd.split()
+        iv = DEFAULT_INTERVAL
+        if len(parts) > 1 and parts[1].isdigit():
+            iv = int(parts[1])
+        watch_loop(iv)
+    elif cmd == "":
+        one_shot()
+
+
+def main():
+    args = sys.argv[1:]
+    watch = False
+    interval = DEFAULT_INTERVAL
+    for i, a in enumerate(args):
+        if a in ("--watch", "-w"):
+            watch = True
+            if i + 1 < len(args) and args[i+1].isdigit():
+                interval = int(args[i+1])
+            break
+
+    if watch:
+        watch_loop(interval)
+        return
+
+    try:
+        one_shot()
+    except KeyboardInterrupt:
+        console.print()
+        console.print("[dim]Выход.[/]")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print()
+        console.print("[dim]Выход.[/]")
+```
+
+---
+
+## 📄 download_zone.py
+
+*14408 байт · 415 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Download Zone
+#  Многопоточный загрузчик (aria2c) с прогресс-баром
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Загрузчик HTTP/HTTPS/magnet через aria2c (16 потоков).
+
+Использование:
+    d                    # через argonov
+    argonov d            # то же
+
+Возможности:
+    - Многопоточная загрузка (16 соединений)
+    - Прогресс-бар в реальном времени
+    - Magnet-ссылки (BitTorrent)
+    - История загрузок (~/.download_history.json)
+    - Показ файлов в ~/storage/shared/Download/
+
+Зависимости:
+    - rich, prompt_toolkit
+    - aria2c (pkg install aria2)
+    - termux-open (для открытия папки)
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import shutil
+import subprocess
+from datetime import datetime
+from urllib.parse import urlparse
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.live import Live
+from rich import box
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import WordCompleter
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+
+DOWNLOADS_DIR = os.path.expanduser("~/storage/shared/Download")
+HISTORY_FILE = os.path.expanduser("~/.download_history.json")
+MAX_HISTORY = 50
+
+ARIA_FLAGS = [
+    "aria2c", "-x", "16", "-s", "16", "-k", "1M",
+    "--continue=true", "--file-allocation=none",
+    "--auto-file-renaming=false", "--max-tries=5", "--retry-wait=3",
+    "--summary-interval=1", "--console-log-level=warn",
+    "--download-result=hide", "--check-certificate=false",
+    "--user-agent=Mozilla/5.0 (Linux; Android 10) Termux",
+]
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+# ═══ УТИЛИТЫ ═══
+def has_aria():
+    return shutil.which("aria2c") is not None
+
+
+def is_magnet(u):
+    return u.startswith("magnet:")
+
+
+def is_direct(u):
+    return u.startswith(("http://","https://","ftp://","ftps://"))
+
+
+def human_size(b):
+    try:
+        b = float(b)
+    except Exception:
+        return "?"
+    for u in ["B","KB","MB","GB","TB"]:
+        if b < 1024:
+            return f"{b:.1f} {u}"
+        b /= 1024
+    return f"{b:.1f} PB"
+
+
+def guess_filename(url):
+    try:
+        return (os.path.basename(urlparse(url).path) or "download")[:60]
+    except Exception:
+        return "download"
+
+# ═══ ИСТОРИЯ ═══
+def load_history():
+    if not os.path.exists(HISTORY_FILE):
+        return []
+    try:
+        with open(HISTORY_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+
+def save_history(items):
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(items[-MAX_HISTORY:], f, ensure_ascii=False, indent=1)
+    except Exception:
+        pass
+
+
+def push_history(url, ok):
+    items = load_history()
+    items.append({"url": url[:120], "ok": bool(ok),
+                  "time": datetime.now().strftime("%d.%m.%Y %H:%M")})
+    save_history(items)
+
+# ═══ РИСОВКА ═══
+def clear():
+    console.clear()
+
+
+def title_block(main, sub=""):
+    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    lines.append(Text("═" * 60, style=GREEN_DIM))
+    return Group(*lines)
+
+
+def menu_panel():
+    t = Table(box=box.DOUBLE_EDGE, border_style="green",
+              show_header=False, padding=(0, 2))
+    t.add_column("Команда", style="bold yellow", width=18, justify="center")
+    t.add_column("Действие", style="white")
+    t.add_row("[cyan]URL / magnet[/]", "📥 Начать загрузку")
+    t.add_row("[cyan]history[/]",      "📜 История загрузок")
+    t.add_row("[cyan]list[/]",         "📂 Что уже скачано")
+    t.add_row("[cyan]open[/]",         "📁 Открыть папку Download")
+    t.add_row("[cyan]clear[/]",        "🧹 Очистить экран")
+    t.add_row("[cyan]q[/]",            "🚪 Выход")
+    console.print(Panel(t, title="[bold green]🌐  DOWNLOAD ZONE  (Tab — автодополнение)[/]",
+                        border_style="green"))
+    console.print()
+
+# ═══ СКАЧИВАНИЕ ═══
+def run_aria_with_progress(cmd, label):
+    state = {"pct":0, "speed":"0 B/s", "eta":"--",
+             "size":"?", "done_size":"0 B", "status":"start"}
+
+    def render():
+        bw = 50
+        filled = int((state["pct"]/100)*bw)
+        bar = "▓"*filled + "░"*(bw-filled)
+        lines = [
+            Text(""),
+            Text(f"  📥 {label}", style=f"bold {GREEN_BRIGHT}"),
+            Text(""),
+            Text(f"  Прогресс: {state['pct']:>5.1f}%", style=f"bold {CYAN}"),
+            Text(f"  {bar}", style=GREEN_BRIGHT),
+            Text(f"  Скорость: {state['speed']:<14}   ETA: {state['eta']}", style=YELLOW),
+            Text(f"  Скачано:  {state['done_size']:<14}   Всего: {state['size']}", style=GRAY),
+            Text(f"  Статус:   {state['status']}", style=GREEN_DIM),
+            Text(""),
+        ]
+        return Panel(Group(*lines), border_style=GREEN_DIM, padding=(0,1))
+
+    try:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                text=True, bufsize=1, universal_newlines=True)
+    except FileNotFoundError:
+        console.print("[red]❌ aria2c не найден[/]")
+        return False
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return False
+
+    re_pct   = re.compile(r"\((\d+)%\)")
+    re_dl    = re.compile(r"DL:([\d\.]+[KMG]?i?B)")
+    re_size  = re.compile(r"([\d\.]+[KMG]?i?B)/([\d\.]+[KMG]?i?B)")
+    re_eta   = re.compile(r"ETA:([\d]+[smhd])")
+    re_error = re.compile(r"^\s*\d+/\d+\s+\d+:\d+:\d+\s+\[ERROR\]", re.IGNORECASE)
+
+    try:
+        with Live(render(), console=console, refresh_per_second=4) as live:
+            for line in proc.stdout:
+                line = line.strip()
+                if not line:
+                    continue
+                m = re_pct.search(line)
+                state["pct"] = float(m.group(1)) if m else state["pct"]
+                m = re_dl.search(line)
+                state["speed"] = m.group(1) if m else state["speed"]
+                m = re_size.search(line)
+                if m:
+                    state["done_size"] = m.group(1)
+                    state["size"] = m.group(2)
+                m = re_eta.search(line)
+                state["eta"] = m.group(1) if m else state["eta"]
+                if re_error.search(line):
+                    state["status"] = "⚠ Ошибка"
+                live.update(render())
+
+        proc.wait(timeout=5)
+        if proc.returncode == 0:
+            state["pct"] = 100.0
+            state["status"] = "✅ Завершено"
+            live.update(render())
+            time.sleep(0.4)
+            return True
+        else:
+            state["status"] = f"❌ Код: {proc.returncode}"
+            live.update(render())
+            time.sleep(0.5)
+            return False
+    except KeyboardInterrupt:
+        console.print("\n  [yellow]⚠ Прервано[/]")
+        try:
+            proc.terminate()
+        except Exception:
+            pass
+        return False
+    except Exception as e:
+        console.print(f"\n  [red]❌ {e}[/]")
+        try:
+            proc.terminate()
+        except Exception:
+            pass
+        return False
+
+
+def download_direct(url):
+    name = guess_filename(url)
+    console.print()
+    console.print(Panel(f"[bold {WHITE}]{name}[/]\n[dim]{url[:90]}[/]",
+        title=f"[bold {YELLOW}]📥 Загрузка[/]", border_style=GREEN_DIM))
+    cmd = ARIA_FLAGS + ["--dir", DOWNLOADS_DIR, "--referer", url, url]
+    return run_aria_with_progress(cmd, name)
+
+
+def download_magnet(magnet):
+    console.print()
+    console.print(Panel(f"[bold {WHITE}]🧲 Magnet[/]\n[dim]{magnet[:90]}...[/]",
+        title=f"[bold {YELLOW}]📥 Торрент[/]", border_style=GREEN_DIM))
+    console.print("[dim]Получаю метаданные торрента...[/]")
+    cmd = ARIA_FLAGS + ["--dir", DOWNLOADS_DIR,
+        "--bt-enable-lpd=true", "--enable-dht=true",
+        "--bt-max-peers=200", "--seed-time=0", magnet]
+    return run_aria_with_progress(cmd, "torrent")
+
+# ═══ ИСТОРИЯ / LIST / OPEN ═══
+def show_history():
+    items = load_history()
+    console.print()
+    console.print(title_block("📜 ИСТОРИЯ"))
+    console.print()
+    if not items:
+        console.print(Text("  Пока пусто.", style=f"dim {GRAY}"))
+        console.print()
+        return
+    t = Table(box=box.SIMPLE_HEAD, border_style=MAGENTA,
+              header_style=f"bold {MAGENTA}", padding=(0,2))
+    t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
+    t.add_column("✓", width=3, justify="center")
+    t.add_column("URL", style=WHITE)
+    t.add_column("Время", style=GRAY, width=18)
+    for i, it in enumerate(reversed(items), 1):
+        mark = "[green]✔[/]" if it.get("ok") else "[red]✘[/]"
+        t.add_row(str(i), mark, it.get("url","")[:60], it.get("time",""))
+    console.print(t)
+    console.print()
+
+
+def show_downloads():
+    console.print()
+    console.print(title_block("📂 ФАЙЛЫ В DOWNLOAD"))
+    console.print()
+    if not os.path.isdir(DOWNLOADS_DIR):
+        console.print(f"[red]❌ Нет папки: {DOWNLOADS_DIR}[/]")
+        return
+    files = []
+    try:
+        for f in os.listdir(DOWNLOADS_DIR):
+            fp = os.path.join(DOWNLOADS_DIR, f)
+            if os.path.isfile(fp):
+                try:
+                    files.append((f, os.path.getsize(fp)))
+                except Exception:
+                    pass
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return
+    files.sort(key=lambda x: -x[1])
+    if not files:
+        console.print(Text("  Пусто.", style=f"dim {GRAY}"))
+        console.print()
+        return
+    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
+              header_style=f"bold {CYAN}", padding=(0,1))
+    t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
+    t.add_column("Файл", style=WHITE)
+    t.add_column("Размер", style=GREEN_BRIGHT, justify="right", width=12)
+    for i, (n, sz) in enumerate(files[:40], 1):
+        t.add_row(str(i), n[:60], human_size(sz))
+    console.print(t)
+    console.print()
+
+
+def open_downloads():
+    try:
+        subprocess.Popen(["termux-open", DOWNLOADS_DIR])
+        console.print(f"[green]✔ Открываю: {DOWNLOADS_DIR}[/]")
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+    time.sleep(0.6)
+
+# ═══ MAIN ═══
+def main():
+    if not has_aria():
+        clear()
+        console.print(Panel("[red]❌ aria2c не найден[/]\n[yellow]Установи:[/] [cyan]pkg install aria2[/]",
+                            border_style="red"))
+        return
+
+    os.makedirs(DOWNLOADS_DIR, exist_ok=True)
+
+    commands = ["history", "list", "open", "clear", "q"]
+    completer = WordCompleter(commands, ignore_case=True, sentence=False)
+    style = Style.from_dict({
+        "prompt": "bold ansibrightmagenta",
+        "completion-menu.completion": "bg:#000000 #00ff88",
+        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
+    })
+    session = PromptSession(completer=completer, style=style, complete_while_typing=True)
+
+    while True:
+        clear()
+        console.print()
+        console.print(title_block("DOWNLOAD ZONE", "Terminal Argonov  •  Downloader"))
+        console.print()
+        console.print(f"[dim]📁 Папка: {DOWNLOADS_DIR}[/]")
+        console.print()
+        menu_panel()
+
+        try:
+            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+
+        if not cmd:
+            continue
+        cl = cmd.lower()
+
+        if cl in ("q","exit","quit","выход"):
+            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+        if cl == "clear":
+            continue
+
+        if cl == "history":
+            clear()
+            show_history()
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
+            continue
+
+        if cl == "list":
+            clear()
+            show_downloads()
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
+            continue
+
+        if cl == "open":
+            open_downloads()
+            continue
+
+        if is_magnet(cmd):
+            ok = download_magnet(cmd)
+            push_history(cmd, ok)
+            try:
+                console.input("\n[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
+        elif is_direct(cmd):
+            ok = download_direct(cmd)
+            push_history(cmd, ok)
+            try:
+                console.input("\n[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
+        else:
+            console.print(Text("  ❌ Это не URL и не magnet", style=RED))
+            time.sleep(1)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
+```
+
+---
+
+## 📄 hacker_rpg.py
+
+*36581 байт · 801 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Hacker RPG
+#  RPG-симулятор хакера: миссии, скиллы, фракции
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Текстовая RPG в стиле Terminal Argonov.
+
+Использование:
+    rpg                  # через argonov
+    argonov rpg          # то же
+
+Возможности:
+    - 20 миссий в 5 уровнях (Newbie → Legend)
+    - 6 скиллов (cracking, stealth, trading, programming, network, social)
+    - 4 фракции с бонусами
+    - Магазин софта (10 предметов)
+    - 3 мини-игры: crack (Mastermind), infiltrate (Simon), social (квест)
+    - Автосохранение в ~/.hacker_rpg_save.json
+    - Game over при HP=0 или провале
+
+Зависимости:
+    - rich
+"""
+
+import os
+import sys
+import json
+import time
+import random
+import hashlib
+from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.align import Align
+from rich.live import Live
+from rich.markdown import Markdown
+from rich.progress import Progress, BarColumn
+from rich.box import SIMPLE_HEAD
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import FormattedText
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+HOME = os.path.expanduser("~")
+SAVE_FILE = os.path.join(HOME, ".hacker_rpg_save.json")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"; ORANGE = "dark_orange"
+
+# ═══ ИГРОВЫЕ ДАННЫЕ ═══
+SKILLS = {
+    "cracking":    {"name": "🔐 Cracking",    "desc": "Взлом паролей и защит"},
+    "stealth":     {"name": "🕵️  Stealth",     "desc": "Снижает риск обнаружения"},
+    "trading":     {"name": "💰 Trading",     "desc": "Больше денег с миссий"},
+    "programming": {"name": "🛠 Programming", "desc": "Открывает сложные цели"},
+    "network":     {"name": "🌐 Network",     "desc": "Доступ к сетевым миссиям"},
+    "social":      {"name": "💬 Social",      "desc": "Фишинг, манипуляции"},
+}
+
+FACTIONS = {
+    "crimson":   {"name": "🔴 Crimson",   "desc": "Русские хакеры. Сильные, дорогие",  "bonus": "+25% денег, +10% риск"},
+    "ghost":     {"name": "🔵 Ghost",     "desc": "Анонимные. Скрытные, дешёвые",       "bonus": "-25% риск, -10% денег"},
+    "whitehat":  {"name": "🟢 White Hat", "desc": "Пентестеры. Легальные, стабильные", "bonus": "-50% геймовер-риск"},
+    "syndicate": {"name": "🟡 Syndicate", "desc": "Корпорация. Максимум денег",          "bonus": "+50% денег, +25% риск"},
+}
+
+MISSIONS = {
+    0: [
+        {"id":"m01","name":"Ломаем дверь","story":"Древний форум на PHP. Админка на /admin, пароль 12345?","target":"forum.local","reward":15,"xp":10,"diff":1,"req":{},"skills":["cracking"]},
+        {"id":"m02","name":"Старый WordPress","story":"Блог соседа. Плагин не обновлялся 3 года.","target":"blog.local","reward":25,"xp":15,"diff":2,"req":{},"skills":["cracking","programming"]},
+        {"id":"m03","name":"Wi-Fi кафе","story":"Открытая сеть кафе. Перехватить трафик и войти в роутер.","target":"cafe-wifi","reward":30,"xp":20,"diff":2,"req":{},"skills":["network"]},
+        {"id":"m04","name":"Фишинговый сайт","story":"Поддельная страница банка. Найти и обрушить.","target":"fake-bank.xyz","reward":40,"xp":25,"diff":3,"req":{},"skills":["social","cracking"]},
+        {"id":"m05","name":"Разведка портов","story":"Просканировать открытые порты сервера конкурента.","target":"rival-server","reward":50,"xp":30,"diff":3,"req":{},"skills":["network"]},
+    ],
+    1: [
+        {"id":"m06","name":"SQL-инъекция","story":"Интернет-магазин с дырявой формой поиска.","target":"shop-online.ru","reward":120,"xp":60,"diff":4,"req":{"cracking":3},"skills":["cracking","programming"]},
+        {"id":"m07","name":"Социальная инженерия","story":"Убедить сотрудника выдать пароль.","target":"office.corp","reward":200,"xp":80,"diff":5,"req":{"social":3},"skills":["social"]},
+        {"id":"m08","name":"DDoS-заказ","story":"Положить игровой сервер на 2 часа.","target":"game-server.io","reward":300,"xp":100,"diff":5,"req":{"network":3},"skills":["network"]},
+        {"id":"m09","name":"Кража API-ключей","story":"Из чужого репозитория на GitHub.","target":"github.com/user/repo","reward":400,"xp":120,"diff":6,"req":{"programming":3},"skills":["programming","cracking"]},
+        {"id":"m10","name":"Брутфорс-атака","story":"Подобрать пароль к корп-почте.","target":"mail.corp.ru","reward":500,"xp":150,"diff":6,"req":{"cracking":5},"skills":["cracking"]},
+    ],
+    2: [
+        {"id":"m11","name":"Пентест банка","story":"Внутренний аудит безопасности.","target":"bank.internal","reward":1500,"xp":300,"diff":8,"req":{"cracking":7,"programming":5},"skills":["cracking","programming","stealth"]},
+        {"id":"m12","name":"Кража базы данных","story":"3 миллиона пользователей.","target":"social-media.db","reward":2500,"xp":400,"diff":9,"req":{"programming":7,"network":5},"skills":["programming","network","stealth"]},
+        {"id":"m13","name":"Взлом смарт-контракта","story":"Крипто-биржа с багом в контракте.","target":"crypto-exchange.eth","reward":5000,"xp":600,"diff":10,"req":{"programming":9},"skills":["programming","cracking"]},
+        {"id":"m14","name":"APT-атака на корпорацию","story":"Многоступенчатая атака. 3 недели подготовки.","target":"megacorp.com","reward":8000,"xp":900,"diff":11,"req":{"cracking":10,"network":8,"stealth":8},"skills":["cracking","network","stealth","social"]},
+        {"id":"m15","name":"Заряженный ransomware","story":"Развернуть вирус-вымогатель на 500 машинах.","target":"hospital.network","reward":12000,"xp":1200,"diff":12,"req":{"programming":11,"network":9},"skills":["programming","network"]},
+    ],
+    3: [
+        {"id":"m16","name":"Госструктура","story":"Взлом системы министерства.","target":"gov.system","reward":30000,"xp":2500,"diff":14,"req":{"cracking":13,"stealth":12},"skills":["cracking","stealth","programming"]},
+        {"id":"m17","name":"Атака на SWIFT","story":"Межбанковские переводы. Только для настоящих мастеров.","target":"swift.network","reward":100000,"xp":5000,"diff":16,"req":{"cracking":15,"network":14,"programming":13},"skills":["cracking","network","programming","stealth"]},
+        {"id":"m18","name":"Кража прототипа ИИ","story":"Секретная модель из лаборатории.","target":"research-lab.ai","reward":150000,"xp":7000,"diff":17,"req":{"programming":16,"social":12},"skills":["programming","social","stealth"]},
+    ],
+    4: [
+        {"id":"m19","name":"Anonymous-операция","story":"Атака на международную сеть. 1000 хакеров вместе.","target":"worldwide.anonymous","reward":500000,"xp":20000,"diff":20,"req":{"cracking":20,"stealth":20,"programming":20,"network":20,"social":15},"skills":["cracking","network","programming","stealth","social"]},
+        {"id":"m20","name":"Взлом спутника","story":"Управление спутником связи. Финальный босс.","target":"satellite.sky","reward":1000000,"xp":50000,"diff":25,"req":{"cracking":25,"network":22,"programming":22,"stealth":20},"skills":["cracking","network","programming","stealth"]},
+    ],
+}
+
+SHOP_SOFT = [
+    {"id":"s1","name":"🔧 Nmap Pro","price":500,"desc":"+1 к Cracking, открывает сетевые миссии","effect":{"cracking":1}},
+    {"id":"s2","name":"🔍 SQLMap","price":800,"desc":"+2 к Cracking","effect":{"cracking":2}},
+    {"id":"s3","name":"🎭 Proxy Chain","price":1200,"desc":"+2 к Stealth","effect":{"stealth":2}},
+    {"id":"s4","name":"🔐 Hashcat","price":2000,"desc":"+3 к Cracking","effect":{"cracking":3}},
+    {"id":"s5","name":"🕶  Tor Browser+","price":3000,"desc":"+3 к Stealth","effect":{"stealth":3}},
+    {"id":"s6","name":"💬 SocialBot","price":4000,"desc":"+3 к Social","effect":{"social":3}},
+    {"id":"s7","name":"🛠 CodeInjector","price":6000,"desc":"+3 к Programming","effect":{"programming":3}},
+    {"id":"s8","name":"🌐 VPN-Ultra","price":8000,"desc":"+3 к Network","effect":{"network":3}},
+    {"id":"s9","name":"💰 Trader-X","price":10000,"desc":"+3 к Trading","effect":{"trading":3}},
+    {"id":"s10","name":"🚀 Quantum-Crack","price":25000,"desc":"+5 к Cracking","effect":{"cracking":5}},
+]
+
+# ═══ СОСТОЯНИЕ ═══
+STATE = {
+    "hp": 100,
+    "money": 50,
+    "xp": 0,
+    "level": 0,
+    "skills": {k: 0 for k in SKILLS.keys()},
+    "faction": None,
+    "completed": [],
+    "owned_software": [],
+    "equipment": [],
+    "started_at": None,
+    "total_missions": 0,
+    "deaths": 0,
+    "wins": 0,
+}
+
+LEVEL_NAMES = ["🟢 NEWBIE", "🟡 SCRIPT KIDDIE", "🟠 HACKER", "🔴 ELITE", "🏆 LEGEND"]
+LEVEL_XP = [0, 200, 2000, 20000, 100000]
+
+# ═══ УТИЛИТЫ ═══
+def clear():
+    os.system("clear")
+
+
+def hp_bar(hp, width=30):
+    filled = int((hp/100)*width)
+    if hp > 70:
+        color = "bright_green"
+    elif hp > 40:
+        color = "bright_yellow"
+    elif hp > 15:
+        color = "dark_orange"
+    else:
+        color = "bright_red"
+    return Text("▓"*filled + "░"*(width-filled), style=color)
+
+
+def save_game(silent=False):
+    STATE["saved_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        with open(SAVE_FILE, "w", encoding="utf-8") as f:
+            json.dump(STATE, f, ensure_ascii=False, indent=1)
+        if not silent:
+            console.print(f"[green]💾 Прогресс сохранён[/]")
+        return True
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return False
+
+
+def load_game():
+    global STATE
+    if not os.path.exists(SAVE_FILE):
+        return False
+    try:
+        with open(SAVE_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+        for k in STATE.keys():
+            if k in data:
+                STATE[k] = data[k]
+        return True
+    except Exception:
+        return False
+
+
+def check_level_up():
+    old_level = STATE["level"]
+    new_level = 0
+    for i, thresh in enumerate(LEVEL_XP):
+        if STATE["xp"] >= thresh:
+            new_level = i
+    if new_level > old_level:
+        STATE["level"] = new_level
+        console.print()
+        console.print(Panel(Align.center(Text(f"🎉 УРОВЕНЬ ПОВЫШЕН: {LEVEL_NAMES[new_level]}", style="bold bright_green")),
+                            border_style="bright_green"))
+        console.print()
+        save_game(silent=True)
+        return True
+    return False
+
+
+def get_available_missions():
+    available = []
+    for level, missions in MISSIONS.items():
+        for m in missions:
+            if m["id"] in STATE["completed"]:
+                continue
+            req_ok = True
+            for skill, val in m["req"].items():
+                if STATE["skills"].get(skill, 0) < val:
+                    req_ok = False
+                    break
+            if req_ok:
+                available.append((level, m))
+    return available
+
+# ═══ МИНИ-ИГРЫ ═══
+def minigame_crack(diff):
+    code = [random.randint(0,9) for _ in range(4)]
+    tries = max(3, 11 - diff)
+
+    console.print()
+    console.print(Panel.fit(
+        f"[bold cyan]🔐 ВЗЛОМ ПАРОЛЯ[/]\n"
+        f"[dim]Код из 4 цифр (0-9). Угадай за {tries} попыток.[/]\n"
+        f"[dim]● = правильная цифра на месте · ○ = правильная не на месте[/]",
+        border_style="cyan"))
+    console.print()
+
+    for attempt in range(1, tries+1):
+        try:
+            guess_str = console.input(f"[bold magenta]Попытка {attempt}/{tries} > [/]").strip()
+        except (EOFError, KeyboardInterrupt):
+            return False
+        if not guess_str.isdigit() or len(guess_str) != 4:
+            console.print("[red]❌ Нужно ровно 4 цифры[/]")
+            continue
+        guess = [int(c) for c in guess_str]
+        if guess == code:
+            console.print(f"[bold green]✅ ВЗЛОМАНО за {attempt} попыток![/]\n")
+            return True
+        bulls = sum(1 for i in range(4) if guess[i] == code[i])
+        code_c = code.copy()
+        guess_c = guess.copy()
+        for i in range(4):
+            if guess_c[i] == code_c[i]:
+                code_c[i] = None
+                guess_c[i] = None
+        cows = sum(1 for g in guess_c if g is not None and g in code_c)
+        console.print(f"  [green]{'●'*bulls}[/][yellow]{'○'*cows}[/][dim]{'·'*(4-bulls-cows)}[/]")
+
+    console.print(f"[red]❌ Не удалось взломать за {tries} попыток. Код был: {''.join(map(str,code))}[/]\n")
+    return False
+
+
+def minigame_infiltrate(diff):
+    seq_len = min(4 + diff, 12)
+    chars = "ABCDEFGH"
+    sequence = [random.choice(chars) for _ in range(seq_len)]
+
+    console.print()
+    console.print(Panel.fit(
+        f"[bold cyan]🕵️  ПРОНИКНОВЕНИЕ[/]\n"
+        f"[dim]Запомни последовательность {seq_len} символов.[/]",
+        border_style="cyan"))
+    console.print()
+    console.print(f"[bold yellow]{' '.join(sequence)}[/]")
+    time.sleep(2 + seq_len * 0.3)
+    clear()
+    console.print()
+    console.print(Panel.fit(
+        f"[bold cyan]🕵️  ПРОНИКНОВЕНИЕ[/]\n"
+        f"[dim]Введи последовательность через пробел.[/]",
+        border_style="cyan"))
+    console.print()
+    try:
+        answer = console.input("[bold magenta]> [/]").strip().upper().split()
+    except (EOFError, KeyboardInterrupt):
+        return False
+    if answer == sequence:
+        console.print("[bold green]✅ ПРОНИКНОВЕНИЕ УСПЕШНО![/]\n")
+        return True
+    console.print(f"[red]❌ Неверно. Было: {' '.join(sequence)}[/]\n")
+    return False
+
+
+def minigame_social(diff):
+    scenarios = [
+        {"q":"Сотрудник банка: 'Кто вы такой?'",
+         "options":[
+             ("Я из IT-отдела, проверяю систему", True),
+             ("Привет! Я хакер, дай пароль", False),
+             ("Ты что, не узнал меня?", False),
+         ]},
+        {"q":"Админ: 'Назовите ваш отдел.'",
+         "options":[
+             ("Не помню точно, но начальник сказал...", False),
+             ("Финансовый. У нас аудит на следующей неделе.", True),
+             ("А какая разница?", False),
+         ]},
+        {"q":"Секретарь: 'Могу я увидеть ваш пропуск?'",
+         "options":[
+             ("Забыл в машине, сейчас вернусь", False),
+             ("Конечно, вот он. Слушайте, у меня к вам личное дело...", True),
+             ("Не ваше дело", False),
+         ]},
+        {"q":"Охранник: 'Стойте! Куда собрались?'",
+         "options":[
+             ("Домой, я устал", False),
+             ("К начальнику, он сам меня вызвал", True),
+             ("Тебе что, зарплату мало платят?", False),
+         ]},
+    ]
+    rounds = min(2 + diff // 3, 5)
+    console.print()
+    console.print(Panel.fit(
+        f"[bold cyan]💬 СОЦИАЛЬНАЯ ИНЖЕНЕРИЯ[/]\n[dim]Выбери правильный ответ. Раундов: {rounds}[/]",
+        border_style="cyan"))
+    console.print()
+
+    correct = 0
+    for r in range(rounds):
+        sc = random.choice(scenarios)
+        console.print(f"[bold yellow]Раунд {r+1}/{rounds}[/]")
+        console.print(f"  {sc['q']}\n")
+        opts = sc["options"][:]
+        random.shuffle(opts)
+        for i, (o, _) in enumerate(opts, 1):
+            console.print(f"  [cyan]{i}.[/] {o}")
+        try:
+            ch = console.input("\n[bold magenta]Выбор> [/]").strip()
+        except (EOFError, KeyboardInterrupt):
+            return False
+        if ch.isdigit() and 1 <= int(ch) <= len(opts):
+            if opts[int(ch)-1][1]:
+                console.print("  [green]✔ Хорошо[/]\n")
+                correct += 1
+            else:
+                console.print("  [red]✘ Провал реплики[/]\n")
+
+    needed = (rounds * 2) // 3
+    if correct >= needed:
+        console.print(f"[bold green]✅ ПРОШЛО: {correct}/{rounds}[/]\n")
+        return True
+    console.print(f"[red]❌ Провал: {correct}/{rounds} (нужно {needed})[/]\n")
+    return False
+
+
+def get_minigame(skill_type, diff):
+    if skill_type == "cracking":
+        return minigame_crack(diff)
+    if skill_type in ("network", "stealth"):
+        return minigame_infiltrate(diff)
+    if skill_type == "social":
+        return minigame_social(diff)
+    if skill_type == "programming":
+        return minigame_crack(diff)
+    if skill_type == "trading":
+        return minigame_social(diff)
+    return minigame_crack(diff)
+
+# ═══ МИССИИ ═══
+def do_mission(level, mission):
+    clear()
+    console.print()
+    console.print(Panel(
+        Group(
+            Text(f"📋 МИССИЯ: {mission['name']}", style="bold bright_cyan"),
+            Text(""),
+            Text(f"🎯 Цель: {mission['target']}", style="yellow"),
+            Text(f"💀 Сложность: {mission['diff']}/25", style="red"),
+            Text(""),
+            Text(mission['story'], style="white"),
+            Text(""),
+            Text(f"💰 Награда: ${mission['reward']}", style="green"),
+            Text(f"⭐ Опыт: {mission['xp']}", style="cyan"),
+        ),
+        border_style="cyan", padding=(1,2)))
+    console.print()
+
+    try:
+        ans = console.input("[bold magenta]Начать взлом? (y/n)> [/]").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        return False
+    if ans != "y":
+        console.print("[dim]Отмена[/]")
+        return False
+
+    main_skill = mission["skills"][0] if mission["skills"] else "cracking"
+    won = get_minigame(main_skill, mission["diff"])
+
+    if not won:
+        dmg = random.randint(10, 30)
+        STATE["hp"] = max(0, STATE["hp"] - dmg)
+        console.print(f"[red]💥 Провал! Потеряно {dmg} HP (осталось {STATE['hp']})[/]\n")
+
+        if STATE["hp"] <= 0:
+            gameover()
+            return False
+
+        stealth = STATE["skills"].get("stealth", 0)
+        detect_chance = max(5, 60 - stealth * 3 - mission["diff"] * 2)
+        if random.randint(1, 100) <= detect_chance:
+            console.print("[red bold]🚨 ТЕБЯ ОБНАРУЖИЛИ![/]\n")
+            time.sleep(1.5)
+            gameover()
+            return False
+
+        console.print("[yellow]⚠ Тебе удалось скрыться, но миссия провалена[/]\n")
+        save_game(silent=True)
+        return False
+
+    money = mission["reward"]
+    xp = mission["xp"]
+
+    if STATE["faction"] == "crimson":
+        money = int(money * 1.25)
+    elif STATE["faction"] == "ghost":
+        money = int(money * 0.9)
+    elif STATE["faction"] == "syndicate":
+        money = int(money * 1.5)
+
+    trading = STATE["skills"].get("trading", 0)
+    money = int(money * (1 + trading * 0.05))
+
+    STATE["money"] += money
+    STATE["xp"] += xp
+    STATE["completed"].append(mission["id"])
+    STATE["total_missions"] += 1
+    STATE["wins"] += 1
+
+    console.print()
+    console.print(Panel(
+        Group(
+            Text("✅ МИССИЯ ВЫПОЛНЕНА", style="bold bright_green"),
+            Text(""),
+            Text(f"💰 Получено: ${money}", style="green"),
+            Text(f"⭐ Опыт: +{xp}", style="cyan"),
+            Text(f"💼 Всего денег: ${STATE['money']}", style="yellow"),
+        ),
+        border_style="green", padding=(1,2)))
+    console.print()
+
+    save_game(silent=True)
+    console.print("[dim]💾 Автосохранение[/]\n")
+
+    check_level_up()
+    time.sleep(2)
+    return True
+
+
+def gameover():
+    clear()
+    console.print()
+    console.print(Align.center(Panel.fit(
+        "[bold red]💀 GAME OVER 💀[/]\n\n"
+        "[white]Ты попался. Суд, приговор, всё кончено.[/]\n\n"
+        f"[yellow]Всего миссий: {STATE['total_missions']}[/]\n"
+        f"[green]Успешных: {STATE['wins']}[/]\n"
+        f"[cyan]Заработано: ${STATE['money']}[/]\n"
+        f"[magenta]Уровень: {LEVEL_NAMES[STATE['level']]}[/]\n\n"
+        "[dim]Прогресс удалён.[/]",
+        border_style="red", padding=(2,4))))
+    console.print()
+    STATE["deaths"] += 1
+    if os.path.exists(SAVE_FILE):
+        os.remove(SAVE_FILE)
+    console.print("[dim]Нажми Enter чтобы начать заново...[/]")
+    try:
+        console.input()
+    except (EOFError, KeyboardInterrupt):
+        pass
+    reset_game()
+    main_menu()
+
+
+def reset_game():
+    global STATE
+    STATE.update({
+        "hp": 100, "money": 50, "xp": 0, "level": 0,
+        "skills": {k: 0 for k in SKILLS.keys()},
+        "faction": None, "completed": [], "owned_software": [],
+        "equipment": [], "started_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "total_missions": 0, "deaths": STATE.get("deaths", 0), "wins": 0,
+    })
+
+# ═══ ЭКРАНЫ ═══
+def banner():
+    clear()
+    console.print()
+    art = r"""
+    ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗
+    ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗
+    ███████║███████║██║     █████╔╝ █████╗  ██████╔╝
+    ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗
+    ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██║  ██║
+    ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
+                 S I M U L A T O R
+    """
+    console.print(Align.center(f"[bold bright_green]{art}[/]"))
+    console.print(Align.center("[dim]Текстовая RPG хакера в Termux[/]"))
+    console.print()
+
+
+def status_panel():
+    lvl_name = LEVEL_NAMES[STATE["level"]]
+    faction = FACTIONS.get(STATE["faction"], {}).get("name", "— не в фракции")
+    t = Table(box=None, show_header=False, padding=(0,2))
+    t.add_column("", style="bold yellow", width=20)
+    t.add_column("", width=30)
+    t.add_column("", style="bold yellow", width=18)
+    t.add_column("", width=20)
+
+    t.add_row("👤 Уровень", lvl_name, "💰 Деньги", f"[green]${STATE['money']}[/]")
+    t.add_row("⭐ Опыт", f"[cyan]{STATE['xp']}[/]", "🎯 Миссий", str(STATE['total_missions']))
+    t.add_row("🩸 HP", hp_bar(STATE["hp"]), "🏴 Фракция", faction)
+    t.add_row("💀 Смертей", str(STATE['deaths']), "🏆 Побед", str(STATE['wins']))
+    return Panel(t, title="[bold yellow]┃ ПРОФИЛЬ ┃[/]", border_style="yellow", padding=(0,1))
+
+
+def skills_panel():
+    t = Table(box=SIMPLE_HEAD, border_style="cyan", header_style="bold cyan", padding=(0,2))
+    t.add_column("Навык", style="bold cyan", width=20)
+    t.add_column("Уровень", justify="right", width=10)
+    t.add_column("Описание", style="dim")
+    for k, v in STATE["skills"].items():
+        s = SKILLS[k]
+        t.add_row(s["name"], f"[bright_green]{v}[/]", s["desc"])
+    return t
+
+
+def missions_screen():
+    available = get_available_missions()
+    if not available:
+        console.print("[yellow]⚠ Нет доступных миссий. Прокачай скиллы в магазине.[/]\n")
+        return []
+
+    available.sort(key=lambda x: x[1]["diff"])
+
+    t = Table(box=SIMPLE_HEAD, border_style="magenta", header_style="bold magenta", padding=(0,1))
+    t.add_column("#", style="bold yellow", width=4, justify="right")
+    t.add_column("Миссия", style="white", width=28)
+    t.add_column("Цель", style="cyan", width=24)
+    t.add_column("Сложность", justify="center", width=10)
+    t.add_column("💰", style="green", justify="right", width=10)
+    t.add_column("⭐", style="cyan", justify="right", width=8)
+
+    for i, (level, m) in enumerate(available, 1):
+        lvl_mark = "🟢" if level == 0 else "🟡" if level == 1 else "🟠" if level == 2 else "🔴"
+        diff_str = f"{lvl_mark} {m['diff']}"
+        t.add_row(str(i), m["name"], m["target"], diff_str, f"${m['reward']}", str(m['xp']))
+    console.print(t)
+    console.print()
+    return available
+
+
+def shop_screen():
+    t = Table(box=SIMPLE_HEAD, border_style="green", header_style="bold green", padding=(0,1))
+    t.add_column("#", style="bold yellow", width=4, justify="right")
+    t.add_column("Софт", style="white", width=24)
+    t.add_column("Цена", style="green", justify="right", width=10)
+    t.add_column("Описание", style="dim")
+    t.add_column("Куплен", justify="center", width=8)
+
+    for i, s in enumerate(SHOP_SOFT, 1):
+        owned = "✔" if s["id"] in STATE["owned_software"] else ""
+        t.add_row(str(i), s["name"], f"${s['price']}", s["desc"], owned)
+    console.print(t)
+    console.print()
+
+
+def factions_screen():
+    t = Table(box=SIMPLE_HEAD, border_style="magenta", header_style="bold magenta", padding=(0,1))
+    t.add_column("#", style="bold yellow", width=4, justify="right")
+    t.add_column("Фракция", style="white", width=18)
+    t.add_column("Описание", width=44)
+    t.add_column("Бонус", style="green", width=24)
+    for i, (fid, f) in enumerate(FACTIONS.items(), 1):
+        current = "✔" if STATE["faction"] == fid else ""
+        t.add_row(str(i), f["name"] + " " + current, f["desc"], f["bonus"])
+    console.print(t)
+    console.print()
+
+# ═══ TAB-COMPLETER ═══
+COMMANDS = [
+    "missions","m","shop","s","status","st","skills","sk",
+    "factions","f","join","attack","a","save","load",
+    "reset","help","h","q","quit","exit"
+]
+
+
+class RPGComp(Completer):
+    def get_completions(self, doc, ev):
+        t = doc.text_before_cursor
+        if " " in t:
+            return
+        for c in sorted(COMMANDS):
+            if c.startswith(t.lower()):
+                yield Completion(c, start_position=-len(t))
+
+# ═══ ГЛАВНОЕ МЕНЮ ═══
+def main_menu():
+    global STATE
+    while True:
+        banner()
+        console.print(status_panel())
+        console.print()
+
+        c = Table(box=None, show_header=False, padding=(0,2))
+        c.add_column("", style="bold yellow", width=20)
+        c.add_column("", style="cyan", width=30)
+        c.add_column("", style="bold yellow", width=20)
+        c.add_column("", style="cyan", width=30)
+        c.add_row("[m]issions","📋 Список миссий", "[sh]op","🛒 Магазин")
+        c.add_row("[st]atus","👤 Профиль", "[sk]ills","🎯 Скиллы")
+        c.add_row("[f]actions","🏴 Фракции", "[s]ave","💾 Сохранить")
+        c.add_row("[h]elp","❓ Помощь", "[q]uit","🚪 Выход")
+        console.print(Panel(c, title="[bold cyan]⌨  КОМАНДЫ[/]", border_style="cyan", padding=(0,1)))
+        console.print()
+
+        prompt_txt = "╰─🎮> "
+        try:
+            cmd = console.input(f"[bold magenta]{prompt_txt}[/]").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            save_game(silent=True)
+            console.print("\n[dim]💾 Автосохранение при выходе. До связи! 🖖[/]")
+            break
+
+        if not cmd:
+            continue
+
+        if cmd in ("q","quit","exit"):
+            save_game(silent=True)
+            console.print("[dim]💾 Автосохранение. До связи! 🖖[/]")
+            break
+
+        elif cmd in ("missions","m"):
+            avail = missions_screen()
+            if avail:
+                try:
+                    ch = console.input("[bold magenta]Номер миссии (Enter — назад)> [/]").strip()
+                except (EOFError, KeyboardInterrupt):
+                    continue
+                if ch.isdigit() and 1 <= int(ch) <= len(avail):
+                    level, m = avail[int(ch)-1]
+                    do_mission(level, m)
+
+        elif cmd in ("shop","sh","s"):
+            shop_screen()
+            try:
+                ch = console.input("[bold magenta]Номер для покупки (Enter — назад)> [/]").strip()
+            except (EOFError, KeyboardInterrupt):
+                continue
+            if ch.isdigit() and 1 <= int(ch) <= len(SHOP_SOFT):
+                item = SHOP_SOFT[int(ch)-1]
+                if item["id"] in STATE["owned_software"]:
+                    console.print("[yellow]Уже куплено[/]\n")
+                    time.sleep(1)
+                    continue
+                if STATE["money"] < item["price"]:
+                    console.print(f"[red]❌ Не хватает ${item['price'] - STATE['money']}[/]\n")
+                    time.sleep(1.5)
+                    continue
+                STATE["money"] -= item["price"]
+                STATE["owned_software"].append(item["id"])
+                for skill, val in item["effect"].items():
+                    STATE["skills"][skill] = STATE["skills"].get(skill, 0) + val
+                console.print(f"[green]✔ Куплено: {item['name']}[/]\n")
+                save_game(silent=True)
+                time.sleep(1.5)
+
+        elif cmd in ("status","st"):
+            clear()
+            console.print()
+            console.print(status_panel())
+            console.print()
+            console.print(skills_panel())
+            console.print()
+            console.input("[dim]Enter — назад[/] ")
+
+        elif cmd in ("skills","sk"):
+            clear()
+            console.print()
+            console.print(Panel.fit("[bold cyan]🎯 СКИЛЛЫ[/]", border_style="cyan"))
+            console.print()
+            console.print(skills_panel())
+            console.print()
+            console.input("[dim]Enter — назад[/] ")
+
+        elif cmd in ("factions","f"):
+            clear()
+            console.print()
+            console.print(Panel.fit("[bold magenta]🏴 ФРАКЦИИ[/]", border_style="magenta"))
+            console.print()
+            factions_screen()
+            try:
+                ch = console.input("[bold magenta]Номер для вступления (Enter — назад)> [/]").strip()
+            except (EOFError, KeyboardInterrupt):
+                continue
+            if ch.isdigit() and 1 <= int(ch) <= len(FACTIONS):
+                fid = list(FACTIONS.keys())[int(ch)-1]
+                if STATE["faction"] == fid:
+                    console.print("[yellow]Уже в этой фракции[/]\n")
+                    time.sleep(1)
+                    continue
+                STATE["faction"] = fid
+                console.print(f"[green]✔ Вступил в {FACTIONS[fid]['name']}[/]\n")
+                save_game(silent=True)
+                time.sleep(1.5)
+
+        elif cmd in ("save","sv"):
+            save_game()
+
+        elif cmd in ("load","l"):
+            if load_game():
+                console.print("[green]✔ Загрузка успешна[/]\n")
+                time.sleep(1)
+            else:
+                console.print("[red]❌ Сейв не найден[/]\n")
+                time.sleep(1)
+
+        elif cmd in ("reset","r"):
+            try:
+                a = console.input("[red bold]Точно сбросить весь прогресс? (yes/n)> [/]").strip()
+            except (EOFError, KeyboardInterrupt):
+                continue
+            if a == "yes":
+                reset_game()
+                if os.path.exists(SAVE_FILE):
+                    os.remove(SAVE_FILE)
+                console.print("[green]✔ Сброшено[/]\n")
+                time.sleep(1)
+
+        elif cmd in ("help","h"):
+            clear()
+            console.print()
+            console.print(Panel(
+                Group(
+                    Text("🎮 HACKER RPG — помощь", style="bold bright_green"),
+                    Text(""),
+                    Text("🎯 Цель: пройти все миссии, заработать $, стать LEGEND.", style="white"),
+                    Text(""),
+                    Text("📋 missions — список контрактов", style="cyan"),
+                    Text("🛒 shop — купить софт (+ скиллы)", style="cyan"),
+                    Text("🏴 factions — вступить во фракцию (+ бонусы)", style="cyan"),
+                    Text("💾 save — сохранить прогресс", style="cyan"),
+                    Text("💀 Если HP = 0 или тебя поймают — GAME OVER, прогресс стирается.", style="red"),
+                    Text(""),
+                    Text("⚙ Автосохранение после каждой успешной миссии.", style="dim"),
+                ),
+                border_style="bright_green", padding=(1,2)))
+            console.print()
+            console.input("[dim]Enter — назад[/] ")
+
+        else:
+            console.print(f"[red]❌ Неизвестно: {cmd}. Набери 'h' для помощи[/]\n")
+            time.sleep(1)
+
+# ═══ ЗАПУСК ═══
+def main():
+    global STATE
+    clear()
+
+    if os.path.exists(SAVE_FILE):
+        banner()
+        console.print(Panel.fit(
+            f"[bold green]💾 Найден сохранённый прогресс[/]\n\n"
+            f"Уровень: {LEVEL_NAMES[STATE.get('level',0)]}\n"
+            f"Деньги: ${STATE.get('money',0)}\n"
+            f"Миссий пройдено: {STATE.get('total_missions',0)}",
+            border_style="green"))
+        console.print()
+        console.print("  [cyan]1[/])  Продолжить")
+        console.print("  [cyan]2[/])  Новая игра")
+        console.print()
+        try:
+            ch = console.input("[bold magenta]Выбор> [/]").strip()
+        except (EOFError, KeyboardInterrupt):
+            ch = "1"
+        if ch == "2":
+            reset_game()
+        else:
+            load_game()
+    else:
+        reset_game()
+        STATE["started_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    main_menu()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print("\n[dim]Прервано.[/]")
+        save_game(silent=True)
+```
+
+---
+
+## 📄 hacktool.py
+
+*35868 байт · 858 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · HackTool
+#  OSINT-мультитул (28 команд): разведка, сеть, крипто
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Интерактивный OSINT-мультитул для Termux.
+
+Использование:
+    hack                 # через argonov
+    argonov hack         # то же
+
+Категории команд:
+    РАЗВЕДКА: scan · crt · subdomain · dns-enum · robots · headers
+    СЕТЬ:     nmap · ports · ping · trace · ip · speed
+    КРИПТО:   hash · hashid · b64 · pass · pass-audit
+    ДАННЫЕ:   crypto · news · qr
+    ОБУЧЕНИЕ: pentest-guide · ctf-links
+    ПРОЧЕЕ:   matrix · sysinfo · help · exit
+
+Зависимости:
+    - rich, prompt_toolkit
+    - опционально: dnspython, python-whois, requests, feedparser, qrcode, nmap
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import random
+import string
+import secrets
+import socket
+import subprocess
+from datetime import datetime
+import urllib.request
+import urllib.error
+import urllib.parse
+
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
@@ -2807,18 +5763,20 @@ from rich.align import Align
 from rich.live import Live
 from rich.markdown import Markdown
 from rich.box import SIMPLE_HEAD, DOUBLE_EDGE
+
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import FormattedText
 
+# ═══ КОНСТАНТЫ ═══
 console = Console()
 
 GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
 CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
 RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
 
-# ═══════════ БАННЕР ═══════════
+# ═══ БАННЕР / МЕНЮ ═══
 def banner():
     os.system("clear")
     art = r"""
@@ -2834,12 +5792,12 @@ def banner():
     console.print(Align.center(f"[dim]{datetime.now().strftime('%d.%m.%Y %H:%M:%S')}[/]"))
     console.print()
 
+
 def menu():
     t = Table(box=None, border_style="black", show_header=False, padding=(0, 1))
     t.add_column("Команда", style="bold yellow", width=24, justify="center")
     t.add_column("Описание", style="white")
 
-    # Секция 1: Разведка
     t.add_row("[bold magenta]── РАЗВЕДКА ──[/]", "")
     t.add_row("[cyan]scan <domain>[/]",      "🌐 WHOIS + DNS + IP")
     t.add_row("[cyan]crt <domain>[/]",       "🕵️  Certificate Transparency")
@@ -2848,7 +5806,6 @@ def menu():
     t.add_row("[cyan]robots <url>[/]",       "🤖 robots.txt сайта")
     t.add_row("[cyan]headers <url>[/]",      "📋 HTTP-заголовки + аудит")
 
-    # Секция 2: Сеть
     t.add_row("", "")
     t.add_row("[bold magenta]── СЕТЬ ──[/]", "")
     t.add_row("[cyan]nmap <host>[/]",        "🔍 Профессиональный скан портов")
@@ -2858,7 +5815,6 @@ def menu():
     t.add_row("[cyan]ip[/]",                 "📍 Внешний IP + геолокация")
     t.add_row("[cyan]speed[/]",              "⚡ Тест скорости")
 
-    # Секция 3: Крипто/утилиты
     t.add_row("", "")
     t.add_row("[bold magenta]── КРИПТО ──[/]", "")
     t.add_row("[cyan]hash <text>[/]",        "🧮 MD5/SHA1/SHA256/SHA512")
@@ -2867,20 +5823,17 @@ def menu():
     t.add_row("[cyan]pass <length>[/]",      "🎲 Криптостойкий пароль")
     t.add_row("[cyan]pass-audit <pass>[/]",  "🔍 Анализ пароля")
 
-    # Секция 4: Данные
     t.add_row("", "")
     t.add_row("[bold magenta]── ДАННЫЕ ──[/]", "")
     t.add_row("[cyan]crypto[/]",             "💰 Курс BTC/ETH/SOL")
     t.add_row("[cyan]news[/]",               "📰 IT-новости (RU)")
     t.add_row("[cyan]qr <text>[/]",          "📱 QR-код")
 
-    # Секция 5: Обучение
     t.add_row("", "")
     t.add_row("[bold magenta]── ОБУЧЕНИЕ ──[/]", "")
     t.add_row("[cyan]pentest-guide[/]",      "📚 Роадмап обучения пентесту")
     t.add_row("[cyan]ctf-links[/]",          "🏆 Площадки CTF")
 
-    # Секция 6: Утилиты
     t.add_row("", "")
     t.add_row("[cyan]matrix[/]",             "🌧 5 сек матрицы")
     t.add_row("[cyan]sysinfo[/]",            "💻 Центр управления")
@@ -2891,14 +5844,17 @@ def menu():
                         border_style="black"))
     console.print()
 
-# ═══════════ УТИЛИТЫ ═══════════
+# ═══ УТИЛИТЫ ═══
 def run(cmd, timeout=60):
     try:
         return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
     except Exception:
         return None
 
-def has_cmd(c): return subprocess.run(f"which {c}", shell=True, capture_output=True).returncode == 0
+
+def has_cmd(c):
+    return subprocess.run(f"which {c}", shell=True, capture_output=True).returncode == 0
+
 
 def http_get(url, timeout=15, headers=None):
     try:
@@ -2908,20 +5864,19 @@ def http_get(url, timeout=15, headers=None):
     except Exception:
         return None
 
-# ═══════════ РАЗВЕДКА ═══════════
+# ═══ РАЗВЕДКА ═══
 def cmd_scan(domain):
-    if not domain: console.print("[red]❌ scan <домен>[/]"); return
+    if not domain:
+        console.print("[red]❌ scan <домен>[/]"); return
     domain = domain.replace("http://","").replace("https://","").split("/")[0]
     console.print(f"\n[bold yellow]🔍 Сканирую:[/] [cyan]{domain}[/]\n")
 
-    # IP
     try:
         ip = socket.gethostbyname(domain)
         console.print(f"  [green]✔[/] IP: [cyan]{ip}[/]")
     except Exception:
         console.print(f"  [red]✘[/] IP не разрешён")
 
-    # DNS
     try:
         import dns.resolver
         for rt in ["A","MX","NS","TXT","AAAA","CNAME"]:
@@ -2929,52 +5884,63 @@ def cmd_scan(domain):
                 ans = dns.resolver.resolve(domain, rt, lifetime=5)
                 vals = [str(a) for a in ans][:3]
                 console.print(f"  [green]✔[/] DNS {rt}: [cyan]{', '.join(vals)}[/]")
-            except Exception: pass
-    except ImportError: pass
+            except Exception:
+                pass
+    except ImportError:
+        pass
 
-    # WHOIS
     try:
         import whois
         w = whois.whois(domain)
         for k, label in [("registrar","Регистратор"),("creation_date","Создан"),
                           ("expiration_date","Истекает"),("org","Организация")]:
             v = w.get(k)
-            if isinstance(v, list): v = v[0] if v else None
-            if v: console.print(f"  [green]✔[/] {label}: [cyan]{v}[/]")
-    except Exception: pass
+            if isinstance(v, list):
+                v = v[0] if v else None
+            if v:
+                console.print(f"  [green]✔[/] {label}: [cyan]{v}[/]")
+    except Exception:
+        pass
     console.print()
 
+
 def cmd_crt(domain):
-    if not domain: console.print("[red]❌ crt <домен>[/]"); return
+    if not domain:
+        console.print("[red]❌ crt <домен>[/]"); return
     domain = domain.replace("http://","").replace("https://","").split("/")[0]
     console.print(f"\n[bold yellow]🕵️  crt.sh:[/] [cyan]{domain}[/]")
     console.print("[dim]Источник: публичные логи SSL-сертификатов[/]\n")
     try:
         data = http_get(f"https://crt.sh/?q=%25.{domain}&output=json", timeout=25)
-        if not data: console.print("[red]❌ Ошибка запроса[/]"); return
+        if not data:
+            console.print("[red]❌ Ошибка запроса[/]"); return
         items = json.loads(data)
         names = set()
         for it in items:
             for n in it.get("name_value","").split("\n"):
                 n = n.strip().lstrip("*.").lower()
-                if n.endswith(domain): names.add(n)
-        if not names: console.print("[yellow]⚠ Ничего не найдено[/]"); return
+                if n.endswith(domain):
+                    names.add(n)
+        if not names:
+            console.print("[yellow]⚠ Ничего не найдено[/]"); return
         console.print(f"[bold green]✔ Найдено поддоменов: {len(names)}[/]\n")
         for i, n in enumerate(sorted(names)[:50], 1):
             console.print(f"  [cyan]{i:3}.[/] {n}")
-        if len(names) > 50: console.print(f"  [dim]... и ещё {len(names)-50}[/]")
+        if len(names) > 50:
+            console.print(f"  [dim]... и ещё {len(names)-50}[/]")
         console.print()
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
+
 def cmd_subdomain(domain):
-    if not domain: console.print("[red]❌ subdomain <домен>[/]"); return
+    if not domain:
+        console.print("[red]❌ subdomain <домен>[/]"); return
     domain = domain.replace("http://","").replace("https://","").split("/")[0]
     console.print(f"\n[bold yellow]🔎 Поиск поддоменов:[/] [cyan]{domain}[/]\n")
 
     found = set()
 
-    # 1. crt.sh
     console.print("[dim]Источник 1: crt.sh[/]")
     try:
         data = http_get(f"https://crt.sh/?q=%25.{domain}&output=json", timeout=25)
@@ -2984,10 +5950,10 @@ def cmd_subdomain(domain):
                     n = n.strip().lstrip("*.").lower()
                     if n.endswith(domain) and n != domain:
                         found.add(n)
-    except Exception: pass
+    except Exception:
+        pass
     console.print(f"  [green]✔[/] Всего из crt.sh: [cyan]{len(found)}[/]\n")
 
-    # 2. Wordlist brute (базовый список)
     console.print("[dim]Источник 2: wordlist (30 частых поддоменов)[/]")
     wordlist = ["www","mail","ftp","webmail","smtp","pop","ns1","ns2","webdisk",
                 "ns","cpanel","whm","autodiscover","autoconfig","m","imap","test",
@@ -2997,7 +5963,8 @@ def cmd_subdomain(domain):
         try:
             socket.gethostbyname(f"{sub}.{domain}")
             found.add(f"{sub}.{domain}")
-        except Exception: pass
+        except Exception:
+            pass
     console.print(f"  [green]✔[/] Всего поддоменов: [cyan]{len(found)}[/]\n")
 
     if found:
@@ -3007,8 +5974,10 @@ def cmd_subdomain(domain):
         console.print("[yellow]⚠ Ничего не найдено[/]")
     console.print()
 
+
 def cmd_dns_enum(domain):
-    if not domain: console.print("[red]❌ dns-enum <домен>[/]"); return
+    if not domain:
+        console.print("[red]❌ dns-enum <домен>[/]"); return
     domain = domain.replace("http://","").replace("https://","").split("/")[0]
     console.print(f"\n[bold yellow]📡 DNS-анализ:[/] [cyan]{domain}[/]\n")
 
@@ -3024,16 +5993,20 @@ def cmd_dns_enum(domain):
             vals = [str(a)[:100] for a in ans][:5]
             if vals:
                 console.print(f"  [green]{rt:6}[/] → [cyan]{', '.join(vals)}[/]")
-        except Exception: pass
+        except Exception:
+            pass
 
-    # Специальный анализ TXT
     console.print("\n[bold magenta]Анализ безопасности:[/]")
     try:
         txts = " ".join(str(a) for a in dns.resolver.resolve(domain, "TXT", lifetime=5))
-        if "v=spf1" in txts: console.print("  [green]✔[/] SPF найден")
-        else: console.print("  [red]✘[/] SPF отсутствует")
-        if "DMARC" in txts or "_dmarc" in txts: console.print("  [green]✔[/] DMARC найден")
-    except Exception: pass
+        if "v=spf1" in txts:
+            console.print("  [green]✔[/] SPF найден")
+        else:
+            console.print("  [red]✘[/] SPF отсутствует")
+        if "DMARC" in txts or "_dmarc" in txts:
+            console.print("  [green]✔[/] DMARC найден")
+    except Exception:
+        pass
     try:
         dmarc = dns.resolver.resolve(f"_dmarc.{domain}", "TXT", lifetime=5)
         console.print(f"  [green]✔[/] DMARC: [cyan]{str(dmarc[0])[:100]}[/]")
@@ -3041,9 +6014,12 @@ def cmd_dns_enum(domain):
         console.print("  [yellow]⚠[/] DMARC не настроен")
     console.print()
 
+
 def cmd_robots(url):
-    if not url: console.print("[red]❌ robots <url>[/]"); return
-    if not url.startswith("http"): url = "https://" + url
+    if not url:
+        console.print("[red]❌ robots <url>[/]"); return
+    if not url.startswith("http"):
+        url = "https://" + url
     console.print(f"\n[bold yellow]🤖 robots.txt:[/] [cyan]{url}[/]\n")
     txt = http_get(url.rstrip("/") + "/robots.txt", timeout=10)
     if txt:
@@ -3052,9 +6028,12 @@ def cmd_robots(url):
         console.print("[red]❌ Не удалось получить robots.txt[/]")
     console.print()
 
+
 def cmd_headers(url):
-    if not url: console.print("[red]❌ headers <url>[/]"); return
-    if not url.startswith("http"): url = "https://" + url
+    if not url:
+        console.print("[red]❌ headers <url>[/]"); return
+    if not url.startswith("http"):
+        url = "https://" + url
     console.print(f"\n[bold yellow]📋 HTTP-заголовки:[/] [cyan]{url}[/]\n")
     try:
         import requests
@@ -3084,9 +6063,10 @@ def cmd_headers(url):
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
-# ═══════════ СЕТЬ ═══════════
+# ═══ СЕТЬ ═══
 def cmd_nmap(host):
-    if not host: console.print("[red]❌ nmap <host>[/]"); return
+    if not host:
+        console.print("[red]❌ nmap <host>[/]"); return
     if not has_cmd("nmap"):
         console.print("[red]❌ nmap не установлен. Установи: pkg install nmap[/]")
         return
@@ -3098,8 +6078,10 @@ def cmd_nmap(host):
     else:
         console.print("[red]❌ Ошибка сканирования[/]")
 
+
 def cmd_ports(host):
-    if not host: console.print("[red]❌ ports <host>[/]"); return
+    if not host:
+        console.print("[red]❌ ports <host>[/]"); return
     console.print(f"\n[bold yellow]⚙️  Быстрый скан портов:[/] [cyan]{host}[/]")
     console.print("[dim]⚠️  Только свои серверы![/]\n")
     ports = {21:"FTP",22:"SSH",23:"Telnet",25:"SMTP",53:"DNS",80:"HTTP",
@@ -3115,26 +6097,34 @@ def cmd_ports(host):
                 if s.connect_ex((ip, port)) == 0:
                     console.print(f"  [green]✔[/] {port:5} [cyan]{name}[/]")
                     cnt += 1
-            except Exception: pass
-            finally: s.close()
+            except Exception:
+                pass
+            finally:
+                s.close()
         console.print(f"\n[bold]Открыто: {cnt}[/]\n")
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
+
 def cmd_ping(host):
-    if not host: console.print("[red]❌ ping <host>[/]"); return
+    if not host:
+        console.print("[red]❌ ping <host>[/]"); return
     console.print(f"\n[bold yellow]🏓 {host}[/]\n")
     r = run(f"ping -c 4 {host}", timeout=20)
     console.print(r.stdout if r and r.stdout else "[red]❌ Нет ответа[/]")
 
+
 def cmd_trace(host):
-    if not host: console.print("[red]❌ trace <host>[/]"); return
+    if not host:
+        console.print("[red]❌ trace <host>[/]"); return
     console.print(f"\n[bold yellow]🛰 Traceroute:[/] [cyan]{host}[/]\n")
     r = run(f"traceroute -m 15 {host}", timeout=60)
-    if r and r.stdout: console.print(r.stdout)
+    if r and r.stdout:
+        console.print(r.stdout)
     else:
         r2 = run(f"ping -c 1 -R {host}", timeout=20)
         console.print(r2.stdout if r2 and r2.stdout else "[red]❌[/]")
+
 
 def cmd_ip():
     console.print("\n[bold yellow]📍 Определяю IP...[/]\n")
@@ -3153,10 +6143,11 @@ def cmd_ip():
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
+
 def cmd_speed():
     console.print("\n[bold yellow]⚡ Тест скорости...[/]\n")
     try:
-        import requests, time
+        import requests
         url = "https://speed.cloudflare.com/__down?bytes=5000000"
         st = time.time()
         r = requests.get(url, timeout=30, stream=True)
@@ -3175,9 +6166,10 @@ def cmd_speed():
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
-# ═══════════ КРИПТО ═══════════
+# ═══ КРИПТО ═══
 def cmd_hash(text):
-    if not text: console.print("[red]❌ hash <текст>[/]"); return
+    if not text:
+        console.print("[red]❌ hash <текст>[/]"); return
     import hashlib
     console.print()
     t = Table(title=f"🧮 Хэши: {text[:40]}", box=None, border_style="black",
@@ -3188,8 +6180,10 @@ def cmd_hash(text):
         t.add_row(algo.upper(), hashlib.new(algo, text.encode()).hexdigest()[:80])
     console.print(t); console.print()
 
+
 def cmd_hashid(h):
-    if not h: console.print("[red]❌ hashid <хэш>[/]"); return
+    if not h:
+        console.print("[red]❌ hashid <хэш>[/]"); return
     h = h.strip()
     console.print(f"\n[bold yellow]🔐 Анализ хэша:[/] [cyan]{h[:60]}...[/]\n")
     length = len(h)
@@ -3198,18 +6192,29 @@ def cmd_hashid(h):
 
     types = []
     if is_hex:
-        if length == 32: types.append(("MD5, MD4, NTLM, LM", "🔓"))
-        elif length == 40: types.append(("SHA-1, MySQL5, RIPEMD-160", "🔓"))
-        elif length == 56: types.append(("SHA-224", "🔓"))
-        elif length == 64: types.append(("SHA-256, Keccak-256, Blake2s", "🔓"))
-        elif length == 96: types.append(("SHA-384", "🔓"))
-        elif length == 128: types.append(("SHA-512, Whirlpool", "🔓"))
-        else: types.append((f"Неизвестный hex ({length} симв)", "❓"))
+        if length == 32:
+            types.append(("MD5, MD4, NTLM, LM", "🔓"))
+        elif length == 40:
+            types.append(("SHA-1, MySQL5, RIPEMD-160", "🔓"))
+        elif length == 56:
+            types.append(("SHA-224", "🔓"))
+        elif length == 64:
+            types.append(("SHA-256, Keccak-256, Blake2s", "🔓"))
+        elif length == 96:
+            types.append(("SHA-384", "🔓"))
+        elif length == 128:
+            types.append(("SHA-512, Whirlpool", "🔓"))
+        else:
+            types.append((f"Неизвестный hex ({length} симв)", "❓"))
     if is_b64 and not is_hex:
-        if length == 24: types.append(("bcrypt (Base64)", "🔒"))
-        elif length == 60: types.append(("bcrypt", "🔒"))
-        elif length == 20: types.append(("DES (crypt)", "🔓"))
-        else: types.append((f"Возможно Base64 ({length})", "❓"))
+        if length == 24:
+            types.append(("bcrypt (Base64)", "🔒"))
+        elif length == 60:
+            types.append(("bcrypt", "🔒"))
+        elif length == 20:
+            types.append(("DES (crypt)", "🔓"))
+        else:
+            types.append((f"Возможно Base64 ({length})", "❓"))
     if not types:
         types.append(("Не определён", "❓"))
 
@@ -3219,25 +6224,32 @@ def cmd_hashid(h):
     for name, sym in types:
         t.add_row(sym, name)
     console.print(t)
-    console.print(f"\n[dim]Длина: {length} символов  ·  Hex: {'да' if is_hex else 'нет'}  ·  Base64: {'да' if is_b64 else 'нет'}[/]\n")
+    console.print(f"\n[dim]Длина: {length} симв  ·  Hex: {'да' if is_hex else 'нет'}  ·  Base64: {'да' if is_b64 else 'нет'}[/]\n")
+
 
 def cmd_b64(args):
     p = args.split(maxsplit=1)
-    if len(p) < 2: console.print("[red]❌ b64 enc|dec <текст>[/]"); return
+    if len(p) < 2:
+        console.print("[red]❌ b64 enc|dec <текст>[/]"); return
     import base64
     mode, text = p[0].lower(), p[1]
     try:
-        if mode in ("enc","e"): res = base64.b64encode(text.encode()).decode()
-        elif mode in ("dec","d"): res = base64.b64decode(text.encode()).decode()
-        else: console.print("[red]❌ enc|dec[/]"); return
+        if mode in ("enc","e"):
+            res = base64.b64encode(text.encode()).decode()
+        elif mode in ("dec","d"):
+            res = base64.b64decode(text.encode()).decode()
+        else:
+            console.print("[red]❌ enc|dec[/]"); return
         console.print(); console.print(Panel(f"[bold cyan]{res}[/]", border_style="black")); console.print()
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
+
 def cmd_pass(length_str):
     try:
         length = int(length_str) if length_str else 20
-        if not 4 <= length <= 128: raise ValueError
+        if not 4 <= length <= 128:
+            raise ValueError
     except ValueError:
         console.print("[red]❌ Длина 4-128[/]"); return
     alphabet = string.ascii_letters + string.digits + "!@#$%^&*()-_=+[]{};:,.<>?"
@@ -3245,13 +6257,17 @@ def cmd_pass(length_str):
     console.print()
     console.print(Panel(f"[bold green]{pwd}[/]", title=f"🔐 {length} символов", border_style="black"))
     try:
-        import pyperclip; pyperclip.copy(pwd)
+        import pyperclip
+        pyperclip.copy(pwd)
         console.print("[dim]✔ Скопировано в буфер[/]")
-    except Exception: pass
+    except Exception:
+        pass
     console.print()
 
+
 def cmd_pass_audit(pwd):
-    if not pwd: console.print("[red]❌ pass-audit <пароль>[/]"); return
+    if not pwd:
+        console.print("[red]❌ pass-audit <пароль>[/]"); return
     import math
     lo = any(c.islower() for c in pwd); up = any(c.isupper() for c in pwd)
     di = any(c.isdigit() for c in pwd); sy = any(c in string.punctuation for c in pwd)
@@ -3259,11 +6275,16 @@ def cmd_pass_audit(pwd):
     is_c = pwd.lower() in common
     pool = (26 if lo else 0)+(26 if up else 0)+(10 if di else 0)+(32 if sy else 0)
     ent = math.log2(pool)*len(pwd) if pool else 0
-    if is_c: lbl, col = "КАТАСТРОФА", "red"
-    elif ent < 30: lbl, col = "Слабый", "red"
-    elif ent < 50: lbl, col = "Средний", "yellow"
-    elif ent < 70: lbl, col = "Хороший", "green"
-    else: lbl, col = "Отличный", "bold green"
+    if is_c:
+        lbl, col = "КАТАСТРОФА", "red"
+    elif ent < 30:
+        lbl, col = "Слабый", "red"
+    elif ent < 50:
+        lbl, col = "Средний", "yellow"
+    elif ent < 70:
+        lbl, col = "Хороший", "green"
+    else:
+        lbl, col = "Отличный", "bold green"
     t = Table(box=None, show_header=False, border_style=col, padding=(0,2))
     t.add_column("", style="bold yellow", width=18); t.add_column("", style="white")
     t.add_row("Длина", str(len(pwd)))
@@ -3274,7 +6295,7 @@ def cmd_pass_audit(pwd):
     t.add_row("Оценка", f"[{col}]{lbl}[/]")
     console.print(); console.print(Panel(t, title="🔍 Аудит", border_style=col)); console.print()
 
-# ═══════════ ДАННЫЕ ═══════════
+# ═══ ДАННЫЕ ═══
 def cmd_crypto():
     console.print("\n[bold yellow]💰 Крипта...[/]\n")
     try:
@@ -3297,6 +6318,7 @@ def cmd_crypto():
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
+
 def cmd_news():
     console.print("\n[bold yellow]📰 IT-новости...[/]\n")
     feeds = [
@@ -3309,7 +6331,8 @@ def cmd_news():
         import feedparser
         for name, url in feeds:
             feed = feedparser.parse(url)
-            if not feed.entries: continue
+            if not feed.entries:
+                continue
             console.print(f"[bold magenta]━━━ {name} ━━━[/]")
             for e in feed.entries[:3]:
                 console.print(f"  [cyan]•[/] {e.title[:90]}")
@@ -3318,8 +6341,10 @@ def cmd_news():
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
+
 def cmd_qr(text):
-    if not text: console.print("[red]❌ qr <текст>[/]"); return
+    if not text:
+        console.print("[red]❌ qr <текст>[/]"); return
     try:
         import qrcode
         q = qrcode.QRCode(border=1); q.add_data(text); q.make(fit=True)
@@ -3328,7 +6353,7 @@ def cmd_qr(text):
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
-# ═══════════ ОБУЧЕНИЕ ═══════════
+# ═══ ОБУЧЕНИЕ ═══
 def cmd_pentest_guide():
     os.system("clear")
     console.print()
@@ -3378,6 +6403,7 @@ def cmd_pentest_guide():
     console.print("  [cyan]💬 Сообщества:[/] r/netsec, r/AskNetsec, Discord HTB")
     console.print()
 
+
 def cmd_ctf_links():
     os.system("clear")
     console.print()
@@ -3410,14 +6436,17 @@ def cmd_ctf_links():
     console.print("  [cyan]•[/] Intigriti — intigriti.com")
     console.print()
 
-# ═══════════ МАТРИЦА ═══════════
+# ═══ МАТРИЦА / SYSINFO ═══
 def cmd_matrix():
     import curses
+
     def _run(stdscr):
         curses.curs_set(0); stdscr.nodelay(True); stdscr.timeout(0)
         curses.start_color()
-        try: curses.use_default_colors()
-        except: pass
+        try:
+            curses.use_default_colors()
+        except Exception:
+            pass
         curses.init_pair(1, curses.COLOR_WHITE, -1)
         curses.init_pair(2, curses.COLOR_GREEN, -1)
         CH = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
@@ -3426,30 +6455,40 @@ def cmd_matrix():
         end = time.time() + 5
         while time.time() < end:
             try:
-                if stdscr.getch() in (ord('q'), 27): break
-            except: pass
+                if stdscr.getch() in (ord('q'), 27):
+                    break
+            except Exception:
+                pass
             my, mx = stdscr.getmaxyx()
             for x in range(min(mx, len(drops))):
                 d = drops[x]; d["y"] += d["s"]; y = int(d["y"])
                 if 0 <= y < my:
-                    try: stdscr.addstr(y, x, random.choice(CH), curses.color_pair(1)|curses.A_BOLD)
-                    except: pass
+                    try:
+                        stdscr.addstr(y, x, random.choice(CH), curses.color_pair(1)|curses.A_BOLD)
+                    except Exception:
+                        pass
                 e = y - 8
                 if 0 <= e < my:
-                    try: stdscr.addstr(e, x, " ", curses.color_pair(2))
-                    except: pass
+                    try:
+                        stdscr.addstr(e, x, " ", curses.color_pair(2))
+                    except Exception:
+                        pass
                 if y - 8 >= my:
                     d["y"] = random.randint(-10,-1); d["s"] = random.choice([0.5,1,1.5])
             stdscr.refresh(); time.sleep(0.05)
-    try: curses.wrapper(_run)
-    except KeyboardInterrupt: pass
+
+    try:
+        curses.wrapper(_run)
+    except KeyboardInterrupt:
+        pass
+
 
 def cmd_sysinfo():
     console.print("\n[dim]sysinfo.py...[/]\n")
     time.sleep(0.2)
     subprocess.run(["python", os.path.expanduser("~/sysinfo.py")])
 
-# ═══════════ TAB-COMPLETER ═══════════
+# ═══ TAB-COMPLETER ═══
 COMMANDS = [
     "scan","crt","subdomain","dns-enum","robots","headers",
     "nmap","ports","ping","trace","ip","speed",
@@ -3459,17 +6498,20 @@ COMMANDS = [
     "matrix","sysinfo","clear","exit","help"
 ]
 
+
 class HackCompleter(Completer):
     def get_completions(self, doc, ev):
         t = doc.text_before_cursor
-        if " " in t: return
+        if " " in t:
+            return
         for c in sorted(COMMANDS):
             if c.startswith(t.lower()):
                 yield Completion(c, start_position=-len(t))
 
-# ═══════════ MAIN ═══════════
+# ═══ MAIN ═══
 def main():
-    banner(); menu()
+    banner()
+    menu()
 
     style = Style.from_dict({
         "prompt": "bold ansibrightmagenta",
@@ -3483,7 +6525,8 @@ def main():
             line = session.prompt(FormattedText([("bold ansibrightmagenta","hacktool> ")])).strip()
         except (EOFError, KeyboardInterrupt):
             console.print("\n[dim]Выход.[/]"); break
-        if not line: continue
+        if not line:
+            continue
 
         parts = line.split(maxsplit=1)
         cmd = parts[0].lower()
@@ -3491,7 +6534,8 @@ def main():
 
         if cmd in ("exit","quit","q","выход"):
             console.print("[dim]До связи. 🖖[/]"); break
-        elif cmd in ("clear","cls"): banner(); menu()
+        elif cmd in ("clear","cls"):
+            banner(); menu()
         elif cmd == "scan":          cmd_scan(arg)
         elif cmd == "crt":           cmd_crt(arg)
         elif cmd == "subdomain":     cmd_subdomain(arg)
@@ -3520,3838 +6564,12 @@ def main():
         else:
             console.print(f"[red]❌ Неизвестно: {cmd}[/] Введи [cyan]help[/]")
 
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print("\n[dim]Прервано.[/]")
-```
-
----
-
-## 📄 randomaudio.py
-
-*32659 байт · 716 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Music Player v9 — обложки (iTunes) + favorites + экспорт"""
-
-import os, sys, json, random, subprocess, time, re, hashlib
-import urllib.request, urllib.parse, urllib.error
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.markup import escape
-from rich.box import SIMPLE_HEAD
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import FormattedText
-
-console = Console()
-CACHE_FILE = os.path.expanduser("~/music_cache/library.json")
-COVERS_DIR = os.path.expanduser("~/music_cache/covers")
-FAV_FILE = os.path.expanduser("~/.music_favorites.json")
-EXPORT_DIR = os.path.expanduser("~/music_cache/exports")
-PAGE_SIZE = 15
-
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
-
-GENRE_COLORS = {
-    "rock":"bright_red","metal":"bright_red","punk":"bright_red",
-    "pop":"bright_yellow","dance":"bright_yellow",
-    "hip-hop":"dark_orange","rap":"dark_orange",
-    "electronic":"bright_blue","edm":"bright_blue","techno":"bright_blue",
-    "anime":"medium_purple1","soundtrack":"medium_purple1","ost":"medium_purple1",
-    "classical":"bright_green","jazz":"bright_green",
-    "instrumental":"cyan",
-}
-def genre_color(g):
-    if not g: return GRAY
-    gl = g.lower()
-    for k, c in GENRE_COLORS.items():
-        if k in gl: return c
-    return CYAN
-
-TYPE_LABELS = {
-    "opening":"🎌 Опенинг","ending":"🎬 Эндинг","ost":"🎼 OST","theme":"🎵 Тема",
-    "game":"🎮 Игра","anime":"🌸 Аниме","film":"🎞 Кино","classical":"🎻 Классика",
-    "remix":"🎛 Ремикс","live":"🎤 Live","acoustic":"🎸 Акустика","cover":"🎙 Кавер",
-    "instrumental":"🎹 Инстр.","song":"🎵 Песня",
-}
-
-def run(cmd, timeout=10):
-    try: return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
-    except: return None
-
-def has_cmd(cmd):
-    r = run(f"which {cmd}")
-    return r is not None and r.stdout.strip() != ""
-
-def human_size(b):
-    try: b = int(b)
-    except: return "?"
-    for u in ["B","KB","MB","GB"]:
-        if b < 1024: return f"{b:.1f} {u}"
-        b /= 1024
-    return f"{b:.1f} TB"
-
-def fmt_duration(s):
-    if not s: return "--:--"
-    try: s = int(s)
-    except: return "--:--"
-    m, sec = divmod(s, 60); h, m = divmod(m, 60)
-    return f"{h}:{m:02d}:{sec:02d}" if h else f"{m}:{sec:02d}"
-
-def nkey(s): return " ".join(str(s).lower().split()).strip()
-
-# ═══════════ ФИЛЬТР ГОЛОСОВЫХ ═══════════
-NON_MUSIC_KEYWORDS = [
-    "whatsapp audio", "voice", "recording", "запись", "record",
-    "голосовое", "voice message", "dictaphone", "диктофон",
-    "note_to_self", "audio_20", "rec_20", "запись_20", "голос_20",
-]
-
-def is_music_track(track):
-    path = (track.get("path") or "").lower()
-    title = (track.get("title") or "").lower()
-    artist = (track.get("artist") or "").lower()
-    album = (track.get("album") or "").lower()
-    dur = track.get("duration") or 0
-    genre = track.get("genre") or ""
-    source = track.get("source") or "local"
-
-    if 0 < dur < 30: return False
-    hay = f"{path} {title}"
-    for kw in NON_MUSIC_KEYWORDS:
-        if kw in hay: return False
-    if "whatsapp/media" in path.replace("\\", "/"): return False
-    if (artist in ("неизвестен","unknown","") and
-        album in ("без альбома","") and not genre and source == "local"):
-        if any(x in path for x in ["/dcim/", "/recordings/", "/record/", "/voice/"]):
-            return False
-        if re.match(r"^\d+[\d_\-\.]+$", os.path.basename(path).rsplit(".",1)[0]):
-            return False
-    return True
-
-# ═══════════ ОБЛОЖКИ (iTunes API) ═══════════
-def cover_cache_path(artist, album, title):
-    key = f"{artist}|{album}|{title}".lower()
-    h = hashlib.md5(key.encode()).hexdigest()[:16]
-    return os.path.join(COVERS_DIR, f"{h}.jpg")
-
-def fetch_cover_url(artist, album, title):
-    """Ищет обложку на iTunes. Возвращает URL или None."""
-    try:
-        q = f"{artist} {album}" if album and album != "Без альбома" else f"{artist} {title}"
-        params = urllib.parse.urlencode({"term": q, "entity":"album", "limit":1})
-        url = f"https://itunes.apple.com/search?{params}"
-        req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=8) as r:
-            data = json.loads(r.read().decode())
-            results = data.get("results", [])
-            if results:
-                art = results[0].get("artworkUrl100", "")
-                if art:
-                    return art.replace("100x100", "600x600")
-    except Exception:
-        pass
-    return None
-
-def ensure_cover(artist, album, title):
-    """Возвращает путь к обложке или None. Скачивает если надо."""
-    if not artist or artist == "Неизвестен": return None
-    os.makedirs(COVERS_DIR, exist_ok=True)
-    cp = cover_cache_path(artist, album, title)
-    if os.path.exists(cp) and os.path.getsize(cp) > 1000:
-        return cp
-    url = fetch_cover_url(artist, album, title)
-    if not url: return None
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as r:
-            data = r.read()
-        with open(cp, "wb") as f: f.write(data)
-        return cp
-    except Exception:
-        return None
-
-def show_cover(path, width=40, height=20):
-    """Показывает обложку через chafa."""
-    if not path or not os.path.exists(path): return
-    if not has_cmd("chafa"): return
-    try:
-        subprocess.run(
-            ["chafa", f"--size={width}x{height}", "--symbols=block",
-             "--fg-only", "--dither=fs", "--colors=256", path])
-    except Exception:
-        pass
-
-# ═══════════ FAVORITES ═══════════
-def load_favs():
-    if not os.path.exists(FAV_FILE): return set()
-    try:
-        with open(FAV_FILE, encoding="utf-8") as f:
-            d = json.load(f)
-            return set(d.get("paths", []))
-    except: return set()
-
-def save_favs(favs):
-    try:
-        with open(FAV_FILE, "w", encoding="utf-8") as f:
-            json.dump({"paths": sorted(favs)}, f, ensure_ascii=False, indent=1)
-    except: pass
-
-# ═══════════ ЭКСПОРТ ═══════════
-def export_m3u(tracks, name="playlist"):
-    os.makedirs(EXPORT_DIR, exist_ok=True)
-    path = os.path.join(EXPORT_DIR, f"{name}.m3u")
-    try:
-        with open(path, "w", encoding="utf-8") as f:
-            f.write("#EXTM3U\n")
-            for t in tracks:
-                dur = int(t.get("duration") or -1)
-                f.write(f"#EXTINF:{dur},{t.get('artist','')} - {t.get('title','')}\n")
-                f.write(f"{t['path']}\n")
-        return path
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-        return None
-
-def export_csv(tracks, name="library"):
-    import csv
-    os.makedirs(EXPORT_DIR, exist_ok=True)
-    path = os.path.join(EXPORT_DIR, f"{name}.csv")
-    try:
-        with open(path, "w", encoding="utf-8", newline="") as f:
-            w = csv.writer(f)
-            w.writerow(["Artist","Title","Album","Genre","Year","Duration","Type","Path"])
-            for t in tracks:
-                w.writerow([
-                    t.get("artist",""), t.get("title",""), t.get("album",""),
-                    t.get("genre",""), t.get("year",""), t.get("duration",""),
-                    t.get("type",""), t.get("path","")
-                ])
-        return path
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-        return None
-
-# ═══════════ БИБЛИОТЕКА ═══════════
-def load_cache():
-    if not os.path.exists(CACHE_FILE):
-        console.print("[red]❌ Кэш не найден. Запусти music-meta[/]")
-        return None
-    try:
-        with open(CACHE_FILE, encoding="utf-8") as f: return json.load(f)
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]"); return None
-
-def build_library(cache):
-    artists = {}; skipped = 0
-    for path, m in cache["tracks"].items():
-        if not os.path.exists(path): continue
-        a = (m.get("artist") or "Неизвестен").strip()
-        alb = (m.get("album") or "Без альбома").strip()
-        try: size = os.path.getsize(path)
-        except: size = 0
-        track = {
-            "title": m.get("title") or os.path.basename(path),
-            "path": path, "duration": m.get("duration") or 0,
-            "size": size, "genre": (m.get("genre") or "").strip(),
-            "year": (m.get("year") or "").strip(),
-            "type": m.get("type") or "song", "source": m.get("source") or "local",
-            "album": alb, "artist": a,
-        }
-        if not is_music_track(track):
-            skipped += 1; continue
-        ak = nkey(a)
-        if ak not in artists:
-            artists[ak] = {"display": a, "albums": {}, "genres": set()}
-        alk = nkey(alb)
-        if alk not in artists[ak]["albums"]:
-            artists[ak]["albums"][alk] = {"display": alb, "tracks": []}
-        artists[ak]["albums"][alk]["tracks"].append(track)
-        if track["genre"]: artists[ak]["genres"].add(track["genre"])
-    for a in artists.values():
-        for alb in a["albums"].values():
-            alb["tracks"].sort(key=lambda x: x["title"].lower())
-    return artists, skipped
-
-def all_tracks(artists):
-    o = []
-    for a in artists.values():
-        for alb in a["albums"].values(): o.extend(alb["tracks"])
-    return o
-
-def all_genres(artists):
-    g = {}
-    for a in artists.values():
-        for alb in a["albums"].values():
-            for t in alb["tracks"]:
-                if t.get("genre"): g[t["genre"]] = g.get(t["genre"],0)+1
-    return g
-
-def all_types(artists):
-    tp = {}
-    for a in artists.values():
-        for alb in a["albums"].values():
-            for t in alb["tracks"]:
-                k = t.get("type") or "song"; tp[k] = tp.get(k,0)+1
-    return tp
-
-# ═══════════ ПЛЕЕР ═══════════
-PS = {"playing":False,"path":None,"title":None,"artist":None,"album":None,
-      "genre":None,"year":None,"type":None,"duration":0,"started_at":0}
-
-def play_track(path, track=None):
-    run("termux-media-player stop"); time.sleep(0.2)
-    r = run(f'termux-media-player play "{path}"', timeout=10)
-    if r is not None and r.returncode == 0:
-        PS.update({"playing":True,"path":path,"started_at":time.time()})
-        if track:
-            for k in ("title","artist","album","genre","year","type"):
-                PS[k] = track.get(k)
-            PS["duration"] = track.get("duration") or 0
-        return True
-    return False
-
-def stop_playback():
-    run("termux-media-player stop")
-    PS.update({"playing":False,"path":None,"started_at":0})
-
-def cur_pos():
-    return max(0, int(time.time() - PS["started_at"])) if PS["playing"] else 0
-
-def now_playing_panel(show_cover_img=False):
-    if not PS["playing"]: return None
-    pos = cur_pos(); dur = PS["duration"] or 0
-    if dur > 0:
-        bw = 40; filled = min(int((pos/dur)*bw), bw)
-        bar = "▓"*filled + "░"*(bw-filled)
-    else:
-        bar = "▓"*8 + "░"*32
-    gc = genre_color(PS["genre"])
-    lines = [
-        Text(f"  ▶  {PS['artist']} — {PS['title']}", style=f"bold {WHITE}"),
-        Text(f"     💿 {PS['album'] or '—'}", style=f"dim {GRAY}"),
-    ]
-    if PS["genre"]:
-        lines.append(Text(f"     🎼 {PS['genre']}", style=gc))
-    lines.append(Text(f"     {bar}  {fmt_duration(pos)} / {fmt_duration(dur) if dur else '--:--'}", style=GREEN_BRIGHT))
-    return Panel(Group(*lines), title=f"[bold {YELLOW}]┃ PLAYING ┃[/]",
-                 border_style=GREEN_DIM, padding=(0,1))
-
-def play_and_wait(track, pool=None):
-    if not play_track(track["path"], track):
-        console.print(f"[red]❌ Не удалось запустить[/]"); return
-
-    console.clear()
-    console.print()
-    # ⬅️ Обложка слева, панель справа
-    cover_path = ensure_cover(track.get("artist",""), track.get("album",""), track.get("title",""))
-    if cover_path and has_cmd("chafa"):
-        console.print(f"[dim]🎨 Обложка: {os.path.basename(cover_path)}[/]")
-        console.print()
-        show_cover(cover_path, width=40, height=18)
-        console.print()
-    console.print(now_playing_panel())
-    console.print()
-    console.print(f"  [dim]s = стоп  ·  n = след.  ·  f = ♥  ·  Enter = назад[/]\n")
-
-    try:
-        import termios, tty, select
-        has_t = True
-    except: has_t = False
-
-    def read_key():
-        if not has_t: return None
-        fd = sys.stdin.fileno(); old = termios.tcgetattr(fd)
-        try:
-            tty.setraw(fd)
-            rl, _, _ = select.select([sys.stdin], [], [], 0.3)
-            if rl: return sys.stdin.read(1)
-        except: return None
-        finally:
-            try: termios.tcsetattr(fd, termios.TCSADRAIN, old)
-            except: pass
-        return None
-
-    max_dur = PS["duration"] if PS["duration"] > 0 else 300
-    start = time.time()
-    favs = load_favs()
-
-    try:
-        while PS["playing"]:
-            elapsed = time.time() - start
-            if PS["duration"] > 0 and cur_pos() >= PS["duration"]:
-                stop_playback(); console.print(f"  [dim]✔ Завершён[/]")
-                return "done"
-            if PS["duration"] == 0 and elapsed > max_dur:
-                stop_playback(); console.print(f"  [dim]✔ Таймаут[/]")
-                return "done"
-
-            k = read_key()
-            if k:
-                kl = k.lower()
-                if kl in ("s","q"):
-                    stop_playback(); console.print(f"  [yellow]⏹ Стоп[/]")
-                    return "stop"
-                elif kl == "n" and pool:
-                    tr = random.choice(pool); stop_playback(); time.sleep(0.3)
-                    return play_and_wait(tr, pool)
-                elif kl == "f":
-                    p = track["path"]
-                    if p in favs:
-                        favs.discard(p); console.print(f"  [dim]💔 Убран из favorites[/]")
-                    else:
-                        favs.add(p); console.print(f"  [magenta]♥ Добавлен в favorites[/]")
-                    save_favs(favs); time.sleep(0.5)
-                elif k in ("\r","\n","\x1b"):
-                    return "back"
-            time.sleep(0.2)
-    except KeyboardInterrupt:
-        stop_playback(); console.print(f"\n  [yellow]⏹[/]")
-        return "stop"
-    return "done"
-
-# ═══════════ ТАБЛИЦЫ ═══════════
-def title_block(main, sub=""):
-    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
-    lines.append(Text("─"*60, style=GREEN_DIM))
-    return Group(*lines)
-
-def stats_panel(artists, favs):
-    tt = sum(len(alb["tracks"]) for a in artists.values() for alb in a["albums"].values())
-    ts = sum(t["size"] for a in artists.values() for alb in a["albums"].values() for t in alb["tracks"])
-    g = all_genres(artists)
-    t = Table(box=None, show_header=False, padding=(0,3))
-    t.add_column("", style=f"bold {YELLOW}"); t.add_column("", style=f"bold {CYAN}")
-    t.add_column("", style=f"bold {YELLOW}"); t.add_column("", style=f"bold {CYAN}")
-    t.add_row("🎤 Исполнителей", str(len(artists)), "🎵 Треков", str(tt))
-    t.add_row("💾 Вес", human_size(ts), "🎼 Жанров", str(len(g)))
-    t.add_row("♥ Favorites", str(len(favs)), "", "")
-    return t
-
-def commands_panel(extra=None):
-    rows = [("<номер>","🎤 Выбрать")]
-    if extra: rows.extend(extra)
-    rows += [("random","🎲 Случайный"),("favorites","♥ Favorites"),
-             ("export","💾 Экспорт"),("stop","⏹ Стоп"),("q","🚪 Выход")]
-    c = Table(box=None, show_header=False, padding=(0,2))
-    c.add_column("", style=f"bold {YELLOW}", width=16, justify="right")
-    c.add_column("", style=f"{CYAN}")
-    half = (len(rows)+1)//2
-    for i in range(half):
-        L = rows[i]; R = rows[i+half] if i+half < len(rows) else None
-        c.add_row(escape(f"[{L[0]}]"), L[1], escape(f"[{R[0]}]") if R else "", R[1] if R else "")
-    return Panel(c, title=f"[bold {CYAN}]⌨  КОМАНДЫ[/]", border_style=CYAN, padding=(0,1))
-
-def artists_table(items, page, favs):
-    tp = max(1, (len(items)+PAGE_SIZE-1)//PAGE_SIZE)
-    page = max(1, min(page, tp)); s = (page-1)*PAGE_SIZE; e = s+PAGE_SIZE
-    t = Table(box=SIMPLE_HEAD, border_style=GREEN_DIM,
-              header_style=f"bold {GREEN_BRIGHT}", padding=(0,2), expand=True)
-    t.add_column("#", justify="right", width=4, style=f"bold {YELLOW}")
-    t.add_column("ИСПОЛНИТЕЛЬ", style=WHITE)
-    t.add_column("ТРЕКОВ", justify="right", width=8, style=CYAN)
-    t.add_column("ЖАНР", width=20)
-    for i, (ak, a) in enumerate(items[s:e], s+1):
-        cnt = sum(len(alb["tracks"]) for alb in a["albums"].values())
-        gl = list(a["genres"]); mg = gl[0] if gl else "—"
-        t.add_row(str(i), a["display"], str(cnt), Text(mg[:18], style=genre_color(mg)))
-    return t, page, tp
-
-def tracks_table(tracks, start_idx=1, favs=None):
-    favs = favs or set()
-    t = Table(box=SIMPLE_HEAD, border_style=MAGENTA,
-              header_style=f"bold {MAGENTA}", padding=(0,1),
-              expand=True, show_header=False)
-    t.add_column("♥", width=3, justify="center")
-    t.add_column("#", justify="right", width=4, style=f"bold {YELLOW}")
-    t.add_column("НАЗВАНИЕ", style=WHITE)
-    t.add_column("ЖАНР", width=16); t.add_column("ТИП", width=14)
-    t.add_column("ВРЕМЯ", justify="right", width=8, style=GRAY)
-    for i, tr in enumerate(tracks, start_idx):
-        heart = "[magenta]♥[/]" if tr["path"] in favs else " "
-        t.add_row(heart, str(i), tr["title"][:55],
-                  Text((tr.get("genre") or "—")[:14], style=genre_color(tr.get("genre",""))),
-                  Text(TYPE_LABELS.get(tr.get("type"),"—"), style=CYAN),
-                  fmt_duration(tr["duration"]))
-    return t
-
-def filter_tracks(artists, st):
-    o = []
-    for t in all_tracks(artists):
-        if st.get("fg") and t.get("genre","").lower() != st["fg"].lower(): continue
-        if st.get("ft") and t.get("type") != st["ft"]: continue
-        if st.get("s"):
-            q = st["s"].lower()
-            if q not in f"{t.get('title','')} {t.get('genre','')} {t.get('artist','')}".lower(): continue
-        o.append(t)
-    return o
-
-COMMANDS = ["bygenre","bytype","random","favorites","export","stop","q","back","n","p","f","help"]
-
-class MusicComp(Completer):
-    def get_completions(self, doc, ev):
-        t = doc.text_before_cursor
-        if " " in t: return
-        for c in sorted(COMMANDS):
-            if c.startswith(t.lower()): yield Completion(c, start_position=-len(t))
-        if t.isdigit() or t == "":
-            for i in range(1,21):
-                si = str(i)
-                if si.startswith(t): yield Completion(si, start_position=-len(t))
-
-def main():
-    if not has_cmd("termux-media-player"):
-        console.clear(); console.print("[red]❌ termux-media-player не найден[/]"); return
-    cache = load_cache()
-    if not cache: return
-    console.clear()
-    with console.status(f"[bold {GREEN_BRIGHT}]🎵 Загрузка...[/]", spinner="dots"):
-        artists, skipped = build_library(cache)
-    if not artists:
-        console.print("[red]❌ Нет музыки (всё отфильтровано)[/]"); return
-    favs = load_favs()
-    console.print(f"[green]✔ Загружено[/]  ·  [dim]пропущено: {skipped}  ·  favorites: {len(favs)}[/]")
-    time.sleep(0.8)
-
-    state = {"mode":"main","artist_key":None,"page":1,"search":"","fg":None,"ft":None,
-             "current_tracks":[],"current_filtered":[],"filter_page":1}
-
-    session = PromptSession(
-        completer=MusicComp(), complete_while_typing=True,
-        style=Style.from_dict({
-            "prompt": "bold ansibrightmagenta",
-            "completion-menu.completion": "bg:#000000 #00ff88",
-            "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
-        }))
-
-    while True:
-        console.clear()
-        if state["mode"]=="main":
-            title = "М У З Ы К А Л Ь Н А Я   Б И Б Л И О Т Е К А"
-            sub = "Terminal Argonov  •  Music Edition  •  с обложками"
-        elif state["mode"]=="favorites":
-            title = "♥  F A V O R I T E S"
-            sub = f"{len(favs)} треков"
-        else:
-            d = artists[state["artist_key"]]
-            title = f"🎤  {d['display']}"
-            sub = ", ".join(sorted(d["genres"]))[:60] or ""
-
-        console.print(); console.print(title_block(title, sub)); console.print()
-        if PS["playing"]:
-            np = now_playing_panel()
-            if np: console.print(np); console.print()
-
-        # ── FAVORITES ──
-        if state["mode"]=="favorites":
-            fav_tracks = [t for t in all_tracks(artists) if t["path"] in favs]
-            if not fav_tracks:
-                console.print(Text("💔 Favorites пусто. Нажми 'f' при воспроизведении.", style=GRAY))
-            else:
-                console.print(tracks_table(fav_tracks, favs=favs))
-                state["current_filtered"] = fav_tracks
-            console.print()
-            console.print(commands_panel([("back","◀ К библиотеке"),("export","💾 Экспорт")]))
-        # ── MAIN ──
-        elif state["mode"]=="main":
-            console.print(stats_panel(artists, favs)); console.print()
-            hf = state["fg"] or state["ft"] or state["search"]
-            if hf:
-                fl = Text(); fl.append("🔎 ", style=YELLOW)
-                if state["fg"]: fl.append(f"жанр: {state['fg']}  ", style=genre_color(state['fg']))
-                if state["ft"]: fl.append(f"тип: {TYPE_LABELS.get(state['ft'],state['ft'])}  ", style=CYAN)
-                if state["search"]: fl.append(f"поиск: {state['search']}", style=YELLOW)
-                console.print(fl); console.print()
-                tracks = filter_tracks(artists, {"fg":state["fg"],"ft":state["ft"],"s":state["search"]})
-                if not tracks:
-                    console.print(Text("❌ Ничего не найдено", style=RED)); console.print()
-                else:
-                    tp = max(1,(len(tracks)+PAGE_SIZE-1)//PAGE_SIZE)
-                    state["filter_page"] = max(1,min(state["filter_page"],tp))
-                    s = (state["filter_page"]-1)*PAGE_SIZE; e = s+PAGE_SIZE
-                    state["current_filtered"] = tracks
-                    console.print(tracks_table(tracks[s:e], start_idx=s+1, favs=favs)); console.print()
-                    console.print(Text(f"   Стр. {state['filter_page']}/{tp}  ·  всего {len(tracks)}", style=f"dim {GRAY}")); console.print()
-                console.print(commands_panel([("n/p","◀ ▶"),("f","Сброс"),
-                                               ("/слово","Поиск"),("bygenre","Жанр"),("bytype","Тип")]))
-            else:
-                items = sorted(artists.items(), key=lambda x: x[1]["display"].lower())
-                tbl, p, tp = artists_table(items, state["page"], favs); state["page"] = p
-                console.print(tbl); console.print()
-                console.print(Text(f"   Стр. {p}/{tp}  ·  всего {len(items)}", style=f"dim {GRAY}")); console.print()
-                console.print(commands_panel([("n/p","◀ ▶"),("/слово","Поиск"),
-                                               ("bygenre","Жанр"),("bytype","Тип")]))
-        # ── ARTIST ──
-        else:
-            d = artists[state["artist_key"]]
-            state["current_tracks"] = []; flat = []; idx = 1
-            albums = sorted(d["albums"].items(),
-                            key=lambda x: (x[1]["display"]=="Без альбома", x[1]["display"].lower()))
-            for alk, alb in albums:
-                console.print(Text(f"💿 {alb['display']}  ({len(alb['tracks'])})", style=f"bold {MAGENTA}"))
-                console.print(tracks_table(alb["tracks"], start_idx=idx, favs=favs)); console.print()
-                flat.extend(alb["tracks"]); idx += len(alb["tracks"])
-            state["current_tracks"] = flat
-            console.print(commands_panel([("back","◀ К списку")]))
-
-        try:
-            cmd = session.prompt(FormattedText([("bold ansibrightmagenta","╰─❯ ")])).strip()
-        except: console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}")); stop_playback(); break
-
-        if not cmd: continue
-        cl = cmd.lower()
-
-        if cl in ("q","exit","quit","выход"): stop_playback(); break
-        if cl=="stop": stop_playback(); console.print(Text("  ⏹ Стоп", style=YELLOW)); time.sleep(0.4); continue
-
-        if cl=="random":
-            pool = (state["current_filtered"] if state.get("current_filtered")
-                    else state["current_tracks"] if state["mode"]=="artist"
-                    else [t for t in all_tracks(artists) if t["path"] in favs] if state["mode"]=="favorites"
-                    else all_tracks(artists))
-            if pool:
-                tr = random.choice(pool)
-                play_and_wait(tr, pool)
-            continue
-
-        if cl=="favorites":
-            state["mode"] = "favorites"
-            state["current_filtered"] = []
-            continue
-
-        if cl=="back":
-            if state["mode"] in ("favorites","artist"):
-                state["mode"] = "main"
-                state["artist_key"] = None
-                state["page"] = 1
-            continue
-
-        if cl=="export":
-            # Что экспортируем: filtered / favorites / всё
-            pool = (state["current_filtered"] if state.get("current_filtered")
-                    else state["current_tracks"] if state["mode"]=="artist"
-                    else [t for t in all_tracks(artists) if t["path"] in favs] if state["mode"]=="favorites"
-                    else all_tracks(artists))
-            console.print()
-            console.print("[yellow]💾 Экспорт:[/]")
-            console.print(f"  [cyan]1[/])  M3U playlist")
-            console.print(f"  [cyan]2[/])  CSV (Excel)")
-            console.print(f"  [cyan]0[/])  Отмена")
-            try:
-                ch = console.input("[bold magenta]Выбери> [/]").strip()
-            except: continue
-            name = f"export_{int(time.time())}"
-            if ch == "1":
-                p = export_m3u(pool, name)
-                if p: console.print(f"[green]✔ {p}[/] ({len(pool)} треков)")
-            elif ch == "2":
-                p = export_csv(pool, name)
-                if p: console.print(f"[green]✔ {p}[/] ({len(pool)} треков)")
-            console.print()
-            console.input("[dim]Enter — назад[/] ")
-            continue
-
-        if cl=="bygenre":
-            g = all_genres(artists)
-            if not g: continue
-            console.clear(); console.print(); console.print(title_block("ВЫБОР ЖАНРА")); console.print()
-            t = Table(box=SIMPLE_HEAD, border_style=MAGENTA, header_style=f"bold {MAGENTA}", padding=(0,2))
-            t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
-            t.add_column("ЖАНР", style=WHITE); t.add_column("ТРЕКОВ", style=CYAN, justify="right", width=10)
-            gs = sorted(g.items(), key=lambda x: -x[1])
-            for i, (gg, c) in enumerate(gs, 1): t.add_row(str(i), Text(gg, style=genre_color(gg)), str(c))
-            console.print(t); console.print(Text("\n  0 — сброс  •  Enter — назад", style=f"dim {GRAY}")); console.print()
-            try:
-                ch = console.input(Text("╰─[жанр]❯ ", style=f"bold {GREEN_BRIGHT}")).strip()
-                if ch=="0": state["fg"]=None
-                elif ch.isdigit() and 1<=int(ch)<=len(gs): state["fg"]=gs[int(ch)-1][0]
-                state["filter_page"]=1; state["current_filtered"]=[]
-            except: pass
-            continue
-
-        if cl=="bytype":
-            tp = all_types(artists)
-            if not tp: continue
-            console.clear(); console.print(); console.print(title_block("ВЫБОР ТИПА")); console.print()
-            t = Table(box=SIMPLE_HEAD, border_style=CYAN, header_style=f"bold {CYAN}", padding=(0,2))
-            t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
-            t.add_column("ТИП", style=WHITE); t.add_column("ТРЕКОВ", style=CYAN, justify="right", width=10)
-            ts = sorted(tp.items(), key=lambda x: -x[1])
-            for i, (tt, c) in enumerate(ts, 1): t.add_row(str(i), TYPE_LABELS.get(tt,tt), str(c))
-            console.print(t); console.print(Text("\n  0 — сброс  •  Enter — назад", style=f"dim {GRAY}")); console.print()
-            try:
-                ch = console.input(Text("╰─[тип]❯ ", style=f"bold {GREEN_BRIGHT}")).strip()
-                if ch=="0": state["ft"]=None
-                elif ch.isdigit() and 1<=int(ch)<=len(ts): state["ft"]=ts[int(ch)-1][0]
-                state["filter_page"]=1; state["current_filtered"]=[]
-            except: pass
-            continue
-
-        if cl=="f":
-            state["fg"]=None; state["ft"]=None; state["search"]=""
-            state["filter_page"]=1; state["current_filtered"]=[]
-            continue
-        if cmd.startswith("/"):
-            state["search"]=cmd[1:].strip(); state["filter_page"]=1; state["current_filtered"]=[]
-            continue
-
-        if state["mode"]=="main":
-            hf = state["fg"] or state["ft"] or state["search"]
-            if hf:
-                if cl=="n": state["filter_page"]+=1; continue
-                if cl=="p" and state["filter_page"]>1: state["filter_page"]-=1; continue
-            else:
-                if cl=="n": state["page"]+=1; continue
-                if cl=="p" and state["page"]>1: state["page"]-=1; continue
-
-        if cl.isdigit():
-            num = int(cl)
-            if state["mode"]=="main":
-                hf = state["fg"] or state["ft"] or state["search"]
-                if hf:
-                    tracks = state["current_filtered"] or filter_tracks(artists,
-                        {"fg":state["fg"],"ft":state["ft"],"s":state["search"]})
-                    if 1<=num<=len(tracks):
-                        tr = tracks[num-1]
-                        play_and_wait(tr, tracks)
-                    else: console.print(f"[red]❌ 1..{len(tracks)}[/]"); time.sleep(0.8)
-                else:
-                    items = sorted(artists.items(), key=lambda x: x[1]["display"].lower())
-                    s = (state["page"]-1)*PAGE_SIZE; e = s+PAGE_SIZE
-                    if s+1<=num<=min(e, len(items)):
-                        state["artist_key"]=items[num-1][0]; state["mode"]="artist"
-                    else: console.print("[red]❌ вне страницы[/]"); time.sleep(0.8)
-            elif state["mode"]=="favorites":
-                fav_tracks = [t for t in all_tracks(artists) if t["path"] in favs]
-                if 1<=num<=len(fav_tracks):
-                    play_and_wait(fav_tracks[num-1], fav_tracks)
-                else: console.print(f"[red]❌ 1..{len(fav_tracks)}[/]"); time.sleep(0.8)
-            else:
-                if 1<=num<=len(state["current_tracks"]):
-                    play_and_wait(state["current_tracks"][num-1], state["current_tracks"])
-                else: console.print(f"[red]❌ 1..{len(state['current_tracks'])}[/]"); time.sleep(0.8)
-            continue
-
-        console.print(Text(f"  ❌ {cmd}", style=RED)); time.sleep(0.6)
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        stop_playback(); console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
-```
-
----
-
-## 📄 music_meta.py
-
-*16841 байт · 420 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Music Metadata Fetcher v2 — iTunes + Deezer + MusicBrainz, потокобезопасный"""
-
-import os, re, json, time, sys
-import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
-from rich.align import Align
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, MofNCompleteColumn
-from rich import box
-
-console = Console()
-
-CACHE_DIR = os.path.expanduser("~/music_cache")
-CACHE_FILE = os.path.join(CACHE_DIR, "library.json")
-CACHE_VERSION = 2
-
-AUDIO_EXTS = {".mp3", ".m4a", ".aac", ".ogg", ".opus", ".flac",
-              ".wav", ".wma", ".amr", ".3gp", ".3gpp", ".mp4a"}
-
-SEARCH_DIRS = [
-    os.path.expanduser("~/storage/music"),
-    os.path.expanduser("~/storage/shared/Music"),
-    os.path.expanduser("~/storage/shared/Download"),
-    os.path.expanduser("~/storage/shared/Downloads"),
-    os.path.expanduser("~/storage/shared/WhatsApp/Media/WhatsApp Audio"),
-    os.path.expanduser("~/storage/shared/Telegram"),
-    os.path.expanduser("~/storage/shared/DCIM"),
-    os.path.expanduser("~/storage/shared/Ringtones"),
-    os.path.expanduser("~/storage/shared/Notifications"),
-    os.path.expanduser("~/storage/shared/Alarms"),
-    os.path.expanduser("~/storage/shared/Podcasts"),
-    os.path.expanduser("~/storage/shared"),
-]
-
-# ═══════════ ТИПЫ ТРЕКОВ ═══════════
-TYPE_PATTERNS = [
-    ("opening", [r"\bop\s?\d", r"\bopening\b", r"опенинг", r"\bop\d+\b", r"\bop\b"]),
-    ("ending",  [r"\bed\s?\d", r"\bending\b", r"эндинг", r"\bed\d+\b", r"\bed\b"]),
-    ("ost",     [r"\bost\b", r"soundtrack", r"саундтрек", r"original soundtrack"]),
-    ("theme",   [r"\btheme\b", r"\bтема\b", r"main theme"]),
-    ("game",    [r"\bgame\b", r"игров", r"game ost", r"игра\b"]),
-    ("anime",   [r"\banime\b", r"аниме"]),
-    ("film",    [r"\bfilm\b", r"\bmovie\b", r"кино\b", r"из фильма"]),
-    ("classical", [r"classical", r"классика", r"симфони"]),
-    ("remix",   [r"\bremix\b", r"ремикс", r"\bmix\b"]),
-    ("live",    [r"\blive\b", r"концерт"]),
-    ("acoustic", [r"acoustic", r"акустик"]),
-    ("cover",   [r"\bcover\b", r"кавер"]),
-    ("instrumental", [r"instrumental", r"инструментал"]),
-]
-
-def detect_type(title, path):
-    parts = [p.lower() for p in path.split(os.sep)]
-    for part in parts:
-        for t, patterns in TYPE_PATTERNS:
-            for p in patterns:
-                if re.search(p, part, re.IGNORECASE):
-                    return t
-    text = (str(title) + " " + str(path)).lower()
-    for t, patterns in TYPE_PATTERNS:
-        for p in patterns:
-            if re.search(p, text, re.IGNORECASE):
-                return t
-    return "song"
-
-# ═══════════ HTTP ═══════════
-SESSION = requests.Session()
-SESSION.headers.update({
-    "User-Agent": "TermuxMusicMeta/2.0 ( https://termux.dev )",
-    "Accept": "application/json",
-})
-
-def clean_query(s):
-    if not s: return ""
-    s = str(s).strip()
-    s = re.sub(r"^\d{1,3}[\s.\-_]+\s*", "", s)
-    s = re.sub(r"[\(\[].*?[\)\]]", "", s)
-    s = re.sub(r"\s+", " ", s).strip()
-    return s
-
-# ═══════════ iTUNES ═══════════
-def search_itunes(query):
-    if not query: return None
-    for attempt in range(2):
-        try:
-            r = SESSION.get("https://itunes.apple.com/search",
-                params={"term": query, "entity": "song", "limit": 1}, timeout=8)
-            if r.status_code != 200: return None
-            results = r.json().get("results", [])
-            if not results: return None
-            f = results[0]
-            return {
-                "artist": f.get("artistName", "").strip(),
-                "title":  f.get("trackName", "").strip(),
-                "album":  f.get("collectionName", "").strip(),
-                "genre":  f.get("primaryGenreName", "").strip(),
-                "year":   (f.get("releaseDate") or "")[:4],
-                "source": "itunes",
-            }
-        except Exception:
-            if attempt == 0: time.sleep(0.5)
-    return None
-
-# ═══════════ DEEZER ═══════════
-def search_deezer(query):
-    if not query: return None
-    for attempt in range(2):
-        try:
-            r = SESSION.get("https://api.deezer.com/search",
-                params={"q": query, "limit": 1}, timeout=8)
-            if r.status_code != 200: return None
-            items = r.json().get("data", [])
-            if not items: return None
-            f = items[0]
-            return {
-                "artist": f.get("artist", {}).get("name", "").strip(),
-                "title":  f.get("title", "").strip(),
-                "album":  f.get("album", {}).get("title", "").strip(),
-                "genre":  "",
-                "year":   "",
-                "source": "deezer",
-            }
-        except Exception:
-            if attempt == 0: time.sleep(0.5)
-    return None
-
-# ═══════════ MUSICBRAINZ ═══════════
-def search_musicbrainz(query):
-    if not query: return None
-    for attempt in range(2):
-        try:
-            # MusicBrainz любит Lucene-синтаксис
-            r = SESSION.get("https://musicbrainz.org/ws/2/recording",
-                params={"query": query, "fmt": "json", "limit": 1}, timeout=10)
-            if r.status_code != 200: return None
-            recordings = r.json().get("recordings", [])
-            if not recordings: return None
-            rec = recordings[0]
-            title = rec.get("title", "").strip()
-            # Artist
-            credits = rec.get("artist-credit", [])
-            artist = ""
-            if credits:
-                artist = "".join(
-                    (c.get("name") or "") + (c.get("joinphrase") or "")
-                    for c in credits
-                ).strip()
-            # Album
-            album = ""
-            releases = rec.get("releases", [])
-            if releases:
-                album = (releases[0].get("title") or "").strip()
-            # Year
-            year = ""
-            if releases:
-                date = releases[0].get("date", "")
-                if date: year = date[:4]
-            # Genre — из tags
-            genre = ""
-            tags = rec.get("tags", [])
-            if tags:
-                genre = tags[0].get("name", "").capitalize()
-            return {
-                "artist": artist,
-                "title":  title,
-                "album":  album,
-                "genre":  genre,
-                "year":   year,
-                "source": "musicbrainz",
-            }
-        except Exception:
-            if attempt == 0: time.sleep(0.5)
-    return None
-
-def fetch_metadata(title, artist):
-    """Каскад: iTunes → Deezer → MusicBrainz"""
-    if not title and not artist:
-        return None
-
-    # Пробуем artist + title
-    if artist and title:
-        q = clean_query(f"{artist} {title}")
-        for fn in (search_itunes, search_deezer, search_musicbrainz):
-            res = fn(q)
-            if res and res.get("title"):
-                return res
-
-    # Только title
-    if title:
-        q = clean_query(title)
-        for fn in (search_itunes, search_deezer, search_musicbrainz):
-            res = fn(q)
-            if res and res.get("title"):
-                return res
-
-    return None
-
-# ═══════════ ЛОКАЛЬНЫЕ ТЕГИ ═══════════
-def read_local_metadata(path):
-    filename = os.path.splitext(os.path.basename(path))[0]
-    artist = album = title = None
-    duration = 0
-    try:
-        from mutagen import File as MutagenFile
-        audio = MutagenFile(path, easy=True)
-        if audio:
-            if audio.get("artist"):  artist = audio["artist"][0].strip()
-            if audio.get("album"):   album  = audio["album"][0].strip()
-            if audio.get("title"):   title  = audio["title"][0].strip()
-        audio2 = MutagenFile(path)
-        if audio2 and hasattr(audio2, "info") and audio2.info:
-            duration = int(audio2.info.length)
-    except Exception:
-        pass
-
-    if not title or not artist:
-        name = re.sub(r"^\d{1,3}[\s.\-_]+\s*", "", filename)
-        if " - " in name:
-            left, right = name.split(" - ", 1)
-            if not artist: artist = left.strip()
-            if not title:  title  = right.strip()
-        else:
-            if not title: title = name
-
-    return artist or "", album or "", title or filename, duration
-
-# ═══════════ КЭШ ═══════════
-def load_cache():
-    if not os.path.exists(CACHE_FILE):
-        return {"version": CACHE_VERSION, "tracks": {}}
-    try:
-        with open(CACHE_FILE, encoding="utf-8") as f:
-            data = json.load(f)
-            if data.get("version") != CACHE_VERSION:
-                # Мигрируем: старые версии совместимы
-                data["version"] = CACHE_VERSION
-            data.setdefault("tracks", {})
-            return data
-    except Exception:
-        return {"version": CACHE_VERSION, "tracks": {}}
-
-def save_cache(cache):
-    """Сохраняет кэш. Делает снимок dict чтобы избежать ошибок."""
-    os.makedirs(CACHE_DIR, exist_ok=True)
-    tmp = CACHE_FILE + ".tmp"
-    # Снимок — теперь точно никто не изменит во время записи
-    snapshot = {"version": cache.get("version", CACHE_VERSION),
-                "tracks": dict(cache["tracks"])}
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(snapshot, f, ensure_ascii=False, indent=1)
-    os.replace(tmp, CACHE_FILE)
-
-# ═══════════ ФАЙЛЫ ═══════════
-def find_all_audio():
-    found, seen = [], set()
-    for base in SEARCH_DIRS:
-        if not os.path.isdir(base): continue
-        for root, dirs, files in os.walk(base):
-            dirs[:] = [d for d in dirs if d not in
-                       ("Android/data", "Android/obb", ".thumbnails", ".cache")]
-            for f in files:
-                if os.path.splitext(f)[1].lower() in AUDIO_EXTS:
-                    full = os.path.join(root, f)
-                    if full not in seen:
-                        seen.add(full); found.append(full)
-    return found
-
-# ═══════════ ВОРКЕР (НЕ пишет в кэш!) ═══════════
-def worker(path, force):
-    """
-    Читает метаданные и ищет в интернете.
-    ВАЖНО: возвращает (path, entry) или None. НЕ трогает общий кэш.
-    """
-    local_artist, local_album, local_title, dur = read_local_metadata(path)
-    track_type = detect_type(local_title, path)
-
-    # Убираем "Неизвестен" из запроса, чтобы не мусорить
-    q_artist = local_artist if local_artist and local_artist.lower() not in ("неизвестен", "unknown") else ""
-
-    # Если в локальных тегах уже есть artist + title — попробуем сначала найти только жанр
-    remote = fetch_metadata(local_title, q_artist)
-
-    if remote:
-        entry = {
-            "title":  remote.get("title") or local_title,
-            "artist": remote.get("artist") or local_artist or "Неизвестен",
-            "album":  remote.get("album") or local_album or "",
-            "genre":  remote.get("genre") or "",
-            "year":   remote.get("year") or "",
-            "type":   track_type,
-            "source": remote.get("source"),
-            "duration": dur,
-        }
-    else:
-        entry = {
-            "title":  local_title,
-            "artist": local_artist or "Неизвестен",
-            "album":  local_album or "",
-            "genre":  "",
-            "year":   "",
-            "type":   track_type,
-            "source": "local",
-            "duration": dur,
-        }
-    return (path, entry)
-
-# ═══════════ ГЛАВНОЕ ═══════════
-def main():
-    console.clear()
-    force = "--force" in sys.argv
-
-    console.print()
-    console.print(Align.center(Panel.fit(
-        "[bold green]🌐  MUSIC METADATA FETCHER v2  🌐[/]\n"
-        "[dim]iTunes + Deezer + MusicBrainz → кэш в ~/music_cache/[/]",
-        border_style="green")))
-    console.print()
-
-    console.print("[bold yellow]🔍 Сканирую память телефона...[/]")
-    files = find_all_audio()
-    console.print(f"   Найдено аудиофайлов: [green]{len(files)}[/]\n")
-
-    cache = load_cache()
-    cached_count = len(cache["tracks"])
-    console.print(f"💾 В кэше уже: [green]{cached_count}[/] записей\n")
-
-    # Отбираем треки для поиска
-    to_process = []
-    for f in files:
-        existing = cache["tracks"].get(f)
-        if force:
-            to_process.append(f)
-        else:
-            # Ищем только те, у которых нет данных из интернета
-            if not existing or existing.get("source") in (None, "local", "filename", "filename-only"):
-                to_process.append(f)
-
-    if not to_process:
-        console.print("[green]✔ Всё уже найдено. Нечего искать.[/]")
-        console.print("[dim]Запусти music-force для полного переискивания.[/]")
-        return
-
-    console.print(f"[bold cyan]📡 Ищу: {len(to_process)} треков (параллельно в 6 потоков)[/]")
-    console.print("[dim]Можно прервать Ctrl+C — прогресс сохранится.[/]\n")
-
-    done = 0
-    found_remote = 0
-    found_mb = 0
-    not_found = 0
-    save_every = 20
-
-    try:
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[cyan]{task.description}"),
-            BarColumn(),
-            MofNCompleteColumn(),
-            console=console,
-        ) as prog:
-            task = prog.add_task("Поиск...", total=len(to_process))
-
-            # ВАЖНО: воркеры только возвращают результат, кэш мутирует ГЛАВНЫЙ поток
-            with ThreadPoolExecutor(max_workers=6) as pool:
-                futures = {pool.submit(worker, f, force): f for f in to_process}
-                for fut in as_completed(futures):
-                    try:
-                        result = fut.result()
-                        if result:
-                            key, entry = result
-                            # Мутация кэша — только в этом потоке
-                            cache["tracks"][key] = entry
-                            if entry.get("source") in ("itunes", "deezer", "musicbrainz"):
-                                found_remote += 1
-                                if entry.get("source") == "musicbrainz":
-                                    found_mb += 1
-                            else:
-                                not_found += 1
-                    except Exception:
-                        pass
-
-                    done += 1
-                    prog.update(
-                        task, advance=1,
-                        description=f"[cyan]✔ {found_remote}  ✘ {not_found}  (MB: {found_mb})"
-                    )
-
-                    if done % save_every == 0:
-                        try: save_cache(cache)
-                        except Exception: pass
-    except KeyboardInterrupt:
-        console.print("\n[yellow]⚠ Прервано. Сохраняю...[/]")
-
-    try: save_cache(cache)
-    except Exception as e:
-        console.print(f"[red]❌ Ошибка сохранения: {e}[/]")
-
-    console.print()
-    t = Table(box=box.ROUNDED, show_header=False, border_style="green")
-    t.add_column("", style="bold yellow", width=24)
-    t.add_column("", style="white")
-    t.add_row("✅ Найдено в интернете", f"[green]{found_remote}[/]")
-    t.add_row("   из них MusicBrainz",  f"[cyan]{found_mb}[/]")
-    t.add_row("⚠ Не найдено",          f"[yellow]{not_found}[/]")
-    t.add_row("💾 Всего в кэше",         f"[cyan]{len(cache['tracks'])}[/]")
-    t.add_row("📁 Файл",                 f"[dim]{CACHE_FILE}[/]")
-    console.print(t)
-    console.print()
-    console.print("[green]✔ Готово. Запусти [cyan]music[/][/]")
-    console.print()
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
         console.print("\n[dim]Прервано.[/]")
-```
-
----
-
-## 📄 todo.py
-
-*20040 байт · 448 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""TODO — трекер задач с Tab-автодополнением и уведомлениями"""
-
-import os, sys, json, re, subprocess, time
-from datetime import datetime, timedelta
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.align import Align
-from rich import box
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
-
-console = Console()
-TODO_FILE = os.path.expanduser("~/.todo.json")
-
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
-ORANGE = "dark_orange"
-
-PRIORITY_ICON = {"high": "🔴", "medium": "🟡", "low": "🟢"}
-PRIORITY_LABEL = {"high": "Высокий", "medium": "Средний", "low": "Низкий"}
-PRIORITY_COLOR = {"high": RED, "medium": YELLOW, "low": GREEN_BRIGHT}
-
-# ═══════════ ХРАНИЛИЩЕ ═══════════
-def load_todo():
-    if not os.path.exists(TODO_FILE):
-        return {"next_id": 1, "tasks": []}
-    try:
-        with open(TODO_FILE, encoding="utf-8") as f:
-            d = json.load(f)
-            d.setdefault("next_id", 1)
-            d.setdefault("tasks", [])
-            return d
-    except Exception:
-        return {"next_id": 1, "tasks": []}
-
-def save_todo(data):
-    try:
-        with open(TODO_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=1)
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-
-# ═══════════ ПАРСИНГ ═══════════
-def parse_date(s):
-    """Поддержка: today, tomorrow, +3d, +2h, +1w, 15.09, 15.09.2026, 15.09 18:00"""
-    s = s.lower().strip()
-    now = datetime.now()
-    if s in ("today", "сегодня"):     return now.strftime("%Y-%m-%d 23:59")
-    if s in ("tomorrow", "завтра"):   return (now + timedelta(days=1)).strftime("%Y-%m-%d 23:59")
-    m = re.match(r"\+(\d+)([dhmw])", s)
-    if m:
-        n = int(m.group(1)); u = m.group(2)
-        delta = {"d": timedelta(days=n), "h": timedelta(hours=n),
-                 "m": timedelta(minutes=n), "w": timedelta(weeks=n)}[u]
-        return (now + delta).strftime("%Y-%m-%d %H:%M")
-    m = re.match(r"(\d{1,2})\.(\d{1,2})(?:\.(\d{4}))?(?:\s+(\d{1,2}):(\d{2}))?$", s)
-    if m:
-        d = int(m.group(1)); mo = int(m.group(2))
-        y  = int(m.group(3)) if m.group(3) else now.year
-        h  = int(m.group(4)) if m.group(4) else 23
-        mi = int(m.group(5)) if m.group(5) else 59
-        try:
-            return datetime(y, mo, d, h, mi).strftime("%Y-%m-%d %H:%M")
-        except Exception:
-            return None
-    return None
-
-def parse_add(text):
-    """add Купить молоко !high @tomorrow #покупки"""
-    title_parts = []; priority = "medium"; deadline = None; tags = []
-    for w in text.split():
-        if w.startswith("!"):
-            p = w[1:].lower()
-            if p in ("h","high","1","в","высокий"): priority = "high"
-            elif p in ("m","mid","medium","2","с","средний"): priority = "medium"
-            elif p in ("l","low","3","н","низкий"): priority = "low"
-        elif w.startswith("@") and not deadline:
-            deadline = parse_date(w[1:])
-        elif w.startswith("#") and len(w) > 1:
-            tags.append(w[1:])
-        else:
-            title_parts.append(w)
-    return {"title": " ".join(title_parts).strip(),
-            "priority": priority, "deadline": deadline, "tags": tags}
-
-# ═══════════ ДАТЫ / ПРИОРИТЕТЫ ═══════════
-def is_overdue(task):
-    if task.get("done") or not task.get("deadline"): return False
-    try:
-        return datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M") < datetime.now()
-    except Exception:
-        return False
-
-def is_today(task):
-    if task.get("done") or not task.get("deadline"): return False
-    try:
-        d = datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M")
-        return d.date() == datetime.now().date()
-    except Exception:
-        return False
-
-def is_soon(task, hours=24):
-    if task.get("done") or not task.get("deadline"): return False
-    try:
-        d = datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M")
-        delta = d - datetime.now()
-        return timedelta(0) <= delta <= timedelta(hours=hours)
-    except Exception:
-        return False
-
-def fmt_deadline(s):
-    if not s: return "—"
-    try:
-        d = datetime.strptime(s, "%Y-%m-%d %H:%M")
-        now = datetime.now()
-        delta = d - now
-        # Короткий формат
-        date_s = d.strftime("%d.%m %H:%M")
-        if d.date() == now.date():   date_s = f"сегодня {d.strftime('%H:%M')}"
-        elif d.date() == (now + timedelta(days=1)).date(): date_s = f"завтра {d.strftime('%H:%M')}"
-        if delta.total_seconds() < 0:
-            return f"❗ {date_s}"
-        if delta.total_seconds() < 3600:
-            return f"⏰ {date_s} ({int(delta.total_seconds()//60)} мин)"
-        if delta < timedelta(days=1):
-            return f"⏰ {date_s}"
-        return date_s
-    except Exception:
-        return s
-
-# ═══════════ УВЕДОМЛЕНИЯ ═══════════
-def notify(task):
-    """Отправить уведомление через termux-notification"""
-    title = f"📌 TODO #{task['id']}: {task['title']}"
-    content = f"Приоритет: {PRIORITY_LABEL.get(task['priority'],'—')}"
-    if task.get("deadline"): content += f"\nДедлайн: {fmt_deadline(task['deadline'])}"
-    if task.get("tags"):     content += f"\nТеги: {', '.join(task['tags'])}"
-    try:
-        subprocess.run(["termux-notification",
-            "--title", title, "--content", content,
-            "--id", str(task["id"])], check=False)
-        return True
-    except Exception:
-        return False
-
-# ═══════════ РИСОВКА ═══════════
-def clear(): os.system("clear")
-
-def title_block(main, sub=""):
-    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
-    lines.append(Text("═"*60, style=GREEN_DIM))
-    return Group(*lines)
-
-def stats_panel(tasks):
-    total = len(tasks)
-    active = sum(1 for t in tasks if not t.get("done"))
-    done = sum(1 for t in tasks if t.get("done"))
-    overdue = sum(1 for t in tasks if is_overdue(t))
-    today = sum(1 for t in tasks if is_today(t))
-    t = Table(box=None, show_header=False, padding=(0, 3))
-    for _ in range(4): t.add_column("")
-    t.add_row(f"📋 Всего [bold]{total}[/]", f"⏳ Активных [bold]{active}[/]",
-              f"✅ Выполнено [bold]{done}[/]", f"❗ Просрочено [bold]{overdue}[/]")
-    t.add_row(f"📅 Сегодня [bold]{today}[/]", "", "", "")
-    return t
-
-def tasks_table(tasks, filter_mode="active"):
-    """filter_mode: active, done, all, today, overdue"""
-    now = datetime.now()
-    if filter_mode == "active":
-        shown = [t for t in tasks if not t.get("done")]
-    elif filter_mode == "done":
-        shown = [t for t in tasks if t.get("done")]
-    elif filter_mode == "today":
-        shown = [t for t in tasks if is_today(t)]
-    elif filter_mode == "overdue":
-        shown = [t for t in tasks if is_overdue(t)]
-    else:
-        shown = tasks
-
-    # Сортировка: активные → по дедлайну → по приоритету
-    def sort_key(t):
-        pri = {"high": 0, "medium": 1, "low": 2}.get(t.get("priority"), 1)
-        d = t.get("deadline") or "9999-99-99 99:99"
-        return (t.get("done", False), d, pri)
-    shown = sorted(shown, key=sort_key)
-
-    if not shown:
-        console.print(Text(f"  📭 Задач нет (фильтр: {filter_mode})", style=f"dim {GRAY}"))
-        console.print()
-        return
-
-    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
-              header_style=f"bold {CYAN}", padding=(0, 1), expand=True)
-    t.add_column("ID", style=f"bold {YELLOW}", width=4, justify="right")
-    t.add_column("✓",  width=3, justify="center")
-    t.add_column("!",  width=3, justify="center")
-    t.add_column("Задача", style=WHITE)
-    t.add_column("Дедлайн", width=22)
-    t.add_column("Теги", style=MAGENTA, width=18)
-
-    for task in shown:
-        mark = "[green]✔[/]" if task.get("done") else "[ ]"
-        pri_icon = PRIORITY_ICON.get(task.get("priority"), "⚪")
-        title = task["title"]
-        if task.get("done"):
-            title = f"[dim strikethrough]{title}[/]"
-        deadline_s = fmt_deadline(task.get("deadline"))
-        if is_overdue(task):
-            deadline_s = f"[bold {RED}]{deadline_s}[/]"
-        elif is_soon(task):
-            deadline_s = f"[{YELLOW}]{deadline_s}[/]"
-        else:
-            deadline_s = f"[{GRAY}]{deadline_s}[/]"
-        tags_s = " ".join(f"#{x}" for x in task.get("tags", []))[:18] or "[dim]—[/]"
-        t.add_row(str(task["id"]), mark, pri_icon, title, deadline_s, tags_s)
-    console.print(t)
-    console.print()
-
-def commands_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="black",
-              show_header=False, padding=(0, 2))
-    t.add_column("Команда", style="bold yellow", width=26, justify="right")
-    t.add_column("Действие", style="white")
-    t.add_row("[cyan]add <текст> !high @tomorrow #tag[/]", "➕ Добавить задачу")
-    t.add_row("[cyan]done <id>[/]",     "✅ Отметить выполненной")
-    t.add_row("[cyan]undone <id>[/]",   "↩ Вернуть в работу")
-    t.add_row("[cyan]del <id>[/]",      "🗑 Удалить задачу")
-    t.add_row("[cyan]edit <id>[/]",     "✏ Изменить задачу")
-    t.add_row("[cyan]notify <id>[/]",   "🔔 Отправить уведомление")
-    t.add_row("[cyan]notify-all[/]",    "🔔 Уведомить о всех активных")
-    t.add_row("[cyan]filter <mode>[/]", "🔎 filter: active/done/all/today/overdue")
-    t.add_row("[cyan]clear-done[/]",    "🧹 Удалить все выполненные")
-    t.add_row("[cyan]q[/]",             "🚪 Выход")
-    console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
-                        border_style="black"))
-    console.print()
-
-# ═══════════ TAB-COMPLETER ═══════════
-class TodoCompleter(Completer):
-    def __init__(self, get_tasks):
-        self.get_tasks = get_tasks
-
-    def get_completions(self, document, complete_event):
-        text = document.text_before_cursor
-        words = text.split()
-        # Первое слово — команда
-        if not words or (len(words) == 1 and not text.endswith(" ")):
-            partial = words[0] if words else ""
-            commands = [
-                "add","done","undone","del","edit","notify","notify-all",
-                "filter","clear-done","clear","help","q",
-            ]
-            for c in commands:
-                if c.startswith(partial.lower()):
-                    yield Completion(c, start_position=-len(partial))
-            return
-        cmd = words[0].lower()
-        partial = words[-1] if not text.endswith(" ") else ""
-
-        if cmd in ("done","undone","del","edit","notify"):
-            tasks = self.get_tasks()
-            for t in tasks:
-                sid = str(t["id"])
-                if sid.startswith(partial):
-                    label = f'{sid}  {t["title"][:50]}'
-                    yield Completion(sid, start_position=-len(partial),
-                                     display=label, display_meta=PRIORITY_LABEL.get(t.get("priority"),""))
-            return
-
-        if cmd == "filter":
-            for m in ("active","done","all","today","overdue"):
-                if m.startswith(partial.lower()):
-                    yield Completion(m, start_position=-len(partial))
-
-# ═══════════ MAIN ═══════════
-def main():
-    data = load_todo()
-    current_filter = "active"
-
-    style = Style.from_dict({
-        "prompt": "bold ansibrightmagenta",
-        "completion-menu.completion": "bg:#000000 #00ff88",
-        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
-        "completion-menu.meta.completion": "bg:#000000 #557755",
-        "completion-menu.meta.completion.current": "bg:#aa00aa #000000",
-    })
-
-    while True:
-        data = load_todo()
-        tasks = data["tasks"]
-
-        clear()
-        console.print()
-        console.print(title_block("T O D O", "Terminal Argonov  •  Task Manager"))
-        console.print()
-        console.print(stats_panel(tasks))
-        console.print()
-
-        # Напоминание о близких
-        soon = [t for t in tasks if (is_overdue(t) or is_today(t) or is_soon(t)) and not t.get("done")]
-        if soon:
-            console.print(f"[bold {YELLOW}]⏰ Требуют внимания ({len(soon)}):[/]")
-            for t in soon[:3]:
-                mark = "❗" if is_overdue(t) else "⏰"
-                console.print(f"  {mark} [bold]#{t['id']}[/] {t['title'][:55]}  [dim]{fmt_deadline(t.get('deadline'))}[/]")
-            console.print()
-
-        console.print(f"[dim]Фильтр: [bold]{current_filter}[/][/]")
-        console.print()
-        tasks_table(tasks, filter_mode=current_filter)
-        commands_panel()
-
-        session = PromptSession(
-            completer=TodoCompleter(lambda: load_todo()["tasks"]),
-            style=style, complete_while_typing=True)
-        try:
-            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
-        except (EOFError, KeyboardInterrupt):
-            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
-            break
-
-        if not cmd: continue
-        parts = cmd.split(maxsplit=1)
-        c = parts[0].lower()
-        arg = parts[1] if len(parts) > 1 else ""
-
-        if c in ("q","exit","quit","выход"):
-            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}")); break
-        if c == "clear": continue
-
-        if c == "add":
-            if not arg:
-                console.print(Text("  ❌ add <текст> [!high] [@tomorrow] [#tag]", style=RED))
-                time.sleep(1); continue
-            p = parse_add(arg)
-            if not p["title"]:
-                console.print(Text("  ❌ Пустой заголовок", style=RED)); time.sleep(1); continue
-            task = {
-                "id": data["next_id"],
-                "title": p["title"],
-                "priority": p["priority"],
-                "deadline": p["deadline"],
-                "tags": p["tags"],
-                "done": False,
-                "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            }
-            data["next_id"] += 1
-            data["tasks"].append(task)
-            save_todo(data)
-            console.print(Text(f"  ✔ Добавлено #{task['id']}: {task['title']}", style=GREEN_BRIGHT))
-            if task["deadline"]:
-                console.print(Text(f"     📅 {fmt_deadline(task['deadline'])}", style=YELLOW))
-            time.sleep(0.8); continue
-
-        if c in ("done","undone","del","edit","notify"):
-            if not arg.isdigit():
-                console.print(Text(f"  ❌ {c} <id>", style=RED)); time.sleep(1); continue
-            tid = int(arg)
-            task = next((t for t in data["tasks"] if t["id"] == tid), None)
-            if not task:
-                console.print(Text(f"  ❌ Задача #{tid} не найдена", style=RED)); time.sleep(1); continue
-
-            if c == "done":
-                task["done"] = True
-                save_todo(data)
-                console.print(Text(f"  ✅ #{tid} выполнено", style=GREEN_BRIGHT))
-            elif c == "undone":
-                task["done"] = False
-                save_todo(data)
-                console.print(Text(f"  ↩ #{tid} возвращено в работу", style=YELLOW))
-            elif c == "del":
-                data["tasks"] = [t for t in data["tasks"] if t["id"] != tid]
-                save_todo(data)
-                console.print(Text(f"  🗑 #{tid} удалено", style=RED))
-            elif c == "edit":
-                console.print(Text(f"  ✏ Текущий: {task['title']}", style=WHITE))
-                try:
-                    new_title = console.input("[bold magenta]Новый заголовок (Enter — оставить)> [/]").strip()
-                    if new_title: task["title"] = new_title
-                    new_pri = console.input("[bold magenta]Приоритет (h/m/l, Enter — оставить)> [/]").strip().lower()
-                    if new_pri in ("h","high","1"): task["priority"] = "high"
-                    elif new_pri in ("m","mid","2"): task["priority"] = "medium"
-                    elif new_pri in ("l","low","3"): task["priority"] = "low"
-                    new_dl = console.input("[bold magenta]Дедлайн (@tomorrow, @+3d, Enter — оставить)> [/]").strip()
-                    if new_dl.startswith("@"):
-                        pd = parse_date(new_dl[1:])
-                        if pd: task["deadline"] = pd
-                    save_todo(data)
-                    console.print(Text(f"  ✔ #{tid} обновлено", style=GREEN_BRIGHT))
-                except (EOFError, KeyboardInterrupt):
-                    console.print(Text("  Отменено", style=YELLOW))
-            elif c == "notify":
-                if notify(task):
-                    console.print(Text(f"  🔔 Уведомление отправлено: {task['title']}", style=GREEN_BRIGHT))
-                else:
-                    console.print(Text("  ⚠ termux-notification не сработал (установлен ли Termux:API?)", style=YELLOW))
-            time.sleep(0.8); continue
-
-        if c == "notify-all":
-            active = [t for t in data["tasks"] if not t.get("done")]
-            if not active:
-                console.print(Text("  ⚠ Нет активных задач", style=YELLOW)); time.sleep(1); continue
-            cnt = 0
-            for t in active[:10]:
-                if notify(t): cnt += 1
-                time.sleep(0.3)
-            console.print(Text(f"  🔔 Отправлено уведомлений: {cnt}", style=GREEN_BRIGHT))
-            time.sleep(1); continue
-
-        if c == "filter":
-            if arg in ("active","done","all","today","overdue"):
-                current_filter = arg
-                console.print(Text(f"  🔎 Фильтр: {arg}", style=GREEN_BRIGHT))
-                time.sleep(0.5)
-            else:
-                console.print(Text("  ❌ filter: active/done/all/today/overdue", style=RED))
-                time.sleep(1)
-            continue
-
-        if c == "clear-done":
-            before = len(data["tasks"])
-            data["tasks"] = [t for t in data["tasks"] if not t.get("done")]
-            save_todo(data)
-            removed = before - len(data["tasks"])
-            console.print(Text(f"  🧹 Удалено выполненных: {removed}", style=GREEN_BRIGHT))
-            time.sleep(0.8); continue
-
-        if c in ("help","h","?"):
-            console.print(Text("  Tab — автодополнение. Пример: add Купить хлеб !high @tomorrow #покупки", style=CYAN))
-            time.sleep(1.5); continue
-
-        console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
-        time.sleep(0.6)
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
-```
-
----
-
-## 📄 notes.py
-
-*18700 байт · 427 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""NOTES — заметки с тегами, поиском, экспортом + Tab-автодополнение"""
-
-import os, sys, json, re, subprocess, time
-from datetime import datetime
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.markdown import Markdown
-from rich import box
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
-
-console = Console()
-NOTES_FILE  = os.path.expanduser("~/.notes.json")
-EXPORT_DIR  = os.path.expanduser("~/notes_export")
-
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
-
-# ═══════════ ХРАНИЛИЩЕ ═══════════
-def load_notes():
-    if not os.path.exists(NOTES_FILE):
-        return {"next_id": 1, "notes": []}
-    try:
-        with open(NOTES_FILE, encoding="utf-8") as f:
-            d = json.load(f)
-            d.setdefault("next_id", 1)
-            d.setdefault("notes", [])
-            return d
-    except Exception:
-        return {"next_id": 1, "notes": []}
-
-def save_notes(data):
-    try:
-        with open(NOTES_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=1)
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-
-# ═══════════ ПАРСИНГ ═══════════
-def parse_new(text):
-    """new Заголовок | Тело заметки #тег1 #тег2"""
-    # Теги ищем в конце
-    tags = re.findall(r"#(\S+)", text)
-    text_no_tags = re.sub(r"#\S+", "", text).strip()
-    if "|" in text_no_tags:
-        title, body = text_no_tags.split("|", 1)
-    else:
-        title = text_no_tags
-        body = ""
-    return {"title": title.strip(), "body": body.strip(), "tags": tags}
-
-def edit_note_interactive(note):
-    """Интерактивное редактирование через мультистрочный ввод"""
-    console.print(Text(f"  ✏ Текущий заголовок: {note['title']}", style=WHITE))
-    try:
-        new_title = console.input("[bold magenta]Новый заголовок (Enter — оставить)> [/]").strip()
-        if new_title: note["title"] = new_title
-    except (EOFError, KeyboardInterrupt):
-        console.print(Text("  Отменено", style=YELLOW)); return False
-
-    console.print(Text("  Текущее тело:", style=WHITE))
-    console.print(Panel(note.get("body","") or "[dim](пусто)[/]", border_style=GRAY))
-    console.print(Text("  Введи новый текст (Enter на пустой строке — конец):", style=CYAN))
-    lines = []
-    try:
-        while True:
-            line = console.input("[bold magenta]...[/] ")
-            if not line: break
-            lines.append(line)
-    except (EOFError, KeyboardInterrupt):
-        pass
-    if lines:
-        note["body"] = "\n".join(lines)
-
-    try:
-        new_tags = console.input(f"[bold magenta]Теги через пробел (текущие: {', '.join(note.get('tags',[])) or '—'})> [/]").strip()
-        if new_tags:
-            note["tags"] = [t.lstrip("#") for t in new_tags.split()]
-    except (EOFError, KeyboardInterrupt):
-        pass
-    note["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-    return True
-
-# ═══════════ ЭКСПОРТ ═══════════
-def export_notes(fmt="md"):
-    os.makedirs(EXPORT_DIR, exist_ok=True)
-    data = load_notes()
-    notes = data["notes"]
-    if not notes:
-        console.print(Text("  ⚠ Нечего экспортировать", style=YELLOW)); return
-
-    if fmt == "json":
-        path = os.path.join(EXPORT_DIR, f"notes_{datetime.now().strftime('%Y%m%d_%H%M')}.json")
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(notes, f, ensure_ascii=False, indent=2)
-    elif fmt == "md":
-        path = os.path.join(EXPORT_DIR, f"notes_{datetime.now().strftime('%Y%m%d_%H%M')}.md")
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(f"# Мои заметки\n\n_Экспорт: {datetime.now().strftime('%d.%m.%Y %H:%M')}_\n\n")
-            for n in notes:
-                f.write(f"## #{n['id']} — {n['title']}\n\n")
-                if n.get("tags"):
-                    f.write("**Теги:** " + " ".join(f"`#{t}`" for t in n["tags"]) + "\n\n")
-                if n.get("body"):
-                    f.write(n["body"] + "\n\n")
-                f.write(f"_Создано: {n.get('created','—')}_\n\n---\n\n")
-    elif fmt == "txt":
-        path = os.path.join(EXPORT_DIR, f"notes_{datetime.now().strftime('%Y%m%d_%H%M')}.txt")
-        with open(path, "w", encoding="utf-8") as f:
-            for n in notes:
-                f.write(f"=== #{n['id']} — {n['title']} ===\n")
-                if n.get("tags"): f.write("Теги: " + ", ".join(n["tags"]) + "\n")
-                if n.get("body"): f.write(n["body"] + "\n")
-                f.write("\n")
-    else:
-        console.print(Text(f"  ❌ Неизвестный формат: {fmt}", style=RED)); return
-
-    console.print(Text(f"  ✔ Экспортировано: {path}", style=GREEN_BRIGHT))
-
-# ═══════════ РИСОВКА ═══════════
-def clear(): os.system("clear")
-
-def title_block(main, sub=""):
-    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
-    lines.append(Text("═" * 60, style=GREEN_DIM))
-    return Group(*lines)
-
-def stats_panel(notes):
-    total = len(notes)
-    tags_count = {}
-    for n in notes:
-        for t in n.get("tags", []):
-            tags_count[t] = tags_count.get(t, 0) + 1
-    top_tags = sorted(tags_count.items(), key=lambda x: -x[1])[:5]
-    top_s = " ".join(f"#{t}({c})" for t, c in top_tags) or "[dim]нет[/]"
-
-    t = Table(box=None, show_header=False, padding=(0, 3))
-    t.add_column(""); t.add_column("")
-    t.add_row(f"📝 Заметок: [bold]{total}[/]",
-              f"🏷 Тегов: [bold]{len(tags_count)}[/]")
-    t.add_row(f"🔝 Топ теги: {top_s}", "")
-    return t
-
-def notes_table(notes, filter_mode=None):
-    """filter_mode: None (все), 'tag:xxx', search-строка"""
-    shown = notes
-    if filter_mode and filter_mode.startswith("tag:"):
-        tag = filter_mode[4:].lower()
-        shown = [n for n in notes if tag in [x.lower() for x in n.get("tags", [])]]
-    elif filter_mode:
-        q = filter_mode.lower()
-        shown = [n for n in notes
-                 if q in n["title"].lower() or q in n.get("body","").lower()
-                 or any(q in t.lower() for t in n.get("tags", []))]
-
-    shown = sorted(shown, key=lambda x: x.get("updated") or x.get("created",""), reverse=True)
-
-    if not shown:
-        console.print(Text(f"  📭 Заметок нет (фильтр: {filter_mode or 'нет'})", style=f"dim {GRAY}"))
-        console.print()
-        return
-
-    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
-              header_style=f"bold {CYAN}", padding=(0, 1), expand=True)
-    t.add_column("ID", style=f"bold {YELLOW}", width=4, justify="right")
-    t.add_column("Заголовок", style=WHITE)
-    t.add_column("Теги", style=MAGENTA, width=20)
-    t.add_column("Обновлено", style=GRAY, width=17)
-
-    for n in shown:
-        title = n["title"][:55]
-        tags_s = " ".join(f"#{x}" for x in n.get("tags", []))[:20] or "[dim]—[/]"
-        upd = n.get("updated") or n.get("created", "—")
-        t.add_row(str(n["id"]), title, tags_s, upd[:16])
-    console.print(t)
-    console.print()
-
-def commands_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="black",
-              show_header=False, padding=(0, 2))
-    t.add_column("Команда", style="bold yellow", width=26, justify="right")
-    t.add_column("Действие", style="white")
-    t.add_row("[cyan]new <заголовок> | <тело> #tag[/]", "➕ Новая заметка")
-    t.add_row("[cyan]show <id>[/]",     "👁 Показать заметку")
-    t.add_row("[cyan]edit <id>[/]",     "✏ Редактировать")
-    t.add_row("[cyan]del <id>[/]",      "🗑 Удалить")
-    t.add_row("[cyan]tag <тег>[/]",     "🏷 Фильтр по тегу")
-    t.add_row("[cyan]search <текст>[/]", "🔍 Поиск по всем полям")
-    t.add_row("[cyan]tags[/]",          "📋 Список всех тегов")
-    t.add_row("[cyan]reset[/]",         "↩ Сбросить фильтр")
-    t.add_row("[cyan]export md|txt|json[/]", "💾 Экспорт в ~/notes_export/")
-    t.add_row("[cyan]q[/]",             "🚪 Выход")
-    console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
-                        border_style="black"))
-    console.print()
-
-# ═══════════ TAB-COMPLETER ═══════════
-class NotesCompleter(Completer):
-    def __init__(self, get_data):
-        self.get_data = get_data
-
-    def get_completions(self, document, complete_event):
-        text = document.text_before_cursor
-        words = text.split()
-        if not words or (len(words) == 1 and not text.endswith(" ")):
-            partial = words[0] if words else ""
-            commands = ["new","show","edit","del","tag","search","tags",
-                        "reset","export","clear","help","q"]
-            for c in commands:
-                if c.startswith(partial.lower()):
-                    yield Completion(c, start_position=-len(partial))
-            return
-
-        cmd = words[0].lower()
-        partial = words[-1] if not text.endswith(" ") else ""
-
-        if cmd in ("show","edit","del"):
-            data = self.get_data()
-            for n in data["notes"]:
-                sid = str(n["id"])
-                if sid.startswith(partial):
-                    label = f'{sid}  {n["title"][:55]}'
-                    yield Completion(sid, start_position=-len(partial),
-                                     display=label)
-            return
-
-        if cmd == "tag":
-            data = self.get_data()
-            tags = set()
-            for n in data["notes"]:
-                tags.update(n.get("tags", []))
-            for t in sorted(tags):
-                if t.lower().startswith(partial.lower()):
-                    yield Completion(t, start_position=-len(partial))
-            return
-
-        if cmd == "export":
-            for m in ("md","txt","json"):
-                if m.startswith(partial.lower()):
-                    yield Completion(m, start_position=-len(partial))
-
-# ═══════════ MAIN ═══════════
-def main():
-    data = load_notes()
-    current_filter = None
-
-    style = Style.from_dict({
-        "prompt": "bold ansibrightmagenta",
-        "completion-menu.completion": "bg:#000000 #00ff88",
-        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
-        "completion-menu.meta.completion": "bg:#000000 #557755",
-        "completion-menu.meta.completion.current": "bg:#aa00aa #000000",
-    })
-
-    while True:
-        data = load_notes()
-        notes = data["notes"]
-
-        clear()
-        console.print()
-        console.print(title_block("N O T E S", "Terminal Argonov  •  Notes"))
-        console.print()
-        console.print(stats_panel(notes))
-        console.print()
-
-        if current_filter:
-            console.print(f"[dim]Фильтр: [bold]{current_filter}[/][/]")
-            console.print()
-
-        notes_table(notes, filter_mode=current_filter)
-        commands_panel()
-
-        session = PromptSession(
-            completer=NotesCompleter(lambda: load_notes()),
-            style=style, complete_while_typing=True)
-        try:
-            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
-        except (EOFError, KeyboardInterrupt):
-            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
-            break
-
-        if not cmd: continue
-        parts = cmd.split(maxsplit=1)
-        c = parts[0].lower()
-        arg = parts[1] if len(parts) > 1 else ""
-
-        if c in ("q","exit","quit","выход"):
-            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}")); break
-        if c == "clear": continue
-
-        if c == "new":
-            if not arg:
-                console.print(Text("  ❌ new <заголовок> | <тело> #тег", style=RED))
-                time.sleep(1); continue
-            p = parse_new(arg)
-            if not p["title"]:
-                console.print(Text("  ❌ Пустой заголовок", style=RED)); time.sleep(1); continue
-            note = {
-                "id": data["next_id"],
-                "title": p["title"],
-                "body": p["body"],
-                "tags": p["tags"],
-                "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            }
-            data["next_id"] += 1
-            data["notes"].append(note)
-            save_notes(data)
-            console.print(Text(f"  ✔ Заметка #{note['id']} создана", style=GREEN_BRIGHT))
-            time.sleep(0.8); continue
-
-        if c == "show":
-            if not arg.isdigit():
-                console.print(Text("  ❌ show <id>", style=RED)); time.sleep(1); continue
-            tid = int(arg)
-            note = next((n for n in data["notes"] if n["id"] == tid), None)
-            if not note:
-                console.print(Text(f"  ❌ #{tid} не найдена", style=RED)); time.sleep(1); continue
-            clear()
-            console.print()
-            console.print(title_block(f"#{note['id']}  {note['title']}"))
-            console.print()
-            if note.get("tags"):
-                console.print(Text("🏷 " + " ".join(f"#{t}" for t in note["tags"]), style=MAGENTA))
-                console.print()
-            body = note.get("body") or "[dim](пусто)[/]"
-            try:
-                console.print(Markdown(body))
-            except Exception:
-                console.print(body)
-            console.print()
-            console.print(Text(f"📅 Создано: {note.get('created','—')}", style=GRAY))
-            console.print(Text(f"🕐 Обновлено: {note.get('updated','—')}", style=GRAY))
-            console.print()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
-            continue
-
-        if c in ("edit","del"):
-            if not arg.isdigit():
-                console.print(Text(f"  ❌ {c} <id>", style=RED)); time.sleep(1); continue
-            tid = int(arg)
-            note = next((n for n in data["notes"] if n["id"] == tid), None)
-            if not note:
-                console.print(Text(f"  ❌ #{tid} не найдена", style=RED)); time.sleep(1); continue
-            if c == "edit":
-                if edit_note_interactive(note):
-                    save_notes(data)
-                    console.print(Text(f"  ✔ Заметка #{tid} обновлена", style=GREEN_BRIGHT))
-                time.sleep(1); continue
-            if c == "del":
-                try:
-                    ans = console.input(f"[bold red]Удалить #{tid} «{note['title'][:40]}»? (y/N)> [/]").strip().lower()
-                    if ans == "y":
-                        data["notes"] = [n for n in data["notes"] if n["id"] != tid]
-                        save_notes(data)
-                        console.print(Text(f"  🗑 #{tid} удалена", style=RED))
-                    else:
-                        console.print(Text("  Отменено", style=YELLOW))
-                except (EOFError, KeyboardInterrupt):
-                    console.print(Text("  Отменено", style=YELLOW))
-                time.sleep(0.8); continue
-
-        if c == "tag":
-            if not arg:
-                console.print(Text("  ❌ tag <тег>", style=RED)); time.sleep(1); continue
-            current_filter = f"tag:{arg.lstrip('#')}"
-            console.print(Text(f"  🏷 Фильтр по тегу: {arg}", style=GREEN_BRIGHT))
-            time.sleep(0.5); continue
-
-        if c == "search":
-            if not arg:
-                console.print(Text("  ❌ search <текст>", style=RED)); time.sleep(1); continue
-            current_filter = arg
-            console.print(Text(f"  🔍 Поиск: {arg}", style=GREEN_BRIGHT))
-            time.sleep(0.5); continue
-
-        if c == "tags":
-            tags_count = {}
-            for n in data["notes"]:
-                for t in n.get("tags", []):
-                    tags_count[t] = tags_count.get(t, 0) + 1
-            if not tags_count:
-                console.print(Text("  ⚠ Тегов нет", style=YELLOW)); time.sleep(1); continue
-            clear()
-            console.print(); console.print(title_block("🏷 ВСЕ ТЕГИ")); console.print()
-            t = Table(box=box.SIMPLE_HEAD, border_style=MAGENTA,
-                      header_style=f"bold {MAGENTA}", padding=(0, 2))
-            t.add_column("Тег", style=MAGENTA)
-            t.add_column("Заметок", style=CYAN, justify="right", width=10)
-            for tg, cnt in sorted(tags_count.items(), key=lambda x: -x[1]):
-                t.add_row(f"#{tg}", str(cnt))
-            console.print(t); console.print()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
-            continue
-
-        if c == "reset":
-            current_filter = None
-            console.print(Text("  ↩ Фильтр сброшен", style=GREEN_BRIGHT))
-            time.sleep(0.5); continue
-
-        if c == "export":
-            fmt = (arg or "md").lower()
-            export_notes(fmt)
-            time.sleep(1.2); continue
-
-        if c in ("help","h","?"):
-            console.print(Text("  Tab — автодополнение. Пример: new Рецепт блинов | 2 яйца, мука, молоко #кухня", style=CYAN))
-            time.sleep(2); continue
-
-        console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
-        time.sleep(0.6)
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
-```
-
----
-
-## 📄 passmanager.py
-
-*23101 байт · 507 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""PassManager — зашифрованное хранилище паролей (AES-256 + PBKDF2)"""
-
-import os, sys, json, time, base64, getpass, secrets, string, hashlib
-from datetime import datetime
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.align import Align
-from rich import box
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
-
-# ─── Криптография ───
-try:
-    from cryptography.hazmat.primitives import hashes
-    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-    from cryptography.exceptions import InvalidTag
-except ImportError:
-    print("❌ Установи: pip install cryptography")
-    sys.exit(1)
-
-console = Console()
-VAULT_FILE = os.path.expanduser("~/.pm.vault")
-BACKUP_DIR = os.path.expanduser("~/pm_backups")
-
-# ANSI/rich цвета
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
-
-# ═══════════ КРИПТО ═══════════
-PBKDF2_ITERS = 480_000
-SALT_SIZE    = 16
-NONCE_SIZE   = 12
-
-def derive_key(password: str, salt: bytes) -> bytes:
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=salt,
-        iterations=PBKDF2_ITERS,
-    )
-    return kdf.derive(password.encode())
-
-def encrypt_vault(data: dict, password: str) -> bytes:
-    """Возвращает salt + nonce + ciphertext"""
-    salt = os.urandom(SALT_SIZE)
-    nonce = os.urandom(NONCE_SIZE)
-    key = derive_key(password, salt)
-    plaintext = json.dumps(data, ensure_ascii=False).encode()
-    ct = AESGCM(key).encrypt(nonce, plaintext, None)
-    return salt + nonce + ct
-
-def decrypt_vault(blob: bytes, password: str) -> dict:
-    """Расшифровывает. Бросает InvalidTag при неверном пароле."""
-    if len(blob) < SALT_SIZE + NONCE_SIZE + 16:
-        raise ValueError("Повреждённый файл хранилища")
-    salt = blob[:SALT_SIZE]
-    nonce = blob[SALT_SIZE:SALT_SIZE + NONCE_SIZE]
-    ct = blob[SALT_SIZE + NONCE_SIZE:]
-    key = derive_key(password, salt)
-    pt = AESGCM(key).decrypt(nonce, ct, None)
-    return json.loads(pt.decode())
-
-# ═══════════ ГЕНЕРАЦИЯ ═══════════
-def gen_password(length=20, symbols=True, digits=True, upper=True, lower=True) -> str:
-    pool = ""
-    if lower:  pool += string.ascii_lowercase
-    if upper:  pool += string.ascii_uppercase
-    if digits: pool += string.digits
-    if symbols: pool += "!@#$%^&*()-_=+[]{};:,.<>?"
-    if not pool: pool = string.ascii_letters
-    return "".join(secrets.choice(pool) for _ in range(length))
-
-# ═══════════ РИСОВКА ═══════════
-def clear(): os.system("clear")
-
-def title_block(main, sub=""):
-    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
-    lines.append(Text("═" * 60, style=GREEN_DIM))
-    return Group(*lines)
-
-def stats_panel(entries):
-    total = len(entries)
-    categories = {}
-    for e in entries.values():
-        c = e.get("category", "без категории")
-        categories[c] = categories.get(c, 0) + 1
-    cats = " ".join(f"{c}({n})" for c, n in sorted(categories.items(), key=lambda x: -x[1])[:5]) or "[dim]—[/]"
-    t = Table(box=None, show_header=False, padding=(0, 3))
-    t.add_column(""); t.add_column("")
-    t.add_row(f"🔑 Записей: [bold]{total}[/]", f"📁 Категории: {cats}")
-    return t
-
-def entries_table(entries, filter_cat=None, filter_search=None):
-    shown = []
-    for name, e in entries.items():
-        if filter_cat and e.get("category","").lower() != filter_cat.lower():
-            continue
-        if filter_search:
-            q = filter_search.lower()
-            if q not in name.lower() and q not in e.get("url","").lower() and q not in e.get("notes","").lower():
-                continue
-        shown.append((name, e))
-    shown.sort(key=lambda x: x[0].lower())
-
-    if not shown:
-        console.print(Text(f"  📭 Записей нет", style=f"dim {GRAY}"))
-        console.print()
-        return
-
-    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
-              header_style=f"bold {CYAN}", padding=(0, 1), expand=True)
-    t.add_column("№", style=f"bold {YELLOW}", width=4, justify="right")
-    t.add_column("Название", style=WHITE)
-    t.add_column("Категория", style=MAGENTA, width=16)
-    t.add_column("Логин", style=GRAY, width=24)
-    t.add_column("URL", style=CYAN, width=30)
-
-    for i, (name, e) in enumerate(shown, 1):
-        t.add_row(str(i), name[:40],
-                  (e.get("category","—") or "—")[:14],
-                  (e.get("login","—") or "—")[:22],
-                  (e.get("url","—") or "—")[:28])
-    console.print(t)
-    console.print()
-    return shown
-
-def commands_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="black",
-              show_header=False, padding=(0, 2))
-    t.add_column("Команда", style="bold yellow", width=30, justify="right")
-    t.add_column("Действие", style="white")
-    t.add_row("[cyan]add[/]",                 "➕ Добавить запись")
-    t.add_row("[cyan]get <№>[/]",             "👁 Показать пароль")
-    t.add_row("[cyan]copy <№>[/]",            "📋 Скопировать пароль в буфер")
-    t.add_row("[cyan]gen [длина][/]",         "🎲 Сгенерировать пароль")
-    t.add_row("[cyan]edit <№>[/]",            "✏ Редактировать")
-    t.add_row("[cyan]del <№>[/]",             "🗑 Удалить")
-    t.add_row("[cyan]cat <категория>[/]",     "📁 Фильтр по категории")
-    t.add_row("[cyan]search <текст>[/]",      "🔍 Поиск")
-    t.add_row("[cyan]reset[/]",               "↩ Сбросить фильтр")
-    t.add_row("[cyan]backup[/]",              "💾 Резервная копия")
-    t.add_row("[cyan]passwd[/]",              "🔑 Сменить мастер-пароль")
-    t.add_row("[cyan]lock[/]",                "🔒 Заблокировать (выйти)")
-    console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
-                        border_style="black"))
-    console.print()
-
-# ═══════════ TAB-COMPLETER ═══════════
-class PMCompleter(Completer):
-    def __init__(self, get_entries, get_shown):
-        self.get_entries = get_entries
-        self.get_shown = get_shown
-
-    def get_completions(self, document, complete_event):
-        text = document.text_before_cursor
-        words = text.split()
-        if not words or (len(words) == 1 and not text.endswith(" ")):
-            partial = words[0] if words else ""
-            commands = ["add","get","copy","gen","edit","del","cat","search",
-                        "reset","backup","passwd","lock","q"]
-            for c in commands:
-                if c.startswith(partial.lower()):
-                    yield Completion(c, start_position=-len(partial))
-            return
-
-        cmd = words[0].lower()
-        partial = words[-1] if not text.endswith(" ") else ""
-
-        if cmd in ("get","copy","edit","del"):
-            shown = self.get_shown() or []
-            for i, (name, _) in enumerate(shown, 1):
-                si = str(i)
-                if si.startswith(partial):
-                    yield Completion(si, start_position=-len(partial),
-                                     display=f"{si}  {name[:50]}")
-            return
-
-        if cmd == "cat":
-            entries = self.get_entries()
-            cats = set()
-            for e in entries.values():
-                if e.get("category"): cats.add(e["category"])
-            for c in sorted(cats):
-                if c.lower().startswith(partial.lower()):
-                    yield Completion(c, start_position=-len(partial))
-            return
-
-# ═══════════ МАСТЕР-ПАРОЛЬ ═══════════
-def unlock_vault():
-    """Возвращает (vault_data, master_password) или (None, None)"""
-    if not os.path.exists(VAULT_FILE):
-        # Первый запуск — создаём
-        clear()
-        console.print()
-        console.print(Align.center(Panel.fit(
-            "[bold green]🔐  P A S S M A N A G E R  🔐[/]\n"
-            "[dim]Первый запуск — создание мастер-пароля[/]",
-            border_style="black")))
-        console.print()
-        console.print("[yellow]⚠  Мастер-пароль НЕЛЬЗЯ восстановить![/]")
-        console.print("[yellow]   Запомни его или запиши в надёжном месте.[/]")
-        console.print()
-        try:
-            p1 = getpass.getpass("🔑 Новый мастер-пароль: ")
-            if len(p1) < 6:
-                console.print("[red]❌ Минимум 6 символов[/]"); return None, None
-            p2 = getpass.getpass("🔑 Повтори: ")
-            if p1 != p2:
-                console.print("[red]❌ Пароли не совпадают[/]"); return None, None
-        except (KeyboardInterrupt, EOFError):
-            console.print("\n[yellow]Отменено[/]"); return None, None
-
-        vault = {"entries": {}, "created": datetime.now().strftime("%Y-%m-%d %H:%M")}
-        blob = encrypt_vault(vault, p1)
-        with open(VAULT_FILE, "wb") as f: f.write(blob)
-        try: os.chmod(VAULT_FILE, 0o600)
-        except Exception: pass
-        console.print("[green]✔ Хранилище создано[/]")
-        time.sleep(1)
-        return vault, p1
-
-    # Разблокировка
-    clear()
-    console.print()
-    console.print(Align.center(Panel.fit(
-        "[bold green]🔐  P A S S M A N A G E R  🔐[/]\n"
-        "[dim]Введи мастер-пароль[/]",
-        border_style="black")))
-    console.print()
-    for attempt in range(3):
-        try:
-            pwd = getpass.getpass("🔑 Мастер-пароль: ")
-        except (KeyboardInterrupt, EOFError):
-            console.print("\n[yellow]Отменено[/]"); return None, None
-        try:
-            with open(VAULT_FILE, "rb") as f: blob = f.read()
-            vault = decrypt_vault(blob, pwd)
-            console.print("[green]✔ Разблокировано[/]")
-            time.sleep(0.5)
-            return vault, pwd
-        except (InvalidTag, ValueError):
-            console.print(f"[red]❌ Неверный пароль ({attempt+1}/3)[/]")
-        except Exception as e:
-            console.print(f"[red]❌ {e}[/]"); return None, None
-    return None, None
-
-def save_vault(vault, password):
-    blob = encrypt_vault(vault, password)
-    tmp = VAULT_FILE + ".tmp"
-    with open(tmp, "wb") as f: f.write(blob)
-    try: os.chmod(tmp, 0o600)
-    except Exception: pass
-    os.replace(tmp, VAULT_FILE)
-
-# ═══════════ MAIN ═══════════
-def main():
-    vault, master_pwd = unlock_vault()
-    if vault is None:
-        return
-    entries = vault.setdefault("entries", {})
-    current_filter_cat = None
-    current_search = None
-    last_shown = []
-
-    style = Style.from_dict({
-        "prompt": "bold ansibrightmagenta",
-        "completion-menu.completion": "bg:#000000 #00ff88",
-        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
-    })
-
-    while True:
-        clear()
-        console.print()
-        console.print(title_block("P A S S M A N A G E R", "Terminal Argonov  •  AES-256"))
-        console.print()
-        console.print(stats_panel(entries))
-        console.print()
-
-        filters = []
-        if current_filter_cat: filters.append(f"категория: [magenta]{current_filter_cat}[/]")
-        if current_search:     filters.append(f"поиск: [yellow]{current_search}[/]")
-        if filters:
-            console.print("[bold]🔎 Фильтр:[/] " + "  •  ".join(filters))
-            console.print()
-
-        last_shown = entries_table(entries, current_filter_cat, current_search) or []
-        commands_panel()
-
-        session = PromptSession(
-            completer=PMCompleter(lambda: entries, lambda: last_shown),
-            style=style, complete_while_typing=True)
-        try:
-            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
-        except (EOFError, KeyboardInterrupt):
-            console.print(Text("\n 🔒 Хранилище заблокировано. 🖖", style=f"dim {GREEN_DIM}"))
-            break
-
-        if not cmd: continue
-        parts = cmd.split(maxsplit=1)
-        c = parts[0].lower()
-        arg = parts[1] if len(parts) > 1 else ""
-
-        if c in ("lock","q","exit","quit","выход"):
-            console.print(Text(" 🔒 Заблокировано. 🖖", style=f"dim {GREEN_DIM}"))
-            break
-        if c == "clear": continue
-
-        if c == "add":
-            console.print()
-            try:
-                name = console.input("[bold cyan]📝 Название (Google, VK, банк)> [/]").strip()
-                if not name: raise KeyboardInterrupt
-                if name in entries:
-                    console.print(f"[yellow]⚠ Уже есть «{name}». Будет перезаписано.[/]")
-                url   = console.input("[bold cyan]🌐 URL (Enter — нет)> [/]").strip()
-                login = console.input("[bold cyan]👤 Логин (Enter — нет)> [/]").strip()
-                cat   = console.input("[bold cyan]📁 Категория (Enter — «личное»)> [/]").strip() or "личное"
-                notes = console.input("[bold cyan]📄 Заметки (Enter — нет)> [/]").strip()
-
-                console.print("[bold cyan]🔐 Пароль: (Enter — сгенерировать)[/]")
-                pwd = getpass.getpass("   Пароль: ").strip()
-                if not pwd:
-                    pwd = gen_password(20)
-                    console.print(f"[green]🎲 Сгенерирован:[/] [bold]{pwd}[/]")
-
-                entries[name] = {
-                    "login": login,
-                    "password": pwd,
-                    "url": url,
-                    "category": cat,
-                    "notes": notes,
-                    "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                    "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                }
-                save_vault(vault, master_pwd)
-                console.print(f"[green]✔ Добавлено: {name}[/]")
-            except (KeyboardInterrupt, EOFError):
-                console.print("[yellow]Отменено[/]")
-            time.sleep(1)
-            continue
-
-        if c in ("get","copy","edit","del"):
-            if not arg.isdigit():
-                console.print(f"[red]❌ {c} <№>[/]"); time.sleep(1); continue
-            idx = int(arg)
-            if not (1 <= idx <= len(last_shown)):
-                console.print(f"[red]❌ № от 1 до {len(last_shown)}[/]"); time.sleep(1); continue
-            name, e = last_shown[idx - 1]
-
-            if c == "get":
-                clear()
-                console.print()
-                console.print(title_block(f"🔑 {name}"))
-                console.print()
-                t = Table(box=box.ROUNDED, show_header=False, border_style=CYAN, padding=(0, 2))
-                t.add_column("", style=f"bold {YELLOW}", width=16)
-                t.add_column("", style=WHITE)
-                t.add_row("📝 Название", name)
-                t.add_row("🌐 URL", e.get("url") or "—")
-                t.add_row("👤 Логин", e.get("login") or "—")
-                t.add_row("🔐 Пароль", f"[bold {GREEN_BRIGHT}]{e.get('password','—')}[/]")
-                t.add_row("📁 Категория", e.get("category") or "—")
-                t.add_row("📄 Заметки", e.get("notes") or "—")
-                t.add_row("📅 Создано", e.get("created","—"))
-                t.add_row("🕐 Обновлено", e.get("updated","—"))
-                console.print(t); console.print()
-                try: console.input("[dim]Enter — назад[/] ")
-                except (KeyboardInterrupt, EOFError): pass
-                continue
-
-            if c == "copy":
-                try:
-                    import pyperclip
-                    pyperclip.copy(e.get("password",""))
-                    console.print(f"[green]✔ Пароль скопирован в буфер[/]")
-                except Exception:
-                    console.print(f"[yellow]⚠ pyperclip не сработал. Пароль: {e.get('password')}[/]")
-                time.sleep(1); continue
-
-            if c == "del":
-                try:
-                    ans = console.input(f"[bold red]Удалить «{name}»? (y/N)> [/]").strip().lower()
-                    if ans == "y":
-                        del entries[name]
-                        save_vault(vault, master_pwd)
-                        console.print(f"[red]🗑 Удалено: {name}[/]")
-                    else:
-                        console.print("[yellow]Отменено[/]")
-                except (KeyboardInterrupt, EOFError):
-                    console.print("[yellow]Отменено[/]")
-                time.sleep(0.8); continue
-
-            if c == "edit":
-                console.print()
-                console.print(f"[bold]Редактирование «{name}»[/] [dim](Enter — оставить)[/]")
-                try:
-                    url = console.input(f"[cyan]URL ({e.get('url','')})> [/]").strip()
-                    if url: e["url"] = url
-                    login = console.input(f"[cyan]Логин ({e.get('login','')})> [/]").strip()
-                    if login: e["login"] = login
-                    cat = console.input(f"[cyan]Категория ({e.get('category','')})> [/]").strip()
-                    if cat: e["category"] = cat
-                    notes = console.input(f"[cyan]Заметки ({e.get('notes','')})> [/]").strip()
-                    if notes: e["notes"] = notes
-                    console.print("[cyan]Новый пароль (Enter — оставить, !gen — сгенерировать)[/]")
-                    pwd = getpass.getpass("   > ").strip()
-                    if pwd == "!gen":
-                        pwd = gen_password(20)
-                        console.print(f"[green]🎲 Новый:[/] [bold]{pwd}[/]")
-                        e["password"] = pwd
-                    elif pwd:
-                        e["password"] = pwd
-                    e["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-                    save_vault(vault, master_pwd)
-                    console.print(f"[green]✔ Обновлено[/]")
-                except (KeyboardInterrupt, EOFError):
-                    console.print("[yellow]Отменено[/]")
-                time.sleep(1); continue
-
-        if c == "gen":
-            try: length = int(arg) if arg else 20
-            except ValueError: length = 20
-            if not 4 <= length <= 128: length = 20
-            pwd = gen_password(length)
-            console.print()
-            console.print(Panel(f"[bold {GREEN_BRIGHT}]{pwd}[/]",
-                                title=f"🎲 {length} символов", border_style=GREEN_DIM))
-            try:
-                import pyperclip; pyperclip.copy(pwd)
-                console.print("[dim]✔ Скопировано в буфер[/]")
-            except Exception: pass
-            console.print()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (KeyboardInterrupt, EOFError): pass
-            continue
-
-        if c == "cat":
-            if not arg:
-                current_filter_cat = None
-                console.print("[yellow]↩ Фильтр категории сброшен[/]")
-            else:
-                current_filter_cat = arg
-                console.print(f"[green]📁 Фильтр: {arg}[/]")
-            time.sleep(0.5); continue
-
-        if c == "search":
-            current_search = arg or None
-            console.print(f"[green]🔍 Поиск: {arg or 'сброшен'}[/]")
-            time.sleep(0.5); continue
-
-        if c == "reset":
-            current_filter_cat = None
-            current_search = None
-            console.print("[green]↩ Фильтры сброшены[/]")
-            time.sleep(0.5); continue
-
-        if c == "backup":
-            os.makedirs(BACKUP_DIR, exist_ok=True)
-            path = os.path.join(BACKUP_DIR,
-                f"pm_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.vault")
-            try:
-                with open(VAULT_FILE, "rb") as f: data = f.read()
-                with open(path, "wb") as f: f.write(data)
-                console.print(f"[green]💾 Резервная копия: {path}[/]")
-            except Exception as e:
-                console.print(f"[red]❌ {e}[/]")
-            time.sleep(1.2); continue
-
-        if c == "passwd":
-            console.print()
-            console.print("[yellow]⚠ Смена мастер-пароля. Все данные останутся.[/]")
-            try:
-                old = getpass.getpass("🔑 Текущий мастер-пароль: ")
-                try:
-                    with open(VAULT_FILE,"rb") as f: decrypt_vault(f.read(), old)
-                except Exception:
-                    console.print("[red]❌ Неверный пароль[/]"); time.sleep(1); continue
-                new1 = getpass.getpass("🔑 Новый мастер-пароль: ")
-                if len(new1) < 6:
-                    console.print("[red]❌ Минимум 6 символов[/]"); time.sleep(1); continue
-                new2 = getpass.getpass("🔑 Повтори: ")
-                if new1 != new2:
-                    console.print("[red]❌ Не совпадают[/]"); time.sleep(1); continue
-                save_vault(vault, new1)
-                master_pwd = new1
-                console.print("[green]✔ Мастер-пароль изменён[/]")
-            except (KeyboardInterrupt, EOFError):
-                console.print("[yellow]Отменено[/]")
-            time.sleep(1); continue
-
-        console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
-        time.sleep(0.6)
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print(Text("\n 🔒 Заблокировано.", style=f"dim {GREEN_DIM}"))
-```
-
----
-
-## 📄 crypto_informer.py
-
-*7474 байт · 208 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Crypto Informer v6 — простой вывод + опциональный watch"""
-
-import os, sys, time, subprocess
-from datetime import datetime
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.box import SIMPLE_HEAD
-
-sys.path.insert(0, os.path.expanduser("~"))
-from net_helper import get_crypto_prices, get_fx_rates, freshness_badge
-
-console = Console()
-
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
-
-COIN_ICONS = {
-    "bitcoin": "₿", "ethereum": "Ξ", "solana": "◎", "binancecoin": "🅑",
-    "cardano": "₳", "ripple": "✕", "dogecoin": "Ð", "polkadot": "●",
-    "tron": "◈", "litecoin": "Ł", "chainlink": "⬡", "matic-network": "⬢",
-    "avalanche-2": "▲", "uniswap": "🦄", "shiba-inu": "🐕",
-    "toncoin": "💎", "near": "Ⓝ", "cosmos": "⚛", "stellar": "✦",
-}
-
-DEFAULT_INTERVAL = 60
-
-def clear():
-    subprocess.run("clear", shell=True)
-
-def fmt_price(p):
-    if p is None: return "—"
-    if p < 0.01: return f"${p:.8f}"
-    if p < 1:    return f"${p:.4f}"
-    if p < 1000: return f"${p:,.2f}"
-    return f"${p:,.0f}"
-
-def fmt_change(pct):
-    if pct is None: return "—"
-    color = GREEN_BRIGHT if pct >= 0 else RED
-    arrow = "▲" if pct >= 0 else "▼"
-    return f"[{color}]{arrow}{abs(pct):.2f}%[/]"
-
-def print_header(watch=False):
-    line = Text()
-    line.append("▓▒░ ", style=f"bold {GREEN_BRIGHT}")
-    line.append("CRYPTO INFORMER", style=f"bold {GREEN_BRIGHT}")
-    line.append(" ░▒▓", style=f"bold {GREEN_BRIGHT}")
-    if watch:
-        line.append("  ", style="")
-        line.append("[LIVE]", style=f"bold {MAGENTA}")
-    console.print(line)
-    console.print(Text("─" * 50, style=GREEN_DIM))
-    console.print()
-
-def print_freshness(crypto_meta, fx_meta):
-    line = Text()
-    line.append("  ", style="")
-    line.append_text(Text.from_markup(freshness_badge(crypto_meta)))
-    line.append(" крипта   ·   ", style=f"dim {GRAY}")
-    line.append_text(Text.from_markup(freshness_badge(fx_meta)))
-    line.append(" курс   ·   ", style=f"dim {GRAY}")
-    line.append(f"🕐 {datetime.now().strftime('%H:%M:%S')}", style=f"dim {GRAY}")
-    console.print(line)
-    console.print()
-
-def print_fx(fx):
-    if not fx:
-        console.print(Text("  ⚠ Курс валют недоступен", style=YELLOW))
-        console.print()
-        return
-    console.print(f"  [dim]💵 1 USD ≈ [/][bold {YELLOW}]{fx['USD_RUB']:.2f}₽[/]")
-    if fx.get("EUR_RUB"):
-        console.print(f"  [dim]💶 1 EUR ≈ [/][bold {YELLOW}]{fx['EUR_RUB']:.2f}₽[/]")
-    if fx.get("USD_EUR"):
-        console.print(f"  [dim]💵 1 USD ≈ [/][bold {CYAN}]{fx['USD_EUR']:.4f}€[/]")
-    console.print()
-
-def print_prices(prices, fx, source):
-    if not prices:
-        console.print("  [red]❌ Нет данных[/]")
-        console.print()
-        return
-    t = Table(box=SIMPLE_HEAD, border_style="black",
-              header_style=f"bold {CYAN}", padding=(0,1), expand=False)
-    t.add_column("Монета", style=WHITE, min_width=18)
-    t.add_column("USD", style=GREEN_BRIGHT, justify="right", min_width=12)
-    t.add_column("RUB", style=YELLOW, justify="right", min_width=12)
-    t.add_column("24ч", justify="right", min_width=8)
-    usd_rub = fx.get("USD_RUB", 0) if fx else 0
-    for cid, c in prices.items():
-        icon = COIN_ICONS.get(cid, "●")
-        name = f"{icon} {c['symbol']:<4} {c['name'][:10]}"
-        usd = c.get("usd", 0)
-        rub = c.get("rub") or (usd * usd_rub if usd_rub else 0)
-        t.add_row(name, fmt_price(usd),
-                  f"{rub:,.0f} ₽" if rub else "—",
-                  fmt_change(c.get("change_24h", 0)))
-    console.print(t)
-    console.print()
-    console.print(f"  [dim]📊 {source}[/]")
-    console.print()
-
-def fetch_all(force=False):
-    """Возвращает (prices, source, crypto_meta, fx, fx_src, fx_meta)."""
-    p, s, m  = get_crypto_prices(with_meta=True, force=force)
-    f, fs, fm = get_fx_rates(with_meta=True, force=force)
-    return p, s, m, f, fs, fm
-
-def show_once(force=False):
-    """Один показ."""
-    with console.status(f"[bold {GREEN_BRIGHT}]📡 Загружаю...[/]", spinner="dots"):
-        prices, source, crypto_meta, fx, fx_src, fx_meta = fetch_all(force=force)
-
-    print_header(watch=False)
-    print_freshness(crypto_meta, fx_meta)
-    print_fx(fx)
-    print_prices(prices, fx, source)
-
-def show_watch_footer(interval):
-    console.print(f"  [dim]⏱ обновление каждые {interval}с  ·  [/][bold {YELLOW}]Ctrl+C[/][dim] — выход[/]")
-    console.print()
-
-def watch_loop(interval):
-    """Простой цикл: clear → показать → sleep."""
-    try:
-        while True:
-            clear()
-            prices, source, crypto_meta, fx, fx_src, fx_meta = fetch_all(force=True)
-
-            print_header(watch=True)
-            print_freshness(crypto_meta, fx_meta)
-            print_fx(fx)
-            print_prices(prices, fx, source)
-            show_watch_footer(interval)
-
-            time.sleep(interval)
-    except KeyboardInterrupt:
-        console.print()
-        console.print("[dim]⏹ Watch остановлен.[/]")
-        console.print()
-
-def one_shot():
-    """Обычный режим: показать один раз + подсказки."""
-    clear()
-    show_once(force=False)
-
-    # Подсказки
-    hint = Table(box=None, show_header=False, padding=(0, 2))
-    hint.add_column("", style=f"bold {YELLOW}", width=14, justify="right")
-    hint.add_column("", style=f"{CYAN}")
-    hint.add_row("[crypto -w 30]", "🚀 watch — автообновление каждые 30с")
-    hint.add_row("[crypto -w 60]", "🚀 watch — автообновление каждые 60с")
-    hint.add_row("[crypto -w 10]", "🚀 watch — автообновление каждые 10с")
-    hint.add_row("[crypto]", "🔄 просто показать (сейчас)")
-    hint.add_row("[q]", "🚪 выход")
-    console.print(Panel(hint, title=f"[bold {GREEN_BRIGHT}]⌨  ЧТО ДАЛЬШЕ[/]",
-                        border_style=GREEN_DIM, padding=(0, 1)))
-    console.print()
-
-    try:
-        cmd = console.input(f"[bold {MAGENTA}]╰─❯ [/]").strip().lower()
-    except (EOFError, KeyboardInterrupt):
-        return
-
-    if cmd in ("q", "exit", "quit", "выход"):
-        return
-    elif cmd.startswith("w"):
-        parts = cmd.split()
-        iv = DEFAULT_INTERVAL
-        if len(parts) > 1 and parts[1].isdigit():
-            iv = int(parts[1])
-        watch_loop(iv)
-    elif cmd == "":
-        one_shot()
-
-def main():
-    args = sys.argv[1:]
-    watch = False
-    interval = DEFAULT_INTERVAL
-    for i, a in enumerate(args):
-        if a in ("--watch", "-w"):
-            watch = True
-            if i + 1 < len(args) and args[i+1].isdigit():
-                interval = int(args[i+1])
-            break
-
-    if watch:
-        watch_loop(interval)
-        return
-
-    try:
-        one_shot()
-    except KeyboardInterrupt:
-        console.print()
-        console.print("[dim]Выход.[/]")
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        console.print()
-        console.print("[dim]Выход.[/]")
-```
-
----
-
-## 📄 hacker_rpg.py
-
-*36556 байт · 729 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""HACKER SIMULATOR RPG — текстовый квест в стиле Terminal Argonov"""
-
-import os, sys, json, time, random, hashlib
-from datetime import datetime
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.align import Align
-from rich.live import Live
-from rich.markdown import Markdown
-from rich.progress import Progress, BarColumn
-from rich.box import SIMPLE_HEAD
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import Completer, Completion
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import FormattedText
-
-console = Console()
-HOME = os.path.expanduser("~")
-SAVE_FILE = os.path.join(HOME, ".hacker_rpg_save.json")
-
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"; ORANGE = "dark_orange"
-
-# ═══════════ ИГРОВЫЕ ДАННЫЕ ═══════════
-SKILLS = {
-    "cracking":    {"name": "🔐 Cracking",    "desc": "Взлом паролей и защит"},
-    "stealth":     {"name": "🕵️  Stealth",     "desc": "Снижает риск обнаружения"},
-    "trading":     {"name": "💰 Trading",     "desc": "Больше денег с миссий"},
-    "programming": {"name": "🛠 Programming", "desc": "Открывает сложные цели"},
-    "network":     {"name": "🌐 Network",     "desc": "Доступ к сетевым миссиям"},
-    "social":      {"name": "💬 Social",      "desc": "Фишинг, манипуляции"},
-}
-
-FACTIONS = {
-    "crimson":   {"name": "🔴 Crimson",   "desc": "Русские хакеры. Сильные, дорогие",  "bonus": "+25% денег, +10% риск"},
-    "ghost":     {"name": "🔵 Ghost",     "desc": "Анонимные. Скрытные, дешёвые",       "bonus": "-25% риск, -10% денег"},
-    "whitehat":  {"name": "🟢 White Hat", "desc": "Пентестеры. Легальные, стабильные", "bonus": "-50% геймовер-риск"},
-    "syndicate": {"name": "🟡 Syndicate", "desc": "Корпорация. Максимум денег",          "bonus": "+50% денег, +25% риск"},
-}
-
-# ═══════════ МИССИИ (по уровням) ═══════════
-MISSIONS = {
-    0: [  # Newbie
-        {"id":"m01","name":"Ломаем дверь","story":"Древний форум на PHP. Админка на /admin, пароль 12345?","target":"forum.local","reward":15,"xp":10,"diff":1,"req":{},"skills":["cracking"]},
-        {"id":"m02","name":"Старый WordPress","story":"Блог соседа. Плагин не обновлялся 3 года.","target":"blog.local","reward":25,"xp":15,"diff":2,"req":{},"skills":["cracking","programming"]},
-        {"id":"m03","name":"Wi-Fi кафе","story":"Открытая сеть кафе. Перехватить трафик и войти в роутер.","target":"cafe-wifi","reward":30,"xp":20,"diff":2,"req":{},"skills":["network"]},
-        {"id":"m04","name":"Фишинговый сайт","story":"Поддельная страница банка. Найти и обрушить.","target":"fake-bank.xyz","reward":40,"xp":25,"diff":3,"req":{},"skills":["social","cracking"]},
-        {"id":"m05","name":"Разведка портов","story":"Просканировать открытые порты сервера конкурента.","target":"rival-server","reward":50,"xp":30,"diff":3,"req":{},"skills":["network"]},
-    ],
-    1: [  # Script Kiddie
-        {"id":"m06","name":"SQL-инъекция","story":"Интернет-магазин с дырявой формой поиска.","target":"shop-online.ru","reward":120,"xp":60,"diff":4,"req":{"cracking":3},"skills":["cracking","programming"]},
-        {"id":"m07","name":"Социальная инженерия","story":"Убедить сотрудника выдать пароль.","target":"office.corp","reward":200,"xp":80,"diff":5,"req":{"social":3},"skills":["social"]},
-        {"id":"m08","name":"DDoS-заказ","story":"Положить игровой сервер на 2 часа.","target":"game-server.io","reward":300,"xp":100,"diff":5,"req":{"network":3},"skills":["network"]},
-        {"id":"m09","name":"Кража API-ключей","story":"Из чужого репозитория на GitHub.","target":"github.com/user/repo","reward":400,"xp":120,"diff":6,"req":{"programming":3},"skills":["programming","cracking"]},
-        {"id":"m10","name":"Брутфорс-атака","story":"Подобрать пароль к корп-почте.","target":"mail.corp.ru","reward":500,"xp":150,"diff":6,"req":{"cracking":5},"skills":["cracking"]},
-    ],
-    2: [  # Hacker
-        {"id":"m11","name":"Пентест банка","story":"Внутренний аудит безопасности.","target":"bank.internal","reward":1500,"xp":300,"diff":8,"req":{"cracking":7,"programming":5},"skills":["cracking","programming","stealth"]},
-        {"id":"m12","name":"Кража базы данных","story":"3 миллиона пользователей.","target":"social-media.db","reward":2500,"xp":400,"diff":9,"req":{"programming":7,"network":5},"skills":["programming","network","stealth"]},
-        {"id":"m13","name":"Взлом смарт-контракта","story":"Крипто-биржа с багом в контракте.","target":"crypto-exchange.eth","reward":5000,"xp":600,"diff":10,"req":{"programming":9},"skills":["programming","cracking"]},
-        {"id":"m14","name":"APT-атака на корпорацию","story":"Многоступенчатая атака. 3 недели подготовки.","target":"megacorp.com","reward":8000,"xp":900,"diff":11,"req":{"cracking":10,"network":8,"stealth":8},"skills":["cracking","network","stealth","social"]},
-        {"id":"m15","name":"Заряженный ransomware","story":"Развернуть вирус-вымогатель на 500 машинах.","target":"hospital.network","reward":12000,"xp":1200,"diff":12,"req":{"programming":11,"network":9},"skills":["programming","network"]},
-    ],
-    3: [  # Elite
-        {"id":"m16","name":"Госструктура","story":"Взлом системы министерства.","target":"gov.system","reward":30000,"xp":2500,"diff":14,"req":{"cracking":13,"stealth":12},"skills":["cracking","stealth","programming"]},
-        {"id":"m17","name":"Атака на SWIFT","story":"Межбанковские переводы. Только для настоящих мастеров.","target":"swift.network","reward":100000,"xp":5000,"diff":16,"req":{"cracking":15,"network":14,"programming":13},"skills":["cracking","network","programming","stealth"]},
-        {"id":"m18","name":"Кража прототипа ИИ","story":"Секретная модель из лаборатории.","target":"research-lab.ai","reward":150000,"xp":7000,"diff":17,"req":{"programming":16,"social":12},"skills":["programming","social","stealth"]},
-    ],
-    4: [  # Legend
-        {"id":"m19","name":"Anonymous-операция","story":"Атака на международную сеть. 1000 хакеров вместе.","target":"worldwide.anonymous","reward":500000,"xp":20000,"diff":20,"req":{"cracking":20,"stealth":20,"programming":20,"network":20,"social":15},"skills":["cracking","network","programming","stealth","social"]},
-        {"id":"m20","name":"Взлом спутника","story":"Управление спутником связи. Финальный босс.","target":"satellite.sky","reward":1000000,"xp":50000,"diff":25,"req":{"cracking":25,"network":22,"programming":22,"stealth":20},"skills":["cracking","network","programming","stealth"]},
-    ],
-}
-
-# ═══════════ МАГАЗИН ═══════════
-SHOP_SOFT = [
-    {"id":"s1","name":"🔧 Nmap Pro","price":500,"desc":"+1 к Cracking, открывает сетевые миссии","effect":{"cracking":1}},
-    {"id":"s2","name":"🔍 SQLMap","price":800,"desc":"+2 к Cracking","effect":{"cracking":2}},
-    {"id":"s3","name":"🎭 Proxy Chain","price":1200,"desc":"+2 к Stealth","effect":{"stealth":2}},
-    {"id":"s4","name":"🔐 Hashcat","price":2000,"desc":"+3 к Cracking","effect":{"cracking":3}},
-    {"id":"s5","name":"🕶  Tor Browser+","price":3000,"desc":"+3 к Stealth","effect":{"stealth":3}},
-    {"id":"s6","name":"💬 SocialBot","price":4000,"desc":"+3 к Social","effect":{"social":3}},
-    {"id":"s7","name":"🛠 CodeInjector","price":6000,"desc":"+3 к Programming","effect":{"programming":3}},
-    {"id":"s8","name":"🌐 VPN-Ultra","price":8000,"desc":"+3 к Network","effect":{"network":3}},
-    {"id":"s9","name":"💰 Trader-X","price":10000,"desc":"+3 к Trading","effect":{"trading":3}},
-    {"id":"s10","name":"🚀 Quantum-Crack","price":25000,"desc":"+5 к Cracking","effect":{"cracking":5}},
-]
-
-# ═══════════ СОСТОЯНИЕ ═══════════
-STATE = {
-    "hp": 100,
-    "money": 50,
-    "xp": 0,
-    "level": 0,
-    "skills": {k: 0 for k in SKILLS.keys()},
-    "faction": None,
-    "completed": [],
-    "owned_software": [],
-    "equipment": [],
-    "started_at": None,
-    "total_missions": 0,
-    "deaths": 0,
-    "wins": 0,
-}
-
-LEVEL_NAMES = ["🟢 NEWBIE", "🟡 SCRIPT KIDDIE", "🟠 HACKER", "🔴 ELITE", "🏆 LEGEND"]
-LEVEL_XP = [0, 200, 2000, 20000, 100000]
-
-# ═══════════ УТИЛИТЫ ═══════════
-def clear():
-    os.system("clear")
-
-def hp_bar(hp, width=30):
-    filled = int((hp/100)*width)
-    if hp > 70: color = "bright_green"
-    elif hp > 40: color = "bright_yellow"
-    elif hp > 15: color = "dark_orange"
-    else: color = "bright_red"
-    return Text("▓"*filled + "░"*(width-filled), style=color)
-
-def save_game(silent=False):
-    STATE["saved_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    try:
-        with open(SAVE_FILE, "w", encoding="utf-8") as f:
-            json.dump(STATE, f, ensure_ascii=False, indent=1)
-        if not silent:
-            console.print(f"[green]💾 Прогресс сохранён[/]")
-        return True
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-        return False
-
-def load_game():
-    global STATE
-    if not os.path.exists(SAVE_FILE): return False
-    try:
-        with open(SAVE_FILE, encoding="utf-8") as f:
-            data = json.load(f)
-        for k in STATE.keys():
-            if k in data: STATE[k] = data[k]
-        return True
-    except: return False
-
-def check_level_up():
-    """Возвращает True если уровень повысился"""
-    old_level = STATE["level"]
-    new_level = 0
-    for i, thresh in enumerate(LEVEL_XP):
-        if STATE["xp"] >= thresh: new_level = i
-    if new_level > old_level:
-        STATE["level"] = new_level
-        console.print()
-        console.print(Panel(Align.center(Text(f"🎉 УРОВЕНЬ ПОВЫШЕН: {LEVEL_NAMES[new_level]}", style="bold bright_green")),
-                            border_style="bright_green"))
-        console.print()
-        save_game(silent=True)
-        return True
-    return False
-
-def get_available_missions():
-    """Возвращает список доступных миссий с их сложностью (относительно скиллов)"""
-    available = []
-    for level, missions in MISSIONS.items():
-        for m in missions:
-            if m["id"] in STATE["completed"]: continue
-            # Проверяем требования
-            req_ok = True
-            for skill, val in m["req"].items():
-                if STATE["skills"].get(skill, 0) < val:
-                    req_ok = False; break
-            if req_ok:
-                available.append((level, m))
-    return available
-
-# ═══════════ МИНИ-ИГРЫ ═══════════
-def minigame_crack(diff):
-    """Mastermind: угадать 4-значный код (0-9). 10 попыток."""
-    code = [random.randint(0,9) for _ in range(4)]
-    tries = max(3, 11 - diff)  # сложнее → меньше попыток
-
-    console.print()
-    console.print(Panel.fit(
-        f"[bold cyan]🔐 ВЗЛОМ ПАРОЛЯ[/]\n"
-        f"[dim]Код из 4 цифр (0-9). Угадай за {tries} попыток.[/]\n"
-        f"[dim]● = правильная цифра на месте · ○ = правильная не на месте[/]",
-        border_style="cyan"))
-    console.print()
-
-    for attempt in range(1, tries+1):
-        try:
-            guess_str = console.input(f"[bold magenta]Попытка {attempt}/{tries} > [/]").strip()
-        except: return False
-        if not guess_str.isdigit() or len(guess_str) != 4:
-            console.print("[red]❌ Нужно ровно 4 цифры[/]")
-            continue
-        guess = [int(c) for c in guess_str]
-        if guess == code:
-            console.print(f"[bold green]✅ ВЗЛОМАНО за {attempt} попыток![/]\n")
-            return True
-        # Подсказки
-        bulls = sum(1 for i in range(4) if guess[i] == code[i])
-        code_c = code.copy(); guess_c = guess.copy()
-        for i in range(4):
-            if guess_c[i] == code_c[i]: code_c[i] = None; guess_c[i] = None
-        cows = sum(1 for g in guess_c if g is not None and g in code_c)
-        console.print(f"  [green]{'●'*bulls}[/][yellow]{'○'*cows}[/][dim]{'·'*(4-bulls-cows)}[/]")
-
-    console.print(f"[red]❌ Не удалось взломать за {tries} попыток. Код был: {''.join(map(str,code))}[/]\n")
-    return False
-
-def minigame_infiltrate(diff):
-    """Simon: запомнить последовательность символов"""
-    seq_len = min(4 + diff, 12)
-    chars = "ABCDEFGH"
-    sequence = [random.choice(chars) for _ in range(seq_len)]
-
-    console.print()
-    console.print(Panel.fit(
-        f"[bold cyan]🕵️  ПРОНИКНОВЕНИЕ[/]\n"
-        f"[dim]Запомни последовательность {seq_len} символов.[/]",
-        border_style="cyan"))
-    console.print()
-    console.print(f"[bold yellow]{' '.join(sequence)}[/]")
-    time.sleep(2 + seq_len * 0.3)
-    clear()
-    console.print()
-    console.print(Panel.fit(
-        f"[bold cyan]🕵️  ПРОНИКНОВЕНИЕ[/]\n"
-        f"[dim]Введи последовательность через пробел.[/]",
-        border_style="cyan"))
-    console.print()
-    try:
-        answer = console.input("[bold magenta]> [/]").strip().upper().split()
-    except: return False
-    if answer == sequence:
-        console.print("[bold green]✅ ПРОНИКНОВЕНИЕ УСПЕШНО![/]\n")
-        return True
-    console.print(f"[red]❌ Неверно. Было: {' '.join(sequence)}[/]\n")
-    return False
-
-def minigame_social(diff):
-    """Выбрать правильную реплику из 3"""
-    scenarios = [
-        {"q":"Сотрудник банка: 'Кто вы такой?'",
-         "options":[
-             ("Я из IT-отдела, проверяю систему", True),
-             ("Привет! Я хакер, дай пароль", False),
-             ("Ты что, не узнал меня?", False),
-         ]},
-        {"q":"Админ: 'Назовите ваш отдел.'",
-         "options":[
-             ("Не помню точно, но начальник сказал...", False),
-             ("Финансовый. У нас аудит на следующей неделе.", True),
-             ("А какая разница?", False),
-         ]},
-        {"q":"Секретарь: 'Могу я увидеть ваш пропуск?'",
-         "options":[
-             ("Забыл в машине, сейчас вернусь", False),
-             ("Конечно, вот он. Слушайте, у меня к вам личное дело...", True),
-             ("Не ваше дело", False),
-         ]},
-        {"q":"Охранник: 'Стойте! Куда собрались?'",
-         "options":[
-             ("Домой, я устал", False),
-             ("К начальнику, он сам меня вызвал", True),
-             ("Тебе что, зарплату мало платят?", False),
-         ]},
-    ]
-    rounds = min(2 + diff // 3, 5)
-    console.print()
-    console.print(Panel.fit(f"[bold cyan]💬 СОЦИАЛЬНАЯ ИНЖЕНЕРИЯ[/]\n[dim]Выбери правильный ответ. Раундов: {rounds}[/]",
-                            border_style="cyan"))
-    console.print()
-
-    correct = 0
-    for r in range(rounds):
-        sc = random.choice(scenarios)
-        console.print(f"[bold yellow]Раунд {r+1}/{rounds}[/]")
-        console.print(f"  {sc['q']}\n")
-        opts = sc["options"][:]
-        random.shuffle(opts)
-        for i, (o, _) in enumerate(opts, 1):
-            console.print(f"  [cyan]{i}.[/] {o}")
-        try:
-            ch = console.input("\n[bold magenta]Выбор> [/]").strip()
-        except: return False
-        if ch.isdigit() and 1 <= int(ch) <= len(opts):
-            if opts[int(ch)-1][1]:
-                console.print("  [green]✔ Хорошо[/]\n"); correct += 1
-            else:
-                console.print("  [red]✘ Провал реплики[/]\n")
-
-    needed = (rounds * 2) // 3
-    if correct >= needed:
-        console.print(f"[bold green]✅ ПРОШЛО: {correct}/{rounds}[/]\n")
-        return True
-    console.print(f"[red]❌ Провал: {correct}/{rounds} (нужно {needed})[/]\n")
-    return False
-
-def get_minigame(skill_type, diff):
-    if skill_type == "cracking": return minigame_crack(diff)
-    if skill_type in ("network", "stealth"): return minigame_infiltrate(diff)
-    if skill_type == "social": return minigame_social(diff)
-    if skill_type == "programming": return minigame_crack(diff)  # тоже код
-    if skill_type == "trading": return minigame_social(diff)    # переговоры
-    return minigame_crack(diff)
-
-# ═══════════ МИССИИ — ИСПОЛНЕНИЕ ═══════════
-def do_mission(level, mission):
-    """Возвращает True если миссия пройдена"""
-    clear()
-    console.print()
-    console.print(Panel(
-        Group(
-            Text(f"📋 МИССИЯ: {mission['name']}", style="bold bright_cyan"),
-            Text(""),
-            Text(f"🎯 Цель: {mission['target']}", style="yellow"),
-            Text(f"💀 Сложность: {mission['diff']}/25", style="red"),
-            Text(""),
-            Text(mission['story'], style="white"),
-            Text(""),
-            Text(f"💰 Награда: ${mission['reward']}", style="green"),
-            Text(f"⭐ Опыт: {mission['xp']}", style="cyan"),
-        ),
-        border_style="cyan", padding=(1,2)))
-    console.print()
-
-    try:
-        ans = console.input("[bold magenta]Начать взлом? (y/n)> [/]").strip().lower()
-    except: return False
-    if ans != "y":
-        console.print("[dim]Отмена[/]"); return False
-
-    # Определяем какой скилл использовать
-    main_skill = mission["skills"][0] if mission["skills"] else "cracking"
-
-    # Мини-игра
-    won = get_minigame(main_skill, mission["diff"])
-
-    if not won:
-        # Провал миссии → урон
-        dmg = random.randint(10, 30)
-        STATE["hp"] = max(0, STATE["hp"] - dmg)
-        console.print(f"[red]💥 Провал! Потеряно {dmg} HP (осталось {STATE['hp']})[/]\n")
-
-        # Проверка геймовера
-        if STATE["hp"] <= 0:
-            gameover()
-            return False
-
-        # Провал с шансом обнаружения (зависит от stealth)
-        stealth = STATE["skills"].get("stealth", 0)
-        detect_chance = max(5, 60 - stealth * 3 - mission["diff"] * 2)
-        if random.randint(1, 100) <= detect_chance:
-            console.print("[red bold]🚨 ТЕБЯ ОБНАРУЖИЛИ![/]\n")
-            time.sleep(1.5)
-            gameover()
-            return False
-
-        console.print("[yellow]⚠ Тебе удалось скрыться, но миссия провалена[/]\n")
-        save_game(silent=True)
-        return False
-
-    # Успех!
-    money = mission["reward"]
-    xp = mission["xp"]
-
-    # Множители от фракции
-    if STATE["faction"] == "crimson": money = int(money * 1.25)
-    elif STATE["faction"] == "ghost": money = int(money * 0.9)
-    elif STATE["faction"] == "syndicate": money = int(money * 1.5)
-
-    # Множители от скиллов
-    trading = STATE["skills"].get("trading", 0)
-    money = int(money * (1 + trading * 0.05))
-
-    STATE["money"] += money
-    STATE["xp"] += xp
-    STATE["completed"].append(mission["id"])
-    STATE["total_missions"] += 1
-    STATE["wins"] += 1
-
-    console.print()
-    console.print(Panel(
-        Group(
-            Text("✅ МИССИЯ ВЫПОЛНЕНА", style="bold bright_green"),
-            Text(""),
-            Text(f"💰 Получено: ${money}", style="green"),
-            Text(f"⭐ Опыт: +{xp}", style="cyan"),
-            Text(f"💼 Всего денег: ${STATE['money']}", style="yellow"),
-        ),
-        border_style="green", padding=(1,2)))
-    console.print()
-
-    # Автосохранение при успехе
-    save_game(silent=True)
-    console.print("[dim]💾 Автосохранение[/]\n")
-
-    check_level_up()
-    time.sleep(2)
-    return True
-
-def gameover():
-    clear()
-    console.print()
-    console.print(Align.center(Panel.fit(
-        "[bold red]💀 GAME OVER 💀[/]\n\n"
-        "[white]Ты попался. Суд, приговор, всё кончено.[/]\n\n"
-        f"[yellow]Всего миссий: {STATE['total_missions']}[/]\n"
-        f"[green]Успешных: {STATE['wins']}[/]\n"
-        f"[cyan]Заработано: ${STATE['money']}[/]\n"
-        f"[magenta]Уровень: {LEVEL_NAMES[STATE['level']]}[/]\n\n"
-        "[dim]Прогресс удалён.[/]",
-        border_style="red", padding=(2,4))))
-    console.print()
-    STATE["deaths"] += 1
-    # Удаляем сейв
-    if os.path.exists(SAVE_FILE):
-        os.remove(SAVE_FILE)
-    console.print("[dim]Нажми Enter чтобы начать заново...[/]")
-    try: console.input()
-    except: pass
-    reset_game()
-    main_menu()
-
-def reset_game():
-    global STATE
-    STATE.update({
-        "hp": 100, "money": 50, "xp": 0, "level": 0,
-        "skills": {k: 0 for k in SKILLS.keys()},
-        "faction": None, "completed": [], "owned_software": [],
-        "equipment": [], "started_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "total_missions": 0, "deaths": STATE.get("deaths", 0), "wins": 0,
-    })
-
-# ═══════════ ЭКРАНЫ ═══════════
-def banner():
-    clear()
-    console.print()
-    art = r"""
-    ██╗  ██╗ █████╗  ██████╗██╗  ██╗███████╗██████╗
-    ██║  ██║██╔══██╗██╔════╝██║ ██╔╝██╔════╝██╔══██╗
-    ███████║███████║██║     █████╔╝ █████╗  ██████╔╝
-    ██╔══██║██╔══██║██║     ██╔═██╗ ██╔══╝  ██╔══██╗
-    ██║  ██║██║  ██║╚██████╗██║  ██╗███████╗██║  ██║
-    ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-                 S I M U L A T O R
-    """
-    console.print(Align.center(f"[bold bright_green]{art}[/]"))
-    console.print(Align.center("[dim]Текстовая RPG хакера в Termux[/]"))
-    console.print()
-
-def status_panel():
-    lvl_name = LEVEL_NAMES[STATE["level"]]
-    faction = FACTIONS.get(STATE["faction"], {}).get("name", "— не в фракции")
-    t = Table(box=None, show_header=False, padding=(0,2))
-    t.add_column("", style="bold yellow", width=20)
-    t.add_column("", width=30)
-    t.add_column("", style="bold yellow", width=18)
-    t.add_column("", width=20)
-
-    t.add_row("👤 Уровень", lvl_name, "💰 Деньги", f"[green]${STATE['money']}[/]")
-    t.add_row("⭐ Опыт", f"[cyan]{STATE['xp']}[/]", "🎯 Миссий", str(STATE['total_missions']))
-    t.add_row("🩸 HP", hp_bar(STATE["hp"]), "🏴 Фракция", faction)
-    t.add_row("💀 Смертей", str(STATE['deaths']), "🏆 Побед", str(STATE['wins']))
-    return Panel(t, title="[bold yellow]┃ ПРОФИЛЬ ┃[/]", border_style="yellow", padding=(0,1))
-
-def skills_panel():
-    t = Table(box=SIMPLE_HEAD, border_style="cyan", header_style="bold cyan", padding=(0,2))
-    t.add_column("Навык", style="bold cyan", width=20)
-    t.add_column("Уровень", justify="right", width=10)
-    t.add_column("Описание", style="dim")
-    for k, v in STATE["skills"].items():
-        s = SKILLS[k]
-        t.add_row(s["name"], f"[bright_green]{v}[/]", s["desc"])
-    return t
-
-def missions_screen():
-    available = get_available_missions()
-    if not available:
-        console.print("[yellow]⚠ Нет доступных миссий. Прокачай скиллы в магазине.[/]\n")
-        return []
-
-    # Сортируем по сложности
-    available.sort(key=lambda x: x[1]["diff"])
-
-    t = Table(box=SIMPLE_HEAD, border_style="magenta", header_style="bold magenta", padding=(0,1))
-    t.add_column("#", style="bold yellow", width=4, justify="right")
-    t.add_column("Миссия", style="white", width=28)
-    t.add_column("Цель", style="cyan", width=24)
-    t.add_column("Сложность", justify="center", width=10)
-    t.add_column("💰", style="green", justify="right", width=10)
-    t.add_column("⭐", style="cyan", justify="right", width=8)
-
-    for i, (level, m) in enumerate(available, 1):
-        lvl_mark = "🟢" if level == 0 else "🟡" if level == 1 else "🟠" if level == 2 else "🔴"
-        diff_str = f"{lvl_mark} {m['diff']}"
-        t.add_row(str(i), m["name"], m["target"], diff_str, f"${m['reward']}", str(m['xp']))
-    console.print(t)
-    console.print()
-    return available
-
-def shop_screen():
-    t = Table(box=SIMPLE_HEAD, border_style="green", header_style="bold green", padding=(0,1))
-    t.add_column("#", style="bold yellow", width=4, justify="right")
-    t.add_column("Софт", style="white", width=24)
-    t.add_column("Цена", style="green", justify="right", width=10)
-    t.add_column("Описание", style="dim")
-    t.add_column("Куплен", justify="center", width=8)
-
-    for i, s in enumerate(SHOP_SOFT, 1):
-        owned = "✔" if s["id"] in STATE["owned_software"] else ""
-        t.add_row(str(i), s["name"], f"${s['price']}", s["desc"], owned)
-    console.print(t)
-    console.print()
-
-def factions_screen():
-    t = Table(box=SIMPLE_HEAD, border_style="magenta", header_style="bold magenta", padding=(0,1))
-    t.add_column("#", style="bold yellow", width=4, justify="right")
-    t.add_column("Фракция", style="white", width=18)
-    t.add_column("Описание", width=44)
-    t.add_column("Бонус", style="green", width=24)
-    for i, (fid, f) in enumerate(FACTIONS.items(), 1):
-        current = "✔" if STATE["faction"] == fid else ""
-        t.add_row(str(i), f["name"] + " " + current, f["desc"], f["bonus"])
-    console.print(t)
-    console.print()
-
-# ═══════════ TAB-COMPLETER ═══════════
-COMMANDS = [
-    "missions","m","shop","s","status","st","skills","sk",
-    "factions","f","join","attack","a","save","load",
-    "reset","help","h","q","quit","exit"
-]
-
-class RPGComp(Completer):
-    def get_completions(self, doc, ev):
-        t = doc.text_before_cursor
-        if " " in t: return
-        for c in sorted(COMMANDS):
-            if c.startswith(t.lower()):
-                yield Completion(c, start_position=-len(t))
-
-# ═══════════ ГЛАВНОЕ МЕНЮ ═══════════
-def main_menu():
-    global STATE
-    while True:
-        banner()
-        console.print(status_panel())
-        console.print()
-
-        # Подсказки
-        c = Table(box=None, show_header=False, padding=(0,2))
-        c.add_column("", style="bold yellow", width=20)
-        c.add_column("", style="cyan", width=30)
-        c.add_column("", style="bold yellow", width=20)
-        c.add_column("", style="cyan", width=30)
-        c.add_row("[m]issions","📋 Список миссий", "[sh]op","🛒 Магазин")
-        c.add_row("[st]atus","👤 Профиль", "[sk]ills","🎯 Скиллы")
-        c.add_row("[f]actions","🏴 Фракции", "[s]ave","💾 Сохранить")
-        c.add_row("[h]elp","❓ Помощь", "[q]uit","🚪 Выход")
-        console.print(Panel(c, title="[bold cyan]⌨  КОМАНДЫ[/]", border_style="cyan", padding=(0,1)))
-        console.print()
-
-        prompt_txt = "╰─🎮> "
-        try:
-            cmd = console.input(f"[bold magenta]{prompt_txt}[/]").strip().lower()
-        except (EOFError, KeyboardInterrupt):
-            save_game(silent=True)
-            console.print("\n[dim]💾 Автосохранение при выходе. До связи! 🖖[/]")
-            break
-
-        if not cmd: continue
-
-        if cmd in ("q","quit","exit"):
-            save_game(silent=True)
-            console.print("[dim]💾 Автосохранение. До связи! 🖖[/]")
-            break
-
-        elif cmd in ("missions","m"):
-            avail = missions_screen()
-            if avail:
-                try:
-                    ch = console.input("[bold magenta]Номер миссии (Enter — назад)> [/]").strip()
-                except: continue
-                if ch.isdigit() and 1 <= int(ch) <= len(avail):
-                    level, m = avail[int(ch)-1]
-                    do_mission(level, m)
-
-        elif cmd in ("shop","sh","s"):
-            shop_screen()
-            try:
-                ch = console.input("[bold magenta]Номер для покупки (Enter — назад)> [/]").strip()
-            except: continue
-            if ch.isdigit() and 1 <= int(ch) <= len(SHOP_SOFT):
-                item = SHOP_SOFT[int(ch)-1]
-                if item["id"] in STATE["owned_software"]:
-                    console.print("[yellow]Уже куплено[/]\n"); time.sleep(1); continue
-                if STATE["money"] < item["price"]:
-                    console.print(f"[red]❌ Не хватает ${item['price'] - STATE['money']}[/]\n"); time.sleep(1.5); continue
-                STATE["money"] -= item["price"]
-                STATE["owned_software"].append(item["id"])
-                for skill, val in item["effect"].items():
-                    STATE["skills"][skill] = STATE["skills"].get(skill, 0) + val
-                console.print(f"[green]✔ Куплено: {item['name']}[/]\n")
-                save_game(silent=True)
-                time.sleep(1.5)
-
-        elif cmd in ("status","st"):
-            clear()
-            console.print()
-            console.print(status_panel())
-            console.print()
-            console.print(skills_panel())
-            console.print()
-            console.input("[dim]Enter — назад[/] ")
-
-        elif cmd in ("skills","sk"):
-            clear()
-            console.print()
-            console.print(Panel.fit("[bold cyan]🎯 СКИЛЛЫ[/]", border_style="cyan"))
-            console.print()
-            console.print(skills_panel())
-            console.print()
-            console.input("[dim]Enter — назад[/] ")
-
-        elif cmd in ("factions","f"):
-            clear()
-            console.print()
-            console.print(Panel.fit("[bold magenta]🏴 ФРАКЦИИ[/]", border_style="magenta"))
-            console.print()
-            factions_screen()
-            try:
-                ch = console.input("[bold magenta]Номер для вступления (Enter — назад)> [/]").strip()
-            except: continue
-            if ch.isdigit() and 1 <= int(ch) <= len(FACTIONS):
-                fid = list(FACTIONS.keys())[int(ch)-1]
-                if STATE["faction"] == fid:
-                    console.print("[yellow]Уже в этой фракции[/]\n"); time.sleep(1); continue
-                STATE["faction"] = fid
-                console.print(f"[green]✔ Вступил в {FACTIONS[fid]['name']}[/]\n")
-                save_game(silent=True)
-                time.sleep(1.5)
-
-        elif cmd in ("save","sv"):
-            save_game()
-
-        elif cmd in ("load","l"):
-            if load_game():
-                console.print("[green]✔ Загрузка успешна[/]\n"); time.sleep(1)
-            else:
-                console.print("[red]❌ Сейв не найден[/]\n"); time.sleep(1)
-
-        elif cmd in ("reset","r"):
-            try:
-                a = console.input("[red bold]Точно сбросить весь прогресс? (yes/n)> [/]").strip()
-            except: continue
-            if a == "yes":
-                reset_game()
-                if os.path.exists(SAVE_FILE): os.remove(SAVE_FILE)
-                console.print("[green]✔ Сброшено[/]\n"); time.sleep(1)
-
-        elif cmd in ("help","h"):
-            clear()
-            console.print()
-            console.print(Panel(
-                Group(
-                    Text("🎮 HACKER RPG — помощь", style="bold bright_green"),
-                    Text(""),
-                    Text("🎯 Цель: пройти все миссии, заработать $, стать LEGEND.", style="white"),
-                    Text(""),
-                    Text("📋 missions — список контрактов", style="cyan"),
-                    Text("🛒 shop — купить софт (+ скиллы)", style="cyan"),
-                    Text("🏴 factions — вступить во фракцию (+ бонусы)", style="cyan"),
-                    Text("💾 save — сохранить прогресс", style="cyan"),
-                    Text("💀 Если HP = 0 или тебя поймают — GAME OVER, прогресс стирается.", style="red"),
-                    Text(""),
-                    Text("⚙ Автосохранение после каждой успешной миссии.", style="dim"),
-                ),
-                border_style="bright_green", padding=(1,2)))
-            console.print()
-            console.input("[dim]Enter — назад[/] ")
-
-        else:
-            console.print(f"[red]❌ Неизвестно: {cmd}. Набери 'h' для помощи[/]\n")
-            time.sleep(1)
-
-# ═══════════ ЗАПУСК ═══════════
-def main():
-    global STATE
-    clear()
-
-    # Загрузка или новая игра
-    if os.path.exists(SAVE_FILE):
-        banner()
-        console.print(Panel.fit(
-            f"[bold green]💾 Найден сохранённый прогресс[/]\n\n"
-            f"Уровень: {LEVEL_NAMES[STATE.get('level',0)]}\n"
-            f"Деньги: ${STATE.get('money',0)}\n"
-            f"Миссий пройдено: {STATE.get('total_missions',0)}",
-            border_style="green"))
-        console.print()
-        console.print("  [cyan]1[/])  Продолжить")
-        console.print("  [cyan]2[/])  Новая игра")
-        console.print()
-        try:
-            ch = console.input("[bold magenta]Выбор> [/]").strip()
-        except: ch = "1"
-        if ch == "2":
-            reset_game()
-        else:
-            load_game()
-    else:
-        reset_game()
-        STATE["started_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-
-    main_menu()
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print("\n[dim]Прервано.[/]")
-        save_game(silent=True)
-```
-
----
-
-## 📄 download_zone.py
-
-*12624 байт · 309 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Download Zone v3 — загрузчик с Tab-автодополнением"""
-
-import os, sys, re, subprocess, time, shutil, json
-from urllib.parse import urlparse
-from datetime import datetime
-from rich.console import Console, Group
-from rich.panel import Panel
-from rich.table import Table
-from rich.text import Text
-from rich.live import Live
-from rich import box
-from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import WordCompleter
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
-
-console = Console()
-
-DOWNLOADS_DIR = os.path.expanduser("~/storage/shared/Download")
-HISTORY_FILE  = os.path.expanduser("~/.download_history.json")
-MAX_HISTORY   = 50
-
-ARIA_FLAGS = [
-    "aria2c", "-x", "16", "-s", "16", "-k", "1M",
-    "--continue=true", "--file-allocation=none",
-    "--auto-file-renaming=false", "--max-tries=5", "--retry-wait=3",
-    "--summary-interval=1", "--console-log-level=warn",
-    "--download-result=hide", "--check-certificate=false",
-    "--user-agent=Mozilla/5.0 (Linux; Android 10) Termux",
-]
-
-GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
-CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
-RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
-
-def has_aria(): return shutil.which("aria2c") is not None
-def is_magnet(u): return u.startswith("magnet:")
-def is_direct(u): return u.startswith(("http://","https://","ftp://","ftps://"))
-
-def human_size(b):
-    try: b = float(b)
-    except: return "?"
-    for u in ["B","KB","MB","GB","TB"]:
-        if b < 1024: return f"{b:.1f} {u}"
-        b /= 1024
-    return f"{b:.1f} PB"
-
-def guess_filename(url):
-    try:
-        return (os.path.basename(urlparse(url).path) or "download")[:60]
-    except Exception:
-        return "download"
-
-# ─── История ───
-def load_history():
-    if not os.path.exists(HISTORY_FILE): return []
-    try:
-        with open(HISTORY_FILE, encoding="utf-8") as f: return json.load(f)
-    except Exception: return []
-
-def save_history(items):
-    try:
-        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-            json.dump(items[-MAX_HISTORY:], f, ensure_ascii=False, indent=1)
-    except Exception: pass
-
-def push_history(url, ok):
-    items = load_history()
-    items.append({"url": url[:120], "ok": bool(ok),
-                  "time": datetime.now().strftime("%d.%m.%Y %H:%M")})
-    save_history(items)
-
-# ─── Рисование ───
-def clear(): console.clear()
-
-def title_block(main, sub=""):
-    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
-    lines.append(Text("═" * 60, style=GREEN_DIM))
-    return Group(*lines)
-
-def menu_panel():
-    t = Table(box=box.DOUBLE_EDGE, border_style="green",
-              show_header=False, padding=(0, 2))
-    t.add_column("Команда", style="bold yellow", width=18, justify="center")
-    t.add_column("Действие", style="white")
-    t.add_row("[cyan]URL / magnet[/]", "📥 Начать загрузку")
-    t.add_row("[cyan]history[/]",      "📜 История загрузок")
-    t.add_row("[cyan]list[/]",         "📂 Что уже скачано")
-    t.add_row("[cyan]open[/]",         "📁 Открыть папку Download")
-    t.add_row("[cyan]clear[/]",        "🧹 Очистить экран")
-    t.add_row("[cyan]q[/]",            "🚪 Выход")
-    console.print(Panel(t, title="[bold green]🌐  DOWNLOAD ZONE  (Tab — автодополнение)[/]",
-                        border_style="green"))
-    console.print()
-
-# ─── Скачивание ───
-def run_aria_with_progress(cmd, label):
-    state = {"pct":0, "speed":"0 B/s", "eta":"--",
-             "size":"?", "done_size":"0 B", "status":"start"}
-
-    def render():
-        bw = 50; filled = int((state["pct"]/100)*bw)
-        bar = "▓"*filled + "░"*(bw-filled)
-        lines = [
-            Text(""),
-            Text(f"  📥 {label}", style=f"bold {GREEN_BRIGHT}"),
-            Text(""),
-            Text(f"  Прогресс: {state['pct']:>5.1f}%", style=f"bold {CYAN}"),
-            Text(f"  {bar}", style=GREEN_BRIGHT),
-            Text(f"  Скорость: {state['speed']:<14}   ETA: {state['eta']}", style=YELLOW),
-            Text(f"  Скачано:  {state['done_size']:<14}   Всего: {state['size']}", style=GRAY),
-            Text(f"  Статус:   {state['status']}", style=GREEN_DIM),
-            Text(""),
-        ]
-        return Panel(Group(*lines), border_style=GREEN_DIM, padding=(0,1))
-
-    try:
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                text=True, bufsize=1, universal_newlines=True)
-    except FileNotFoundError:
-        console.print("[red]❌ aria2c не найден[/]"); return False
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]"); return False
-
-    re_pct   = re.compile(r"\((\d+)%\)")
-    re_dl    = re.compile(r"DL:([\d\.]+[KMG]?i?B)")
-    re_size  = re.compile(r"([\d\.]+[KMG]?i?B)/([\d\.]+[KMG]?i?B)")
-    re_eta   = re.compile(r"ETA:([\d]+[smhd])")
-    re_error = re.compile(r"^\s*\d+/\d+\s+\d+:\d+:\d+\s+\[ERROR\]", re.IGNORECASE)
-
-    try:
-        with Live(render(), console=console, refresh_per_second=4) as live:
-            for line in proc.stdout:
-                line = line.strip()
-                if not line: continue
-                m = re_pct.search(line);  state["pct"] = float(m.group(1)) if m else state["pct"]
-                m = re_dl.search(line);   state["speed"] = m.group(1) if m else state["speed"]
-                m = re_size.search(line)
-                if m:
-                    state["done_size"] = m.group(1); state["size"] = m.group(2)
-                m = re_eta.search(line);  state["eta"] = m.group(1) if m else state["eta"]
-                if re_error.search(line): state["status"] = "⚠ Ошибка"
-                live.update(render())
-
-        proc.wait(timeout=5)
-        if proc.returncode == 0:
-            state["pct"] = 100.0; state["status"] = "✅ Завершено"
-            live.update(render()); time.sleep(0.4)
-            return True
-        else:
-            state["status"] = f"❌ Код: {proc.returncode}"
-            live.update(render()); time.sleep(0.5)
-            return False
-    except KeyboardInterrupt:
-        console.print("\n  [yellow]⚠ Прервано[/]")
-        try: proc.terminate()
-        except Exception: pass
-        return False
-    except Exception as e:
-        console.print(f"\n  [red]❌ {e}[/]")
-        try: proc.terminate()
-        except Exception: pass
-        return False
-
-def download_direct(url):
-    name = guess_filename(url)
-    console.print()
-    console.print(Panel(f"[bold {WHITE}]{name}[/]\n[dim]{url[:90]}[/]",
-        title=f"[bold {YELLOW}]📥 Загрузка[/]", border_style=GREEN_DIM))
-    cmd = ARIA_FLAGS + ["--dir", DOWNLOADS_DIR, "--referer", url, url]
-    return run_aria_with_progress(cmd, name)
-
-def download_magnet(magnet):
-    console.print()
-    console.print(Panel(f"[bold {WHITE}]🧲 Magnet[/]\n[dim]{magnet[:90]}...[/]",
-        title=f"[bold {YELLOW}]📥 Торрент[/]", border_style=GREEN_DIM))
-    console.print("[dim]Получаю метаданные торрента...[/]")
-    cmd = ARIA_FLAGS + ["--dir", DOWNLOADS_DIR,
-        "--bt-enable-lpd=true", "--enable-dht=true",
-        "--bt-max-peers=200", "--seed-time=0", magnet]
-    return run_aria_with_progress(cmd, "torrent")
-
-# ─── История / List / Open ───
-def show_history():
-    items = load_history()
-    console.print(); console.print(title_block("📜 ИСТОРИЯ")); console.print()
-    if not items:
-        console.print(Text("  Пока пусто.", style=f"dim {GRAY}")); console.print(); return
-    t = Table(box=box.SIMPLE_HEAD, border_style=MAGENTA,
-              header_style=f"bold {MAGENTA}", padding=(0,2))
-    t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
-    t.add_column("✓", width=3, justify="center")
-    t.add_column("URL", style=WHITE)
-    t.add_column("Время", style=GRAY, width=18)
-    for i, it in enumerate(reversed(items), 1):
-        mark = "[green]✔[/]" if it.get("ok") else "[red]✘[/]"
-        t.add_row(str(i), mark, it.get("url","")[:60], it.get("time",""))
-    console.print(t); console.print()
-
-def show_downloads():
-    console.print(); console.print(title_block("📂 ФАЙЛЫ В DOWNLOAD")); console.print()
-    if not os.path.isdir(DOWNLOADS_DIR):
-        console.print(f"[red]❌ Нет папки: {DOWNLOADS_DIR}[/]"); return
-    files = []
-    try:
-        for f in os.listdir(DOWNLOADS_DIR):
-            fp = os.path.join(DOWNLOADS_DIR, f)
-            if os.path.isfile(fp):
-                try: files.append((f, os.path.getsize(fp)))
-                except Exception: pass
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]"); return
-    files.sort(key=lambda x: -x[1])
-    if not files:
-        console.print(Text("  Пусто.", style=f"dim {GRAY}")); console.print(); return
-    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
-              header_style=f"bold {CYAN}", padding=(0,1))
-    t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
-    t.add_column("Файл", style=WHITE)
-    t.add_column("Размер", style=GREEN_BRIGHT, justify="right", width=12)
-    for i, (n, sz) in enumerate(files[:40], 1):
-        t.add_row(str(i), n[:60], human_size(sz))
-    console.print(t); console.print()
-
-def open_downloads():
-    try:
-        subprocess.Popen(["termux-open", DOWNLOADS_DIR])
-        console.print(f"[green]✔ Открываю: {DOWNLOADS_DIR}[/]")
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-    time.sleep(0.6)
-
-# ─── MAIN ───
-def main():
-    if not has_aria():
-        clear()
-        console.print(Panel("[red]❌ aria2c не найден[/]\n[yellow]Установи:[/] [cyan]pkg install aria2[/]",
-                            border_style="red"))
-        return
-
-    os.makedirs(DOWNLOADS_DIR, exist_ok=True)
-
-    # ─── Tab-автодополнение ───
-    commands = ["history", "list", "open", "clear", "q"]
-    completer = WordCompleter(commands, ignore_case=True, sentence=False)
-    style = Style.from_dict({
-        "prompt": "bold ansibrightmagenta",
-        "completion-menu.completion": "bg:#000000 #00ff88",
-        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
-    })
-    session = PromptSession(completer=completer, style=style, complete_while_typing=True)
-
-    while True:
-        clear()
-        console.print()
-        console.print(title_block("DOWNLOAD ZONE", "Terminal Argonov  •  Downloader"))
-        console.print()
-        console.print(f"[dim]📁 Папка: {DOWNLOADS_DIR}[/]")
-        console.print()
-        menu_panel()
-
-        try:
-            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
-        except (EOFError, KeyboardInterrupt):
-            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
-            break
-
-        if not cmd: continue
-        cl = cmd.lower()
-
-        if cl in ("q","exit","quit","выход"):
-            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}")); break
-        if cl == "clear": continue
-
-        if cl == "history":
-            clear(); show_history()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
-            continue
-
-        if cl == "list":
-            clear(); show_downloads()
-            try: console.input("[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
-            continue
-
-        if cl == "open":
-            open_downloads(); continue
-
-        if is_magnet(cmd):
-            ok = download_magnet(cmd); push_history(cmd, ok)
-            try: console.input("\n[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
-        elif is_direct(cmd):
-            ok = download_direct(cmd); push_history(cmd, ok)
-            try: console.input("\n[dim]Enter — назад[/] ")
-            except (EOFError, KeyboardInterrupt): pass
-        else:
-            console.print(Text("  ❌ Это не URL и не magnet", style=RED))
-            time.sleep(1)
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
 ```
 
 ---
@@ -7555,6 +6773,989 @@ if __name__ == "__main__":
 
 ---
 
+## 📄 music_meta.py
+
+*16277 байт · 451 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Music Metadata
+#  Метаданные треков: iTunes + Deezer + MusicBrainz
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Сканер музыки в памяти телефона. Собирает метаданные через
+iTunes, Deezer и MusicBrainz, кэширует в ~/music_cache/library.json.
+
+Использование:
+    music-meta            # обычный запуск (ищет только новое)
+    music-meta --force    # полный перепоиск (игнорирует кэш)
+
+Зависимости:
+    - rich, requests, mutagen
+"""
+
+import os
+import re
+import sys
+import json
+import time
+
+import requests
+
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.align import Align
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, MofNCompleteColumn
+from rich import box
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+
+CACHE_DIR = os.path.expanduser("~/music_cache")
+CACHE_FILE = os.path.join(CACHE_DIR, "library.json")
+CACHE_VERSION = 2
+
+AUDIO_EXTS = {".mp3", ".m4a", ".aac", ".ogg", ".opus", ".flac",
+              ".wav", ".wma", ".amr", ".3gp", ".3gpp", ".mp4a"}
+
+SEARCH_DIRS = [
+    os.path.expanduser("~/storage/music"),
+    os.path.expanduser("~/storage/shared/Music"),
+    os.path.expanduser("~/storage/shared/Download"),
+    os.path.expanduser("~/storage/shared/Downloads"),
+    os.path.expanduser("~/storage/shared/WhatsApp/Media/WhatsApp Audio"),
+    os.path.expanduser("~/storage/shared/Telegram"),
+    os.path.expanduser("~/storage/shared/DCIM"),
+    os.path.expanduser("~/storage/shared/Ringtones"),
+    os.path.expanduser("~/storage/shared/Notifications"),
+    os.path.expanduser("~/storage/shared/Alarms"),
+    os.path.expanduser("~/storage/shared/Podcasts"),
+    os.path.expanduser("~/storage/shared"),
+]
+
+TYPE_PATTERNS = [
+    ("opening", [r"\bop\s?\d", r"\bopening\b", r"опенинг", r"\bop\d+\b", r"\bop\b"]),
+    ("ending",  [r"\bed\s?\d", r"\bending\b", r"эндинг", r"\bed\d+\b", r"\bed\b"]),
+    ("ost",     [r"\bost\b", r"soundtrack", r"саундтрек", r"original soundtrack"]),
+    ("theme",   [r"\btheme\b", r"\bтема\b", r"main theme"]),
+    ("game",    [r"\bgame\b", r"игров", r"game ost", r"игра\b"]),
+    ("anime",   [r"\banime\b", r"аниме"]),
+    ("film",    [r"\bfilm\b", r"\bmovie\b", r"кино\b", r"из фильма"]),
+    ("classical", [r"classical", r"классика", r"симфони"]),
+    ("remix",   [r"\bremix\b", r"ремикс", r"\bmix\b"]),
+    ("live",    [r"\blive\b", r"концерт"]),
+    ("acoustic", [r"acoustic", r"акустик"]),
+    ("cover",   [r"\bcover\b", r"кавер"]),
+    ("instrumental", [r"instrumental", r"инструментал"]),
+]
+
+# ═══ HTTP СЕССИЯ ═══
+SESSION = requests.Session()
+SESSION.headers.update({
+    "User-Agent": "TermuxMusicMeta/2.0 ( https://termux.dev )",
+    "Accept": "application/json",
+})
+
+# ═══ УТИЛИТЫ ═══
+def detect_type(title, path):
+    parts = [p.lower() for p in path.split(os.sep)]
+    for part in parts:
+        for t, patterns in TYPE_PATTERNS:
+            for p in patterns:
+                if re.search(p, part, re.IGNORECASE):
+                    return t
+    text = (str(title) + " " + str(path)).lower()
+    for t, patterns in TYPE_PATTERNS:
+        for p in patterns:
+            if re.search(p, text, re.IGNORECASE):
+                return t
+    return "song"
+
+
+def clean_query(s):
+    if not s:
+        return ""
+    s = str(s).strip()
+    s = re.sub(r"^\d{1,3}[\s.\-_]+\s*", "", s)
+    s = re.sub(r"[\(\[].*?[\)\]]", "", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+# ═══ iTUNES ═══
+def search_itunes(query):
+    if not query:
+        return None
+    for attempt in range(2):
+        try:
+            r = SESSION.get("https://itunes.apple.com/search",
+                params={"term": query, "entity": "song", "limit": 1}, timeout=8)
+            if r.status_code != 200:
+                return None
+            results = r.json().get("results", [])
+            if not results:
+                return None
+            f = results[0]
+            return {
+                "artist": f.get("artistName", "").strip(),
+                "title":  f.get("trackName", "").strip(),
+                "album":  f.get("collectionName", "").strip(),
+                "genre":  f.get("primaryGenreName", "").strip(),
+                "year":   (f.get("releaseDate") or "")[:4],
+                "source": "itunes",
+            }
+        except Exception:
+            if attempt == 0:
+                time.sleep(0.5)
+    return None
+
+# ═══ DEEZER ═══
+def search_deezer(query):
+    if not query:
+        return None
+    for attempt in range(2):
+        try:
+            r = SESSION.get("https://api.deezer.com/search",
+                params={"q": query, "limit": 1}, timeout=8)
+            if r.status_code != 200:
+                return None
+            items = r.json().get("data", [])
+            if not items:
+                return None
+            f = items[0]
+            return {
+                "artist": f.get("artist", {}).get("name", "").strip(),
+                "title":  f.get("title", "").strip(),
+                "album":  f.get("album", {}).get("title", "").strip(),
+                "genre":  "",
+                "year":   "",
+                "source": "deezer",
+            }
+        except Exception:
+            if attempt == 0:
+                time.sleep(0.5)
+    return None
+
+# ═══ MUSICBRAINZ ═══
+def search_musicbrainz(query):
+    if not query:
+        return None
+    for attempt in range(2):
+        try:
+            r = SESSION.get("https://musicbrainz.org/ws/2/recording",
+                params={"query": query, "fmt": "json", "limit": 1}, timeout=10)
+            if r.status_code != 200:
+                return None
+            recordings = r.json().get("recordings", [])
+            if not recordings:
+                return None
+            rec = recordings[0]
+            title = rec.get("title", "").strip()
+            credits = rec.get("artist-credit", [])
+            artist = ""
+            if credits:
+                artist = "".join(
+                    (c.get("name") or "") + (c.get("joinphrase") or "")
+                    for c in credits
+                ).strip()
+            album = ""
+            releases = rec.get("releases", [])
+            if releases:
+                album = (releases[0].get("title") or "").strip()
+            year = ""
+            if releases:
+                date = releases[0].get("date", "")
+                if date:
+                    year = date[:4]
+            genre = ""
+            tags = rec.get("tags", [])
+            if tags:
+                genre = tags[0].get("name", "").capitalize()
+            return {
+                "artist": artist,
+                "title":  title,
+                "album":  album,
+                "genre":  genre,
+                "year":   year,
+                "source": "musicbrainz",
+            }
+        except Exception:
+            if attempt == 0:
+                time.sleep(0.5)
+    return None
+
+
+def fetch_metadata(title, artist):
+    """Каскад: iTunes → Deezer → MusicBrainz"""
+    if not title and not artist:
+        return None
+
+    if artist and title:
+        q = clean_query(f"{artist} {title}")
+        for fn in (search_itunes, search_deezer, search_musicbrainz):
+            res = fn(q)
+            if res and res.get("title"):
+                return res
+
+    if title:
+        q = clean_query(title)
+        for fn in (search_itunes, search_deezer, search_musicbrainz):
+            res = fn(q)
+            if res and res.get("title"):
+                return res
+
+    return None
+
+# ═══ ЛОКАЛЬНЫЕ ТЕГИ ═══
+def read_local_metadata(path):
+    filename = os.path.splitext(os.path.basename(path))[0]
+    artist = album = title = None
+    duration = 0
+    try:
+        from mutagen import File as MutagenFile
+        audio = MutagenFile(path, easy=True)
+        if audio:
+            if audio.get("artist"):
+                artist = audio["artist"][0].strip()
+            if audio.get("album"):
+                album = audio["album"][0].strip()
+            if audio.get("title"):
+                title = audio["title"][0].strip()
+        audio2 = MutagenFile(path)
+        if audio2 and hasattr(audio2, "info") and audio2.info:
+            duration = int(audio2.info.length)
+    except Exception:
+        pass
+
+    if not title or not artist:
+        name = re.sub(r"^\d{1,3}[\s.\-_]+\s*", "", filename)
+        if " - " in name:
+            left, right = name.split(" - ", 1)
+            if not artist:
+                artist = left.strip()
+            if not title:
+                title = right.strip()
+        else:
+            if not title:
+                title = name
+
+    return artist or "", album or "", title or filename, duration
+
+# ═══ КЭШ ═══
+def load_cache():
+    if not os.path.exists(CACHE_FILE):
+        return {"version": CACHE_VERSION, "tracks": {}}
+    try:
+        with open(CACHE_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+            if data.get("version") != CACHE_VERSION:
+                data["version"] = CACHE_VERSION
+            data.setdefault("tracks", {})
+            return data
+    except Exception:
+        return {"version": CACHE_VERSION, "tracks": {}}
+
+
+def save_cache(cache):
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    tmp = CACHE_FILE + ".tmp"
+    snapshot = {"version": cache.get("version", CACHE_VERSION),
+                "tracks": dict(cache["tracks"])}
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(snapshot, f, ensure_ascii=False, indent=1)
+    os.replace(tmp, CACHE_FILE)
+
+# ═══ ФАЙЛЫ ═══
+def find_all_audio():
+    found = []
+    seen = set()
+    for base in SEARCH_DIRS:
+        if not os.path.isdir(base):
+            continue
+        for root, dirs, files in os.walk(base):
+            dirs[:] = [d for d in dirs if d not in
+                       ("Android/data", "Android/obb", ".thumbnails", ".cache")]
+            for f in files:
+                if os.path.splitext(f)[1].lower() in AUDIO_EXTS:
+                    full = os.path.join(root, f)
+                    if full not in seen:
+                        seen.add(full)
+                        found.append(full)
+    return found
+
+# ═══ ВОРКЕР ═══
+def worker(path, force):
+    local_artist, local_album, local_title, dur = read_local_metadata(path)
+    track_type = detect_type(local_title, path)
+    q_artist = local_artist if local_artist and local_artist.lower() not in ("неизвестен", "unknown") else ""
+
+    remote = fetch_metadata(local_title, q_artist)
+
+    if remote:
+        entry = {
+            "title":  remote.get("title") or local_title,
+            "artist": remote.get("artist") or local_artist or "Неизвестен",
+            "album":  remote.get("album") or local_album or "",
+            "genre":  remote.get("genre") or "",
+            "year":   remote.get("year") or "",
+            "type":   track_type,
+            "source": remote.get("source"),
+            "duration": dur,
+        }
+    else:
+        entry = {
+            "title":  local_title,
+            "artist": local_artist or "Неизвестен",
+            "album":  local_album or "",
+            "genre":  "",
+            "year":   "",
+            "type":   track_type,
+            "source": "local",
+            "duration": dur,
+        }
+    return (path, entry)
+
+# ═══ MAIN ═══
+def main():
+    console.clear()
+    force = "--force" in sys.argv
+
+    console.print()
+    console.print(Align.center(Panel.fit(
+        "[bold green]🌐  MUSIC METADATA FETCHER v2  🌐[/]\n"
+        "[dim]iTunes + Deezer + MusicBrainz → кэш в ~/music_cache/[/]",
+        border_style="green")))
+    console.print()
+
+    console.print("[bold yellow]🔍 Сканирую память телефона...[/]")
+    files = find_all_audio()
+    console.print(f"   Найдено аудиофайлов: [green]{len(files)}[/]\n")
+
+    cache = load_cache()
+    cached_count = len(cache["tracks"])
+    console.print(f"💾 В кэше уже: [green]{cached_count}[/] записей\n")
+
+    to_process = []
+    for f in files:
+        existing = cache["tracks"].get(f)
+        if force:
+            to_process.append(f)
+        else:
+            if not existing or existing.get("source") in (None, "local", "filename", "filename-only"):
+                to_process.append(f)
+
+    if not to_process:
+        console.print("[green]✔ Всё уже найдено. Нечего искать.[/]")
+        console.print("[dim]Запусти music-force для полного переискивания.[/]")
+        return
+
+    console.print(f"[bold cyan]📡 Ищу: {len(to_process)} треков (параллельно в 6 потоков)[/]")
+    console.print("[dim]Можно прервать Ctrl+C — прогресс сохранится.[/]\n")
+
+    done = 0
+    found_remote = 0
+    found_mb = 0
+    not_found = 0
+    save_every = 20
+
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[cyan]{task.description}"),
+            BarColumn(),
+            MofNCompleteColumn(),
+            console=console,
+        ) as prog:
+            task = prog.add_task("Поиск...", total=len(to_process))
+
+            with ThreadPoolExecutor(max_workers=6) as pool:
+                futures = {pool.submit(worker, f, force): f for f in to_process}
+                for fut in as_completed(futures):
+                    try:
+                        result = fut.result()
+                        if result:
+                            key, entry = result
+                            cache["tracks"][key] = entry
+                            if entry.get("source") in ("itunes", "deezer", "musicbrainz"):
+                                found_remote += 1
+                                if entry.get("source") == "musicbrainz":
+                                    found_mb += 1
+                            else:
+                                not_found += 1
+                    except Exception:
+                        pass
+
+                    done += 1
+                    prog.update(
+                        task, advance=1,
+                        description=f"[cyan]✔ {found_remote}  ✘ {not_found}  (MB: {found_mb})"
+                    )
+
+                    if done % save_every == 0:
+                        try:
+                            save_cache(cache)
+                        except Exception:
+                            pass
+    except KeyboardInterrupt:
+        console.print("\n[yellow]⚠ Прервано. Сохраняю...[/]")
+
+    try:
+        save_cache(cache)
+    except Exception as e:
+        console.print(f"[red]❌ Ошибка сохранения: {e}[/]")
+
+    console.print()
+    t = Table(box=box.ROUNDED, show_header=False, border_style="green")
+    t.add_column("", style="bold yellow", width=24)
+    t.add_column("", style="white")
+    t.add_row("✅ Найдено в интернете", f"[green]{found_remote}[/]")
+    t.add_row("   из них MusicBrainz",  f"[cyan]{found_mb}[/]")
+    t.add_row("⚠ Не найдено",          f"[yellow]{not_found}[/]")
+    t.add_row("💾 Всего в кэше",         f"[cyan]{len(cache['tracks'])}[/]")
+    t.add_row("📁 Файл",                 f"[dim]{CACHE_FILE}[/]")
+    console.print(t)
+    console.print()
+    console.print("[green]✔ Готово. Запусти [cyan]music[/][/]")
+    console.print()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print("\n[dim]Прервано.[/]")
+```
+
+---
+
+## 📄 notes.py
+
+*19791 байт · 516 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Notes
+#  Заметки с тегами, поиском и экспортом
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Заметки с тегами, поиском, фильтром по тегу и экспортом.
+
+Использование:
+    notes                # через argonov
+    argonov notes        # то же
+
+Примеры:
+    new Рецепт блинов | 2 яйца, мука, молоко #кухня
+    new Идея проекта | Сделать крутой CLI #работа #todo
+    show 3
+    tag кухня
+    search молоко
+    export md
+
+Экспорт:
+    ~/notes_export/notes_YYYYMMDD_HHMM.{md,txt,json}
+
+Зависимости:
+    - rich, prompt_toolkit
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import subprocess
+from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.markdown import Markdown
+from rich import box
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+NOTES_FILE = os.path.expanduser("~/.notes.json")
+EXPORT_DIR = os.path.expanduser("~/notes_export")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+# ═══ ХРАНИЛИЩЕ ═══
+def load_notes():
+    if not os.path.exists(NOTES_FILE):
+        return {"next_id": 1, "notes": []}
+    try:
+        with open(NOTES_FILE, encoding="utf-8") as f:
+            d = json.load(f)
+            d.setdefault("next_id", 1)
+            d.setdefault("notes", [])
+            return d
+    except Exception:
+        return {"next_id": 1, "notes": []}
+
+
+def save_notes(data):
+    try:
+        with open(NOTES_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=1)
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+
+# ═══ ПАРСИНГ ═══
+def parse_new(text):
+    """new Заголовок | Тело заметки #тег1 #тег2"""
+    tags = re.findall(r"#(\S+)", text)
+    text_no_tags = re.sub(r"#\S+", "", text).strip()
+    if "|" in text_no_tags:
+        title, body = text_no_tags.split("|", 1)
+    else:
+        title = text_no_tags
+        body = ""
+    return {"title": title.strip(), "body": body.strip(), "tags": tags}
+
+
+def edit_note_interactive(note):
+    console.print(Text(f"  ✏ Текущий заголовок: {note['title']}", style=WHITE))
+    try:
+        new_title = console.input("[bold magenta]Новый заголовок (Enter — оставить)> [/]").strip()
+        if new_title:
+            note["title"] = new_title
+    except (EOFError, KeyboardInterrupt):
+        console.print(Text("  Отменено", style=YELLOW))
+        return False
+
+    console.print(Text("  Текущее тело:", style=WHITE))
+    console.print(Panel(note.get("body", "") or "[dim](пусто)[/]", border_style=GRAY))
+    console.print(Text("  Введи новый текст (Enter на пустой строке — конец):", style=CYAN))
+    lines = []
+    try:
+        while True:
+            line = console.input("[bold magenta]...[/] ")
+            if not line:
+                break
+            lines.append(line)
+    except (EOFError, KeyboardInterrupt):
+        pass
+    if lines:
+        note["body"] = "\n".join(lines)
+
+    try:
+        new_tags = console.input(
+            f"[bold magenta]Теги через пробел (текущие: {', '.join(note.get('tags',[])) or '—'})> [/]"
+        ).strip()
+        if new_tags:
+            note["tags"] = [t.lstrip("#") for t in new_tags.split()]
+    except (EOFError, KeyboardInterrupt):
+        pass
+    note["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+    return True
+
+# ═══ ЭКСПОРТ ═══
+def export_notes(fmt="md"):
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+    data = load_notes()
+    notes = data["notes"]
+    if not notes:
+        console.print(Text("  ⚠ Нечего экспортировать", style=YELLOW))
+        return
+
+    ts = datetime.now().strftime("%Y%m%d_%H%M")
+
+    if fmt == "json":
+        path = os.path.join(EXPORT_DIR, f"notes_{ts}.json")
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(notes, f, ensure_ascii=False, indent=2)
+    elif fmt == "md":
+        path = os.path.join(EXPORT_DIR, f"notes_{ts}.md")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(f"# Мои заметки\n\n_Экспорт: {datetime.now().strftime('%d.%m.%Y %H:%M')}_\n\n")
+            for n in notes:
+                f.write(f"## #{n['id']} — {n['title']}\n\n")
+                if n.get("tags"):
+                    f.write("**Теги:** " + " ".join(f"`#{t}`" for t in n["tags"]) + "\n\n")
+                if n.get("body"):
+                    f.write(n["body"] + "\n\n")
+                f.write(f"_Создано: {n.get('created','—')}_\n\n---\n\n")
+    elif fmt == "txt":
+        path = os.path.join(EXPORT_DIR, f"notes_{ts}.txt")
+        with open(path, "w", encoding="utf-8") as f:
+            for n in notes:
+                f.write(f"=== #{n['id']} — {n['title']} ===\n")
+                if n.get("tags"):
+                    f.write("Теги: " + ", ".join(n["tags"]) + "\n")
+                if n.get("body"):
+                    f.write(n["body"] + "\n")
+                f.write("\n")
+    else:
+        console.print(Text(f"  ❌ Неизвестный формат: {fmt}", style=RED))
+        return
+
+    console.print(Text(f"  ✔ Экспортировано: {path}", style=GREEN_BRIGHT))
+
+# ═══ РИСОВКА ═══
+def clear():
+    os.system("clear")
+
+
+def title_block(main, sub=""):
+    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    lines.append(Text("═" * 60, style=GREEN_DIM))
+    return Group(*lines)
+
+
+def stats_panel(notes):
+    total = len(notes)
+    tags_count = {}
+    for n in notes:
+        for t in n.get("tags", []):
+            tags_count[t] = tags_count.get(t, 0) + 1
+    top_tags = sorted(tags_count.items(), key=lambda x: -x[1])[:5]
+    top_s = " ".join(f"#{t}({c})" for t, c in top_tags) or "[dim]нет[/]"
+
+    t = Table(box=None, show_header=False, padding=(0, 3))
+    t.add_column("")
+    t.add_column("")
+    t.add_row(f"📝 Заметок: [bold]{total}[/]",
+              f"🏷 Тегов: [bold]{len(tags_count)}[/]")
+    t.add_row(f"🔝 Топ теги: {top_s}", "")
+    return t
+
+
+def notes_table(notes, filter_mode=None):
+    shown = notes
+    if filter_mode and filter_mode.startswith("tag:"):
+        tag = filter_mode[4:].lower()
+        shown = [n for n in notes if tag in [x.lower() for x in n.get("tags", [])]]
+    elif filter_mode:
+        q = filter_mode.lower()
+        shown = [n for n in notes
+                 if q in n["title"].lower() or q in n.get("body", "").lower()
+                 or any(q in t.lower() for t in n.get("tags", []))]
+
+    shown = sorted(shown, key=lambda x: x.get("updated") or x.get("created", ""), reverse=True)
+
+    if not shown:
+        console.print(Text(f"  📭 Заметок нет (фильтр: {filter_mode or 'нет'})", style=f"dim {GRAY}"))
+        console.print()
+        return
+
+    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
+              header_style=f"bold {CYAN}", padding=(0, 1), expand=True)
+    t.add_column("ID", style=f"bold {YELLOW}", width=4, justify="right")
+    t.add_column("Заголовок", style=WHITE)
+    t.add_column("Теги", style=MAGENTA, width=20)
+    t.add_column("Обновлено", style=GRAY, width=17)
+
+    for n in shown:
+        title = n["title"][:55]
+        tags_s = " ".join(f"#{x}" for x in n.get("tags", []))[:20] or "[dim]—[/]"
+        upd = n.get("updated") or n.get("created", "—")
+        t.add_row(str(n["id"]), title, tags_s, upd[:16])
+    console.print(t)
+    console.print()
+
+
+def commands_panel():
+    t = Table(box=box.DOUBLE_EDGE, border_style="black",
+              show_header=False, padding=(0, 2))
+    t.add_column("Команда", style="bold yellow", width=30, justify="right")
+    t.add_column("Действие", style="white")
+    t.add_row("[cyan]new <заголовок> | <тело> #tag[/]", "➕ Новая заметка")
+    t.add_row("[cyan]show <id>[/]",     "👁 Показать заметку")
+    t.add_row("[cyan]edit <id>[/]",     "✏ Редактировать")
+    t.add_row("[cyan]del <id>[/]",      "🗑 Удалить")
+    t.add_row("[cyan]tag <тег>[/]",     "🏷 Фильтр по тегу")
+    t.add_row("[cyan]search <текст>[/]", "🔍 Поиск по всем полям")
+    t.add_row("[cyan]tags[/]",          "📋 Список всех тегов")
+    t.add_row("[cyan]reset[/]",         "↩ Сбросить фильтр")
+    t.add_row("[cyan]export md|txt|json[/]", "💾 Экспорт в ~/notes_export/")
+    t.add_row("[cyan]q[/]",             "🚪 Выход")
+    console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
+                        border_style="black"))
+    console.print()
+
+# ═══ TAB-COMPLETER ═══
+class NotesCompleter(Completer):
+    def __init__(self, get_data):
+        self.get_data = get_data
+
+    def get_completions(self, document, complete_event):
+        text = document.text_before_cursor
+        words = text.split()
+
+        if not words or (len(words) == 1 and not text.endswith(" ")):
+            partial = words[0] if words else ""
+            commands = ["new","show","edit","del","tag","search","tags",
+                        "reset","export","clear","help","q"]
+            for c in commands:
+                if c.startswith(partial.lower()):
+                    yield Completion(c, start_position=-len(partial))
+            return
+
+        cmd = words[0].lower()
+        partial = words[-1] if not text.endswith(" ") else ""
+
+        if cmd in ("show","edit","del"):
+            data = self.get_data()
+            for n in data["notes"]:
+                sid = str(n["id"])
+                if sid.startswith(partial):
+                    label = f'{sid}  {n["title"][:55]}'
+                    yield Completion(sid, start_position=-len(partial), display=label)
+            return
+
+        if cmd == "tag":
+            data = self.get_data()
+            tags = set()
+            for n in data["notes"]:
+                tags.update(n.get("tags", []))
+            for t in sorted(tags):
+                if t.lower().startswith(partial.lower()):
+                    yield Completion(t, start_position=-len(partial))
+            return
+
+        if cmd == "export":
+            for m in ("md","txt","json"):
+                if m.startswith(partial.lower()):
+                    yield Completion(m, start_position=-len(partial))
+
+# ═══ MAIN ═══
+def main():
+    data = load_notes()
+    current_filter = None
+
+    style = Style.from_dict({
+        "prompt": "bold ansibrightmagenta",
+        "completion-menu.completion": "bg:#000000 #00ff88",
+        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
+        "completion-menu.meta.completion": "bg:#000000 #557755",
+        "completion-menu.meta.completion.current": "bg:#aa00aa #000000",
+    })
+
+    while True:
+        data = load_notes()
+        notes = data["notes"]
+
+        clear()
+        console.print()
+        console.print(title_block("N O T E S", "Terminal Argonov  •  Notes"))
+        console.print()
+        console.print(stats_panel(notes))
+        console.print()
+
+        if current_filter:
+            console.print(f"[dim]Фильтр: [bold]{current_filter}[/][/]")
+            console.print()
+
+        notes_table(notes, filter_mode=current_filter)
+        commands_panel()
+
+        session = PromptSession(
+            completer=NotesCompleter(lambda: load_notes()),
+            style=style, complete_while_typing=True)
+        try:
+            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+
+        if not cmd:
+            continue
+        parts = cmd.split(maxsplit=1)
+        c = parts[0].lower()
+        arg = parts[1] if len(parts) > 1 else ""
+
+        if c in ("q","exit","quit","выход"):
+            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+        if c == "clear":
+            continue
+
+        if c == "new":
+            if not arg:
+                console.print(Text("  ❌ new <заголовок> | <тело> #тег", style=RED))
+                time.sleep(1)
+                continue
+            p = parse_new(arg)
+            if not p["title"]:
+                console.print(Text("  ❌ Пустой заголовок", style=RED))
+                time.sleep(1)
+                continue
+            note = {
+                "id": data["next_id"],
+                "title": p["title"],
+                "body": p["body"],
+                "tags": p["tags"],
+                "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            }
+            data["next_id"] += 1
+            data["notes"].append(note)
+            save_notes(data)
+            console.print(Text(f"  ✔ Заметка #{note['id']} создана", style=GREEN_BRIGHT))
+            time.sleep(0.8)
+            continue
+
+        if c == "show":
+            if not arg.isdigit():
+                console.print(Text("  ❌ show <id>", style=RED))
+                time.sleep(1)
+                continue
+            tid = int(arg)
+            note = next((n for n in data["notes"] if n["id"] == tid), None)
+            if not note:
+                console.print(Text(f"  ❌ #{tid} не найдена", style=RED))
+                time.sleep(1)
+                continue
+            clear()
+            console.print()
+            console.print(title_block(f"#{note['id']}  {note['title']}"))
+            console.print()
+            if note.get("tags"):
+                console.print(Text("🏷 " + " ".join(f"#{t}" for t in note["tags"]), style=MAGENTA))
+                console.print()
+            body = note.get("body") or "[dim](пусто)[/]"
+            try:
+                console.print(Markdown(body))
+            except Exception:
+                console.print(body)
+            console.print()
+            console.print(Text(f"📅 Создано: {note.get('created','—')}", style=GRAY))
+            console.print(Text(f"🕐 Обновлено: {note.get('updated','—')}", style=GRAY))
+            console.print()
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
+            continue
+
+        if c in ("edit","del"):
+            if not arg.isdigit():
+                console.print(Text(f"  ❌ {c} <id>", style=RED))
+                time.sleep(1)
+                continue
+            tid = int(arg)
+            note = next((n for n in data["notes"] if n["id"] == tid), None)
+            if not note:
+                console.print(Text(f"  ❌ #{tid} не найдена", style=RED))
+                time.sleep(1)
+                continue
+            if c == "edit":
+                if edit_note_interactive(note):
+                    save_notes(data)
+                    console.print(Text(f"  ✔ Заметка #{tid} обновлена", style=GREEN_BRIGHT))
+                time.sleep(1)
+                continue
+            if c == "del":
+                try:
+                    ans = console.input(
+                        f"[bold red]Удалить #{tid} «{note['title'][:40]}»? (y/N)> [/]"
+                    ).strip().lower()
+                    if ans == "y":
+                        data["notes"] = [n for n in data["notes"] if n["id"] != tid]
+                        save_notes(data)
+                        console.print(Text(f"  🗑 #{tid} удалена", style=RED))
+                    else:
+                        console.print(Text("  Отменено", style=YELLOW))
+                except (EOFError, KeyboardInterrupt):
+                    console.print(Text("  Отменено", style=YELLOW))
+                time.sleep(0.8)
+                continue
+
+        if c == "tag":
+            if not arg:
+                console.print(Text("  ❌ tag <тег>", style=RED))
+                time.sleep(1)
+                continue
+            current_filter = f"tag:{arg.lstrip('#')}"
+            console.print(Text(f"  🏷 Фильтр по тегу: {arg}", style=GREEN_BRIGHT))
+            time.sleep(0.5)
+            continue
+
+        if c == "search":
+            if not arg:
+                console.print(Text("  ❌ search <текст>", style=RED))
+                time.sleep(1)
+                continue
+            current_filter = arg
+            console.print(Text(f"  🔍 Поиск: {arg}", style=GREEN_BRIGHT))
+            time.sleep(0.5)
+            continue
+
+        if c == "tags":
+            tags_count = {}
+            for n in data["notes"]:
+                for t in n.get("tags", []):
+                    tags_count[t] = tags_count.get(t, 0) + 1
+            if not tags_count:
+                console.print(Text("  ⚠ Тегов нет", style=YELLOW))
+                time.sleep(1)
+                continue
+            clear()
+            console.print()
+            console.print(title_block("🏷 ВСЕ ТЕГИ"))
+            console.print()
+            t = Table(box=box.SIMPLE_HEAD, border_style=MAGENTA,
+                      header_style=f"bold {MAGENTA}", padding=(0, 2))
+            t.add_column("Тег", style=MAGENTA)
+            t.add_column("Заметок", style=CYAN, justify="right", width=10)
+            for tg, cnt in sorted(tags_count.items(), key=lambda x: -x[1]):
+                t.add_row(f"#{tg}", str(cnt))
+            console.print(t)
+            console.print()
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (EOFError, KeyboardInterrupt):
+                pass
+            continue
+
+        if c == "reset":
+            current_filter = None
+            console.print(Text("  ↩ Фильтр сброшен", style=GREEN_BRIGHT))
+            time.sleep(0.5)
+            continue
+
+        if c == "export":
+            fmt = (arg or "md").lower()
+            export_notes(fmt)
+            time.sleep(1.2)
+            continue
+
+        if c in ("help","h","?"):
+            console.print(Text("  Tab — автодополнение. Пример: new Рецепт блинов | 2 яйца, мука #кухня", style=CYAN))
+            time.sleep(2)
+            continue
+
+        console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
+        time.sleep(0.6)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
+```
+
+---
+
 ## 📄 passgen.py
 
 *4067 байт · 91 строк*
@@ -7650,6 +7851,1580 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print(f"\n{RST}Отменено.{RST}")
+```
+
+---
+
+## 📄 passmanager.py
+
+*25386 байт · 617 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Password Manager
+#  Зашифрованное хранилище паролей (AES-256 + PBKDF2)
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Зашифрованное хранилище паролей: AES-256-GCM + PBKDF2-HMAC-SHA256
+(480k итераций). Мастер-пароль не хранится, только производный ключ
+используется для расшифровки хранилища ~/.pm.vault.
+
+Использование:
+    pm                   # через argonov
+    argonov pm           # то же
+
+Первый запуск — создание мастер-пароля.
+Мастер-пароль НЕЛЬЗЯ восстановить. Запиши его.
+
+Команды:
+    add              добавить запись
+    get <№>          показать пароль
+    copy <№>         скопировать в буфер
+    gen [длина]      сгенерировать пароль
+    edit <№>         редактировать
+    del <№>          удалить
+    cat <категория>  фильтр по категории
+    search <текст>   поиск
+    reset            сбросить фильтры
+    backup           резервная копия
+    passwd           сменить мастер-пароль
+    lock             заблокировать и выйти
+
+Зависимости:
+    - rich, prompt_toolkit, cryptography
+"""
+
+import os
+import sys
+import json
+import time
+import string
+import secrets
+import getpass
+from datetime import datetime
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.align import Align
+from rich import box
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
+
+# ─── Криптография ───
+try:
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    from cryptography.exceptions import InvalidTag
+except ImportError:
+    print("❌ Установи: pip install cryptography")
+    sys.exit(1)
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+VAULT_FILE = os.path.expanduser("~/.pm.vault")
+BACKUP_DIR = os.path.expanduser("~/pm_backups")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+PBKDF2_ITERS = 480_000
+SALT_SIZE    = 16
+NONCE_SIZE   = 12
+
+# ═══ КРИПТО ═══
+def derive_key(password: str, salt: bytes) -> bytes:
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=PBKDF2_ITERS,
+    )
+    return kdf.derive(password.encode())
+
+
+def encrypt_vault(data: dict, password: str) -> bytes:
+    """Возвращает salt + nonce + ciphertext."""
+    salt = os.urandom(SALT_SIZE)
+    nonce = os.urandom(NONCE_SIZE)
+    key = derive_key(password, salt)
+    plaintext = json.dumps(data, ensure_ascii=False).encode()
+    ct = AESGCM(key).encrypt(nonce, plaintext, None)
+    return salt + nonce + ct
+
+
+def decrypt_vault(blob: bytes, password: str) -> dict:
+    """Расшифровывает. Бросает InvalidTag при неверном пароле."""
+    if len(blob) < SALT_SIZE + NONCE_SIZE + 16:
+        raise ValueError("Повреждённый файл хранилища")
+    salt = blob[:SALT_SIZE]
+    nonce = blob[SALT_SIZE:SALT_SIZE + NONCE_SIZE]
+    ct = blob[SALT_SIZE + NONCE_SIZE:]
+    key = derive_key(password, salt)
+    pt = AESGCM(key).decrypt(nonce, ct, None)
+    return json.loads(pt.decode())
+
+# ═══ ГЕНЕРАЦИЯ ═══
+def gen_password(length=20, symbols=True, digits=True, upper=True, lower=True) -> str:
+    pool = ""
+    if lower:
+        pool += string.ascii_lowercase
+    if upper:
+        pool += string.ascii_uppercase
+    if digits:
+        pool += string.digits
+    if symbols:
+        pool += "!@#$%^&*()-_=+[]{};:,.<>?"
+    if not pool:
+        pool = string.ascii_letters
+    return "".join(secrets.choice(pool) for _ in range(length))
+
+# ═══ РИСОВКА ═══
+def clear():
+    os.system("clear")
+
+
+def title_block(main, sub=""):
+    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    lines.append(Text("═" * 60, style=GREEN_DIM))
+    return Group(*lines)
+
+
+def stats_panel(entries):
+    total = len(entries)
+    categories = {}
+    for e in entries.values():
+        c = e.get("category", "без категории")
+        categories[c] = categories.get(c, 0) + 1
+    cats = " ".join(f"{c}({n})" for c, n in sorted(categories.items(), key=lambda x: -x[1])[:5]) or "[dim]—[/]"
+    t = Table(box=None, show_header=False, padding=(0, 3))
+    t.add_column("")
+    t.add_column("")
+    t.add_row(f"🔑 Записей: [bold]{total}[/]", f"📁 Категории: {cats}")
+    return t
+
+
+def entries_table(entries, filter_cat=None, filter_search=None):
+    shown = []
+    for name, e in entries.items():
+        if filter_cat and e.get("category", "").lower() != filter_cat.lower():
+            continue
+        if filter_search:
+            q = filter_search.lower()
+            if q not in name.lower() and q not in e.get("url", "").lower() and q not in e.get("notes", "").lower():
+                continue
+        shown.append((name, e))
+    shown.sort(key=lambda x: x[0].lower())
+
+    if not shown:
+        console.print(Text(f"  📭 Записей нет", style=f"dim {GRAY}"))
+        console.print()
+        return
+
+    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
+              header_style=f"bold {CYAN}", padding=(0, 1), expand=True)
+    t.add_column("№", style=f"bold {YELLOW}", width=4, justify="right")
+    t.add_column("Название", style=WHITE)
+    t.add_column("Категория", style=MAGENTA, width=16)
+    t.add_column("Логин", style=GRAY, width=24)
+    t.add_column("URL", style=CYAN, width=30)
+
+    for i, (name, e) in enumerate(shown, 1):
+        t.add_row(str(i), name[:40],
+                  (e.get("category", "—") or "—")[:14],
+                  (e.get("login", "—") or "—")[:22],
+                  (e.get("url", "—") or "—")[:28])
+    console.print(t)
+    console.print()
+    return shown
+
+
+def commands_panel():
+    t = Table(box=box.DOUBLE_EDGE, border_style="black",
+              show_header=False, padding=(0, 2))
+    t.add_column("Команда", style="bold yellow", width=30, justify="right")
+    t.add_column("Действие", style="white")
+    t.add_row("[cyan]add[/]",                 "➕ Добавить запись")
+    t.add_row("[cyan]get <№>[/]",             "👁 Показать пароль")
+    t.add_row("[cyan]copy <№>[/]",            "📋 Скопировать пароль в буфер")
+    t.add_row("[cyan]gen [длина][/]",         "🎲 Сгенерировать пароль")
+    t.add_row("[cyan]edit <№>[/]",            "✏ Редактировать")
+    t.add_row("[cyan]del <№>[/]",             "🗑 Удалить")
+    t.add_row("[cyan]cat <категория>[/]",     "📁 Фильтр по категории")
+    t.add_row("[cyan]search <текст>[/]",      "🔍 Поиск")
+    t.add_row("[cyan]reset[/]",               "↩ Сбросить фильтр")
+    t.add_row("[cyan]backup[/]",              "💾 Резервная копия")
+    t.add_row("[cyan]passwd[/]",              "🔑 Сменить мастер-пароль")
+    t.add_row("[cyan]lock[/]",                "🔒 Заблокировать (выйти)")
+    console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
+                        border_style="black"))
+    console.print()
+
+# ═══ TAB-COMPLETER ═══
+class PMCompleter(Completer):
+    def __init__(self, get_entries, get_shown):
+        self.get_entries = get_entries
+        self.get_shown = get_shown
+
+    def get_completions(self, document, complete_event):
+        text = document.text_before_cursor
+        words = text.split()
+
+        if not words or (len(words) == 1 and not text.endswith(" ")):
+            partial = words[0] if words else ""
+            commands = ["add","get","copy","gen","edit","del","cat","search",
+                        "reset","backup","passwd","lock","q"]
+            for c in commands:
+                if c.startswith(partial.lower()):
+                    yield Completion(c, start_position=-len(partial))
+            return
+
+        cmd = words[0].lower()
+        partial = words[-1] if not text.endswith(" ") else ""
+
+        if cmd in ("get","copy","edit","del"):
+            shown = self.get_shown() or []
+            for i, (name, _) in enumerate(shown, 1):
+                si = str(i)
+                if si.startswith(partial):
+                    yield Completion(si, start_position=-len(partial),
+                                     display=f"{si}  {name[:50]}")
+            return
+
+        if cmd == "cat":
+            entries = self.get_entries()
+            cats = set()
+            for e in entries.values():
+                if e.get("category"):
+                    cats.add(e["category"])
+            for c in sorted(cats):
+                if c.lower().startswith(partial.lower()):
+                    yield Completion(c, start_position=-len(partial))
+            return
+
+# ═══ МАСТЕР-ПАРОЛЬ ═══
+def unlock_vault():
+    """Возвращает (vault_data, master_password) или (None, None)."""
+    if not os.path.exists(VAULT_FILE):
+        clear()
+        console.print()
+        console.print(Align.center(Panel.fit(
+            "[bold green]🔐  P A S S M A N A G E R  🔐[/]\n"
+            "[dim]Первый запуск — создание мастер-пароля[/]",
+            border_style="black")))
+        console.print()
+        console.print("[yellow]⚠  Мастер-пароль НЕЛЬЗЯ восстановить![/]")
+        console.print("[yellow]   Запомни его или запиши в надёжном месте.[/]")
+        console.print()
+        try:
+            p1 = getpass.getpass("🔑 Новый мастер-пароль: ")
+            if len(p1) < 6:
+                console.print("[red]❌ Минимум 6 символов[/]")
+                return None, None
+            p2 = getpass.getpass("🔑 Повтори: ")
+            if p1 != p2:
+                console.print("[red]❌ Пароли не совпадают[/]")
+                return None, None
+        except (KeyboardInterrupt, EOFError):
+            console.print("\n[yellow]Отменено[/]")
+            return None, None
+
+        vault = {"entries": {}, "created": datetime.now().strftime("%Y-%m-%d %H:%M")}
+        blob = encrypt_vault(vault, p1)
+        with open(VAULT_FILE, "wb") as f:
+            f.write(blob)
+        try:
+            os.chmod(VAULT_FILE, 0o600)
+        except Exception:
+            pass
+        console.print("[green]✔ Хранилище создано[/]")
+        time.sleep(1)
+        return vault, p1
+
+    clear()
+    console.print()
+    console.print(Align.center(Panel.fit(
+        "[bold green]🔐  P A S S M A N A G E R  🔐[/]\n"
+        "[dim]Введи мастер-пароль[/]",
+        border_style="black")))
+    console.print()
+    for attempt in range(3):
+        try:
+            pwd = getpass.getpass("🔑 Мастер-пароль: ")
+        except (KeyboardInterrupt, EOFError):
+            console.print("\n[yellow]Отменено[/]")
+            return None, None
+        try:
+            with open(VAULT_FILE, "rb") as f:
+                blob = f.read()
+            vault = decrypt_vault(blob, pwd)
+            console.print("[green]✔ Разблокировано[/]")
+            time.sleep(0.5)
+            return vault, pwd
+        except (InvalidTag, ValueError):
+            console.print(f"[red]❌ Неверный пароль ({attempt+1}/3)[/]")
+        except Exception as e:
+            console.print(f"[red]❌ {e}[/]")
+            return None, None
+    return None, None
+
+
+def save_vault(vault, password):
+    blob = encrypt_vault(vault, password)
+    tmp = VAULT_FILE + ".tmp"
+    with open(tmp, "wb") as f:
+        f.write(blob)
+    try:
+        os.chmod(tmp, 0o600)
+    except Exception:
+        pass
+    os.replace(tmp, VAULT_FILE)
+
+# ═══ MAIN ═══
+def main():
+    vault, master_pwd = unlock_vault()
+    if vault is None:
+        return
+    entries = vault.setdefault("entries", {})
+    current_filter_cat = None
+    current_search = None
+    last_shown = []
+
+    style = Style.from_dict({
+        "prompt": "bold ansibrightmagenta",
+        "completion-menu.completion": "bg:#000000 #00ff88",
+        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
+    })
+
+    while True:
+        clear()
+        console.print()
+        console.print(title_block("P A S S M A N A G E R", "Terminal Argonov  •  AES-256"))
+        console.print()
+        console.print(stats_panel(entries))
+        console.print()
+
+        filters = []
+        if current_filter_cat:
+            filters.append(f"категория: [magenta]{current_filter_cat}[/]")
+        if current_search:
+            filters.append(f"поиск: [yellow]{current_search}[/]")
+        if filters:
+            console.print("[bold]🔎 Фильтр:[/] " + "  •  ".join(filters))
+            console.print()
+
+        last_shown = entries_table(entries, current_filter_cat, current_search) or []
+        commands_panel()
+
+        session = PromptSession(
+            completer=PMCompleter(lambda: entries, lambda: last_shown),
+            style=style, complete_while_typing=True)
+        try:
+            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(Text("\n 🔒 Хранилище заблокировано. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+
+        if not cmd:
+            continue
+        parts = cmd.split(maxsplit=1)
+        c = parts[0].lower()
+        arg = parts[1] if len(parts) > 1 else ""
+
+        if c in ("lock","q","exit","quit","выход"):
+            console.print(Text(" 🔒 Заблокировано. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+        if c == "clear":
+            continue
+
+        if c == "add":
+            console.print()
+            try:
+                name = console.input("[bold cyan]📝 Название (Google, VK, банк)> [/]").strip()
+                if not name:
+                    raise KeyboardInterrupt
+                if name in entries:
+                    console.print(f"[yellow]⚠ Уже есть «{name}». Будет перезаписано.[/]")
+                url = console.input("[bold cyan]🌐 URL (Enter — нет)> [/]").strip()
+                login = console.input("[bold cyan]👤 Логин (Enter — нет)> [/]").strip()
+                cat = console.input("[bold cyan]📁 Категория (Enter — «личное»)> [/]").strip() or "личное"
+                notes = console.input("[bold cyan]📄 Заметки (Enter — нет)> [/]").strip()
+
+                console.print("[bold cyan]🔐 Пароль: (Enter — сгенерировать)[/]")
+                pwd = getpass.getpass("   Пароль: ").strip()
+                if not pwd:
+                    pwd = gen_password(20)
+                    console.print(f"[green]🎲 Сгенерирован:[/] [bold]{pwd}[/]")
+
+                entries[name] = {
+                    "login": login,
+                    "password": pwd,
+                    "url": url,
+                    "category": cat,
+                    "notes": notes,
+                    "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                }
+                save_vault(vault, master_pwd)
+                console.print(f"[green]✔ Добавлено: {name}[/]")
+            except (KeyboardInterrupt, EOFError):
+                console.print("[yellow]Отменено[/]")
+            time.sleep(1)
+            continue
+
+        if c in ("get","copy","edit","del"):
+            if not arg.isdigit():
+                console.print(f"[red]❌ {c} <№>[/]")
+                time.sleep(1)
+                continue
+            idx = int(arg)
+            if not (1 <= idx <= len(last_shown)):
+                console.print(f"[red]❌ № от 1 до {len(last_shown)}[/]")
+                time.sleep(1)
+                continue
+            name, e = last_shown[idx - 1]
+
+            if c == "get":
+                clear()
+                console.print()
+                console.print(title_block(f"🔑 {name}"))
+                console.print()
+                t = Table(box=box.ROUNDED, show_header=False, border_style=CYAN, padding=(0, 2))
+                t.add_column("", style=f"bold {YELLOW}", width=16)
+                t.add_column("", style=WHITE)
+                t.add_row("📝 Название", name)
+                t.add_row("🌐 URL", e.get("url") or "—")
+                t.add_row("👤 Логин", e.get("login") or "—")
+                t.add_row("🔐 Пароль", f"[bold {GREEN_BRIGHT}]{e.get('password','—')}[/]")
+                t.add_row("📁 Категория", e.get("category") or "—")
+                t.add_row("📄 Заметки", e.get("notes") or "—")
+                t.add_row("📅 Создано", e.get("created", "—"))
+                t.add_row("🕐 Обновлено", e.get("updated", "—"))
+                console.print(t)
+                console.print()
+                try:
+                    console.input("[dim]Enter — назад[/] ")
+                except (KeyboardInterrupt, EOFError):
+                    pass
+                continue
+
+            if c == "copy":
+                try:
+                    import pyperclip
+                    pyperclip.copy(e.get("password", ""))
+                    console.print(f"[green]✔ Пароль скопирован в буфер[/]")
+                except Exception:
+                    console.print(f"[yellow]⚠ pyperclip не сработал. Пароль: {e.get('password')}[/]")
+                time.sleep(1)
+                continue
+
+            if c == "del":
+                try:
+                    ans = console.input(f"[bold red]Удалить «{name}»? (y/N)> [/]").strip().lower()
+                    if ans == "y":
+                        del entries[name]
+                        save_vault(vault, master_pwd)
+                        console.print(f"[red]🗑 Удалено: {name}[/]")
+                    else:
+                        console.print("[yellow]Отменено[/]")
+                except (KeyboardInterrupt, EOFError):
+                    console.print("[yellow]Отменено[/]")
+                time.sleep(0.8)
+                continue
+
+            if c == "edit":
+                console.print()
+                console.print(f"[bold]Редактирование «{name}»[/] [dim](Enter — оставить)[/]")
+                try:
+                    url = console.input(f"[cyan]URL ({e.get('url','')})> [/]").strip()
+                    if url:
+                        e["url"] = url
+                    login = console.input(f"[cyan]Логин ({e.get('login','')})> [/]").strip()
+                    if login:
+                        e["login"] = login
+                    cat = console.input(f"[cyan]Категория ({e.get('category','')})> [/]").strip()
+                    if cat:
+                        e["category"] = cat
+                    notes = console.input(f"[cyan]Заметки ({e.get('notes','')})> [/]").strip()
+                    if notes:
+                        e["notes"] = notes
+                    console.print("[cyan]Новый пароль (Enter — оставить, !gen — сгенерировать)[/]")
+                    pwd = getpass.getpass("   > ").strip()
+                    if pwd == "!gen":
+                        pwd = gen_password(20)
+                        console.print(f"[green]🎲 Новый:[/] [bold]{pwd}[/]")
+                        e["password"] = pwd
+                    elif pwd:
+                        e["password"] = pwd
+                    e["updated"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+                    save_vault(vault, master_pwd)
+                    console.print(f"[green]✔ Обновлено[/]")
+                except (KeyboardInterrupt, EOFError):
+                    console.print("[yellow]Отменено[/]")
+                time.sleep(1)
+                continue
+
+        if c == "gen":
+            try:
+                length = int(arg) if arg else 20
+            except ValueError:
+                length = 20
+            if not 4 <= length <= 128:
+                length = 20
+            pwd = gen_password(length)
+            console.print()
+            console.print(Panel(f"[bold {GREEN_BRIGHT}]{pwd}[/]",
+                                title=f"🎲 {length} символов", border_style=GREEN_DIM))
+            try:
+                import pyperclip
+                pyperclip.copy(pwd)
+                console.print("[dim]✔ Скопировано в буфер[/]")
+            except Exception:
+                pass
+            console.print()
+            try:
+                console.input("[dim]Enter — назад[/] ")
+            except (KeyboardInterrupt, EOFError):
+                pass
+            continue
+
+        if c == "cat":
+            if not arg:
+                current_filter_cat = None
+                console.print("[yellow]↩ Фильтр категории сброшен[/]")
+            else:
+                current_filter_cat = arg
+                console.print(f"[green]📁 Фильтр: {arg}[/]")
+            time.sleep(0.5)
+            continue
+
+        if c == "search":
+            current_search = arg or None
+            console.print(f"[green]🔍 Поиск: {arg or 'сброшен'}[/]")
+            time.sleep(0.5)
+            continue
+
+        if c == "reset":
+            current_filter_cat = None
+            current_search = None
+            console.print("[green]↩ Фильтры сброшены[/]")
+            time.sleep(0.5)
+            continue
+
+        if c == "backup":
+            os.makedirs(BACKUP_DIR, exist_ok=True)
+            path = os.path.join(BACKUP_DIR,
+                f"pm_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.vault")
+            try:
+                with open(VAULT_FILE, "rb") as f:
+                    data = f.read()
+                with open(path, "wb") as f:
+                    f.write(data)
+                console.print(f"[green]💾 Резервная копия: {path}[/]")
+            except Exception as e:
+                console.print(f"[red]❌ {e}[/]")
+            time.sleep(1.2)
+            continue
+
+        if c == "passwd":
+            console.print()
+            console.print("[yellow]⚠ Смена мастер-пароля. Все данные останутся.[/]")
+            try:
+                old = getpass.getpass("🔑 Текущий мастер-пароль: ")
+                try:
+                    with open(VAULT_FILE, "rb") as f:
+                        decrypt_vault(f.read(), old)
+                except Exception:
+                    console.print("[red]❌ Неверный пароль[/]")
+                    time.sleep(1)
+                    continue
+                new1 = getpass.getpass("🔑 Новый мастер-пароль: ")
+                if len(new1) < 6:
+                    console.print("[red]❌ Минимум 6 символов[/]")
+                    time.sleep(1)
+                    continue
+                new2 = getpass.getpass("🔑 Повтори: ")
+                if new1 != new2:
+                    console.print("[red]❌ Не совпадают[/]")
+                    time.sleep(1)
+                    continue
+                save_vault(vault, new1)
+                master_pwd = new1
+                console.print("[green]✔ Мастер-пароль изменён[/]")
+            except (KeyboardInterrupt, EOFError):
+                console.print("[yellow]Отменено[/]")
+            time.sleep(1)
+            continue
+
+        console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
+        time.sleep(0.6)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print(Text("\n 🔒 Заблокировано.", style=f"dim {GREEN_DIM}"))
+```
+
+---
+
+## 📄 randomaudio.py
+
+*35699 байт · 941 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · Music Player
+#  Плеер с обложками, favorites и экспортом
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Музыкальный плеер с обложками (iTunes), favorites и экспортом.
+
+Использование:
+    music                # через argonov
+    argonov music        # то же
+
+Возможности:
+    - Каталог по исполнителям и альбомам
+    - Обложки через iTunes API (кэш в ~/music_cache/covers/)
+    - Фильтры по жанру/типу/поиску
+    - Favorites (♥)
+    - Экспорт в M3U и CSV
+    - Плеер: termux-media-player
+
+Зависимости:
+    - rich, prompt_toolkit
+    - termux-media-player (Termux:API)
+    - chafa (для показа обложек)
+    - mutagen (для чтения тегов)
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import random
+import hashlib
+import subprocess
+import urllib.request
+import urllib.parse
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.markup import escape
+from rich.box import SIMPLE_HEAD
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import FormattedText
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+CACHE_FILE = os.path.expanduser("~/music_cache/library.json")
+COVERS_DIR = os.path.expanduser("~/music_cache/covers")
+FAV_FILE = os.path.expanduser("~/.music_favorites.json")
+EXPORT_DIR = os.path.expanduser("~/music_cache/exports")
+PAGE_SIZE = 15
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+
+GENRE_COLORS = {
+    "rock":"bright_red","metal":"bright_red","punk":"bright_red",
+    "pop":"bright_yellow","dance":"bright_yellow",
+    "hip-hop":"dark_orange","rap":"dark_orange",
+    "electronic":"bright_blue","edm":"bright_blue","techno":"bright_blue",
+    "anime":"medium_purple1","soundtrack":"medium_purple1","ost":"medium_purple1",
+    "classical":"bright_green","jazz":"bright_green",
+    "instrumental":"cyan",
+}
+
+
+def genre_color(g):
+    if not g:
+        return GRAY
+    gl = g.lower()
+    for k, c in GENRE_COLORS.items():
+        if k in gl:
+            return c
+    return CYAN
+
+
+TYPE_LABELS = {
+    "opening":"🎌 Опенинг","ending":"🎬 Эндинг","ost":"🎼 OST","theme":"🎵 Тема",
+    "game":"🎮 Игра","anime":"🌸 Аниме","film":"🎞 Кино","classical":"🎻 Классика",
+    "remix":"🎛 Ремикс","live":"🎤 Live","acoustic":"🎸 Акустика","cover":"🎙 Кавер",
+    "instrumental":"🎹 Инстр.","song":"🎵 Песня",
+}
+
+# ═══ УТИЛИТЫ ═══
+def run(cmd, timeout=10):
+    try:
+        return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=timeout)
+    except Exception:
+        return None
+
+
+def has_cmd(cmd):
+    r = run(f"which {cmd}")
+    return r is not None and r.stdout.strip() != ""
+
+
+def human_size(b):
+    try:
+        b = int(b)
+    except Exception:
+        return "?"
+    for u in ["B","KB","MB","GB"]:
+        if b < 1024:
+            return f"{b:.1f} {u}"
+        b /= 1024
+    return f"{b:.1f} TB"
+
+
+def fmt_duration(s):
+    if not s:
+        return "--:--"
+    try:
+        s = int(s)
+    except Exception:
+        return "--:--"
+    m, sec = divmod(s, 60)
+    h, m = divmod(m, 60)
+    return f"{h}:{m:02d}:{sec:02d}" if h else f"{m}:{sec:02d}"
+
+
+def nkey(s):
+    return " ".join(str(s).lower().split()).strip()
+
+# ═══ ФИЛЬТР ГОЛОСОВЫХ ═══
+NON_MUSIC_KEYWORDS = [
+    "whatsapp audio", "voice", "recording", "запись", "record",
+    "голосовое", "voice message", "dictaphone", "диктофон",
+    "note_to_self", "audio_20", "rec_20", "запись_20", "голос_20",
+]
+
+
+def is_music_track(track):
+    path = (track.get("path") or "").lower()
+    title = (track.get("title") or "").lower()
+    artist = (track.get("artist") or "").lower()
+    album = (track.get("album") or "").lower()
+    dur = track.get("duration") or 0
+    genre = track.get("genre") or ""
+    source = track.get("source") or "local"
+
+    if 0 < dur < 30:
+        return False
+    hay = f"{path} {title}"
+    for kw in NON_MUSIC_KEYWORDS:
+        if kw in hay:
+            return False
+    if "whatsapp/media" in path.replace("\\", "/"):
+        return False
+    if (artist in ("неизвестен","unknown","") and
+        album in ("без альбома","") and not genre and source == "local"):
+        if any(x in path for x in ["/dcim/", "/recordings/", "/record/", "/voice/"]):
+            return False
+        if re.match(r"^\d+[\d_\-\.]+$", os.path.basename(path).rsplit(".",1)[0]):
+            return False
+    return True
+
+# ═══ ОБЛОЖКИ ═══
+def cover_cache_path(artist, album, title):
+    key = f"{artist}|{album}|{title}".lower()
+    h = hashlib.md5(key.encode()).hexdigest()[:16]
+    return os.path.join(COVERS_DIR, f"{h}.jpg")
+
+
+def fetch_cover_url(artist, album, title):
+    try:
+        q = f"{artist} {album}" if album and album != "Без альбома" else f"{artist} {title}"
+        params = urllib.parse.urlencode({"term": q, "entity":"album", "limit":1})
+        url = f"https://itunes.apple.com/search?{params}"
+        req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.loads(r.read().decode())
+            results = data.get("results", [])
+            if results:
+                art = results[0].get("artworkUrl100", "")
+                if art:
+                    return art.replace("100x100", "600x600")
+    except Exception:
+        pass
+    return None
+
+
+def ensure_cover(artist, album, title):
+    if not artist or artist == "Неизвестен":
+        return None
+    os.makedirs(COVERS_DIR, exist_ok=True)
+    cp = cover_cache_path(artist, album, title)
+    if os.path.exists(cp) and os.path.getsize(cp) > 1000:
+        return cp
+    url = fetch_cover_url(artist, album, title)
+    if not url:
+        return None
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = r.read()
+        with open(cp, "wb") as f:
+            f.write(data)
+        return cp
+    except Exception:
+        return None
+
+
+def show_cover(path, width=40, height=20):
+    if not path or not os.path.exists(path):
+        return
+    if not has_cmd("chafa"):
+        return
+    try:
+        subprocess.run(
+            ["chafa", f"--size={width}x{height}", "--symbols=block",
+             "--fg-only", "--dither=fs", "--colors=256", path])
+    except Exception:
+        pass
+
+# ═══ FAVORITES ═══
+def load_favs():
+    if not os.path.exists(FAV_FILE):
+        return set()
+    try:
+        with open(FAV_FILE, encoding="utf-8") as f:
+            d = json.load(f)
+            return set(d.get("paths", []))
+    except Exception:
+        return set()
+
+
+def save_favs(favs):
+    try:
+        with open(FAV_FILE, "w", encoding="utf-8") as f:
+            json.dump({"paths": sorted(favs)}, f, ensure_ascii=False, indent=1)
+    except Exception:
+        pass
+
+# ═══ ЭКСПОРТ ═══
+def export_m3u(tracks, name="playlist"):
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+    path = os.path.join(EXPORT_DIR, f"{name}.m3u")
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("#EXTM3U\n")
+            for t in tracks:
+                dur = int(t.get("duration") or -1)
+                f.write(f"#EXTINF:{dur},{t.get('artist','')} - {t.get('title','')}\n")
+                f.write(f"{t['path']}\n")
+        return path
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return None
+
+
+def export_csv(tracks, name="library"):
+    import csv
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+    path = os.path.join(EXPORT_DIR, f"{name}.csv")
+    try:
+        with open(path, "w", encoding="utf-8", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["Artist","Title","Album","Genre","Year","Duration","Type","Path"])
+            for t in tracks:
+                w.writerow([
+                    t.get("artist",""), t.get("title",""), t.get("album",""),
+                    t.get("genre",""), t.get("year",""), t.get("duration",""),
+                    t.get("type",""), t.get("path","")
+                ])
+        return path
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return None
+
+# ═══ БИБЛИОТЕКА ═══
+def load_cache():
+    if not os.path.exists(CACHE_FILE):
+        console.print("[red]❌ Кэш не найден. Запусти music-meta[/]")
+        return None
+    try:
+        with open(CACHE_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+        return None
+
+
+def build_library(cache):
+    artists = {}
+    skipped = 0
+    for path, m in cache["tracks"].items():
+        if not os.path.exists(path):
+            continue
+        a = (m.get("artist") or "Неизвестен").strip()
+        alb = (m.get("album") or "Без альбома").strip()
+        try:
+            size = os.path.getsize(path)
+        except Exception:
+            size = 0
+        track = {
+            "title": m.get("title") or os.path.basename(path),
+            "path": path,
+            "duration": m.get("duration") or 0,
+            "size": size,
+            "genre": (m.get("genre") or "").strip(),
+            "year": (m.get("year") or "").strip(),
+            "type": m.get("type") or "song",
+            "source": m.get("source") or "local",
+            "album": alb,
+            "artist": a,
+        }
+        if not is_music_track(track):
+            skipped += 1
+            continue
+        ak = nkey(a)
+        if ak not in artists:
+            artists[ak] = {"display": a, "albums": {}, "genres": set()}
+        alk = nkey(alb)
+        if alk not in artists[ak]["albums"]:
+            artists[ak]["albums"][alk] = {"display": alb, "tracks": []}
+        artists[ak]["albums"][alk]["tracks"].append(track)
+        if track["genre"]:
+            artists[ak]["genres"].add(track["genre"])
+    for a in artists.values():
+        for alb in a["albums"].values():
+            alb["tracks"].sort(key=lambda x: x["title"].lower())
+    return artists, skipped
+
+
+def all_tracks(artists):
+    o = []
+    for a in artists.values():
+        for alb in a["albums"].values():
+            o.extend(alb["tracks"])
+    return o
+
+
+def all_genres(artists):
+    g = {}
+    for a in artists.values():
+        for alb in a["albums"].values():
+            for t in alb["tracks"]:
+                if t.get("genre"):
+                    g[t["genre"]] = g.get(t["genre"], 0) + 1
+    return g
+
+
+def all_types(artists):
+    tp = {}
+    for a in artists.values():
+        for alb in a["albums"].values():
+            for t in alb["tracks"]:
+                k = t.get("type") or "song"
+                tp[k] = tp.get(k, 0) + 1
+    return tp
+
+# ═══ ПЛЕЕР ═══
+PS = {"playing":False, "path":None, "title":None, "artist":None, "album":None,
+      "genre":None, "year":None, "type":None, "duration":0, "started_at":0}
+
+
+def play_track(path, track=None):
+    run("termux-media-player stop")
+    time.sleep(0.2)
+    r = run(f'termux-media-player play "{path}"', timeout=10)
+    if r is not None and r.returncode == 0:
+        PS.update({"playing":True, "path":path, "started_at":time.time()})
+        if track:
+            for k in ("title","artist","album","genre","year","type"):
+                PS[k] = track.get(k)
+            PS["duration"] = track.get("duration") or 0
+        return True
+    return False
+
+
+def stop_playback():
+    run("termux-media-player stop")
+    PS.update({"playing":False, "path":None, "started_at":0})
+
+
+def cur_pos():
+    return max(0, int(time.time() - PS["started_at"])) if PS["playing"] else 0
+
+
+def now_playing_panel():
+    if not PS["playing"]:
+        return None
+    pos = cur_pos()
+    dur = PS["duration"] or 0
+    if dur > 0:
+        bw = 40
+        filled = min(int((pos/dur)*bw), bw)
+        bar = "▓"*filled + "░"*(bw-filled)
+    else:
+        bar = "▓"*8 + "░"*32
+    gc = genre_color(PS["genre"])
+    lines = [
+        Text(f"  ▶  {PS['artist']} — {PS['title']}", style=f"bold {WHITE}"),
+        Text(f"     💿 {PS['album'] or '—'}", style=f"dim {GRAY}"),
+    ]
+    if PS["genre"]:
+        lines.append(Text(f"     🎼 {PS['genre']}", style=gc))
+    lines.append(Text(f"     {bar}  {fmt_duration(pos)} / {fmt_duration(dur) if dur else '--:--'}",
+                       style=GREEN_BRIGHT))
+    return Panel(Group(*lines), title=f"[bold {YELLOW}]┃ PLAYING ┃[/]",
+                 border_style=GREEN_DIM, padding=(0,1))
+
+
+def play_and_wait(track, pool=None):
+    if not play_track(track["path"], track):
+        console.print(f"[red]❌ Не удалось запустить[/]")
+        return
+
+    console.clear()
+    console.print()
+    cover_path = ensure_cover(track.get("artist",""), track.get("album",""), track.get("title",""))
+    if cover_path and has_cmd("chafa"):
+        console.print(f"[dim]🎨 Обложка: {os.path.basename(cover_path)}[/]")
+        console.print()
+        show_cover(cover_path, width=40, height=18)
+        console.print()
+    console.print(now_playing_panel())
+    console.print()
+    console.print(f"  [dim]s = стоп  ·  n = след.  ·  f = ♥  ·  Enter = назад[/]\n")
+
+    try:
+        import termios, tty, select
+        has_t = True
+    except ImportError:
+        has_t = False
+
+    def read_key():
+        if not has_t:
+            return None
+        fd = sys.stdin.fileno()
+        old = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            rl, _, _ = select.select([sys.stdin], [], [], 0.3)
+            if rl:
+                return sys.stdin.read(1)
+        except Exception:
+            return None
+        finally:
+            try:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old)
+            except Exception:
+                pass
+        return None
+
+    max_dur = PS["duration"] if PS["duration"] > 0 else 300
+    start = time.time()
+    favs = load_favs()
+
+    try:
+        while PS["playing"]:
+            elapsed = time.time() - start
+            if PS["duration"] > 0 and cur_pos() >= PS["duration"]:
+                stop_playback()
+                console.print(f"  [dim]✔ Завершён[/]")
+                return "done"
+            if PS["duration"] == 0 and elapsed > max_dur:
+                stop_playback()
+                console.print(f"  [dim]✔ Таймаут[/]")
+                return "done"
+
+            k = read_key()
+            if k:
+                kl = k.lower()
+                if kl in ("s","q"):
+                    stop_playback()
+                    console.print(f"  [yellow]⏹ Стоп[/]")
+                    return "stop"
+                elif kl == "n" and pool:
+                    tr = random.choice(pool)
+                    stop_playback()
+                    time.sleep(0.3)
+                    return play_and_wait(tr, pool)
+                elif kl == "f":
+                    p = track["path"]
+                    if p in favs:
+                        favs.discard(p)
+                        console.print(f"  [dim]💔 Убран из favorites[/]")
+                    else:
+                        favs.add(p)
+                        console.print(f"  [magenta]♥ Добавлен в favorites[/]")
+                    save_favs(favs)
+                    time.sleep(0.5)
+                elif k in ("\r","\n","\x1b"):
+                    return "back"
+            time.sleep(0.2)
+    except KeyboardInterrupt:
+        stop_playback()
+        console.print(f"\n  [yellow]⏹[/]")
+        return "stop"
+    return "done"
+
+# ═══ ТАБЛИЦЫ ═══
+def title_block(main, sub=""):
+    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    lines.append(Text("─"*60, style=GREEN_DIM))
+    return Group(*lines)
+
+
+def stats_panel(artists, favs):
+    tt = sum(len(alb["tracks"]) for a in artists.values() for alb in a["albums"].values())
+    ts = sum(t["size"] for a in artists.values() for alb in a["albums"].values() for t in alb["tracks"])
+    g = all_genres(artists)
+    t = Table(box=None, show_header=False, padding=(0,3))
+    t.add_column("", style=f"bold {YELLOW}"); t.add_column("", style=f"bold {CYAN}")
+    t.add_column("", style=f"bold {YELLOW}"); t.add_column("", style=f"bold {CYAN}")
+    t.add_row("🎤 Исполнителей", str(len(artists)), "🎵 Треков", str(tt))
+    t.add_row("💾 Вес", human_size(ts), "🎼 Жанров", str(len(g)))
+    t.add_row("♥ Favorites", str(len(favs)), "", "")
+    return t
+
+
+def commands_panel(extra=None):
+    rows = [("<номер>","🎤 Выбрать")]
+    if extra:
+        rows.extend(extra)
+    rows += [("random","🎲 Случайный"),("favorites","♥ Favorites"),
+             ("export","💾 Экспорт"),("stop","⏹ Стоп"),("q","🚪 Выход")]
+    c = Table(box=None, show_header=False, padding=(0,2))
+    c.add_column("", style=f"bold {YELLOW}", width=16, justify="right")
+    c.add_column("", style=f"{CYAN}")
+    half = (len(rows)+1)//2
+    for i in range(half):
+        L = rows[i]
+        R = rows[i+half] if i+half < len(rows) else None
+        c.add_row(escape(f"[{L[0]}]"), L[1], escape(f"[{R[0]}]") if R else "", R[1] if R else "")
+    return Panel(c, title=f"[bold {CYAN}]⌨  КОМАНДЫ[/]", border_style=CYAN, padding=(0,1))
+
+
+def artists_table(items, page, favs):
+    tp = max(1, (len(items)+PAGE_SIZE-1)//PAGE_SIZE)
+    page = max(1, min(page, tp))
+    s = (page-1)*PAGE_SIZE
+    e = s+PAGE_SIZE
+    t = Table(box=SIMPLE_HEAD, border_style=GREEN_DIM,
+              header_style=f"bold {GREEN_BRIGHT}", padding=(0,2), expand=True)
+    t.add_column("#", justify="right", width=4, style=f"bold {YELLOW}")
+    t.add_column("ИСПОЛНИТЕЛЬ", style=WHITE)
+    t.add_column("ТРЕКОВ", justify="right", width=8, style=CYAN)
+    t.add_column("ЖАНР", width=20)
+    for i, (ak, a) in enumerate(items[s:e], s+1):
+        cnt = sum(len(alb["tracks"]) for alb in a["albums"].values())
+        gl = list(a["genres"])
+        mg = gl[0] if gl else "—"
+        t.add_row(str(i), a["display"], str(cnt), Text(mg[:18], style=genre_color(mg)))
+    return t, page, tp
+
+
+def tracks_table(tracks, start_idx=1, favs=None):
+    favs = favs or set()
+    t = Table(box=SIMPLE_HEAD, border_style=MAGENTA,
+              header_style=f"bold {MAGENTA}", padding=(0,1),
+              expand=True, show_header=False)
+    t.add_column("♥", width=3, justify="center")
+    t.add_column("#", justify="right", width=4, style=f"bold {YELLOW}")
+    t.add_column("НАЗВАНИЕ", style=WHITE)
+    t.add_column("ЖАНР", width=16)
+    t.add_column("ТИП", width=14)
+    t.add_column("ВРЕМЯ", justify="right", width=8, style=GRAY)
+    for i, tr in enumerate(tracks, start_idx):
+        heart = "[magenta]♥[/]" if tr["path"] in favs else " "
+        t.add_row(heart, str(i), tr["title"][:55],
+                  Text((tr.get("genre") or "—")[:14], style=genre_color(tr.get("genre",""))),
+                  Text(TYPE_LABELS.get(tr.get("type"),"—"), style=CYAN),
+                  fmt_duration(tr["duration"]))
+    return t
+
+
+def filter_tracks(artists, st):
+    o = []
+    for t in all_tracks(artists):
+        if st.get("fg") and t.get("genre","").lower() != st["fg"].lower():
+            continue
+        if st.get("ft") and t.get("type") != st["ft"]:
+            continue
+        if st.get("s"):
+            q = st["s"].lower()
+            if q not in f"{t.get('title','')} {t.get('genre','')} {t.get('artist','')}".lower():
+                continue
+        o.append(t)
+    return o
+
+# ═══ TAB-COMPLETER ═══
+COMMANDS = ["bygenre","bytype","random","favorites","export","stop","q","back","n","p","f","help"]
+
+
+class MusicComp(Completer):
+    def get_completions(self, doc, ev):
+        t = doc.text_before_cursor
+        if " " in t:
+            return
+        for c in sorted(COMMANDS):
+            if c.startswith(t.lower()):
+                yield Completion(c, start_position=-len(t))
+        if t.isdigit() or t == "":
+            for i in range(1, 21):
+                si = str(i)
+                if si.startswith(t):
+                    yield Completion(si, start_position=-len(t))
+
+# ═══ MAIN ═══
+def main():
+    if not has_cmd("termux-media-player"):
+        console.clear()
+        console.print("[red]❌ termux-media-player не найден[/]")
+        return
+    cache = load_cache()
+    if not cache:
+        return
+    console.clear()
+    with console.status(f"[bold {GREEN_BRIGHT}]🎵 Загрузка...[/]", spinner="dots"):
+        artists, skipped = build_library(cache)
+    if not artists:
+        console.print("[red]❌ Нет музыки (всё отфильтровано)[/]")
+        return
+    favs = load_favs()
+    console.print(f"[green]✔ Загружено[/]  ·  [dim]пропущено: {skipped}  ·  favorites: {len(favs)}[/]")
+    time.sleep(0.8)
+
+    state = {"mode":"main", "artist_key":None, "page":1, "search":"", "fg":None, "ft":None,
+             "current_tracks":[], "current_filtered":[], "filter_page":1}
+
+    session = PromptSession(
+        completer=MusicComp(), complete_while_typing=True,
+        style=Style.from_dict({
+            "prompt": "bold ansibrightmagenta",
+            "completion-menu.completion": "bg:#000000 #00ff88",
+            "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
+        }))
+
+    while True:
+        console.clear()
+        if state["mode"] == "main":
+            title = "М У З Ы К А Л Ь Н А Я   Б И Б Л И О Т Е К А"
+            sub = "Terminal Argonov  •  Music Edition  •  с обложками"
+        elif state["mode"] == "favorites":
+            title = "♥  F A V O R I T E S"
+            sub = f"{len(favs)} треков"
+        else:
+            d = artists[state["artist_key"]]
+            title = f"🎤  {d['display']}"
+            sub = ", ".join(sorted(d["genres"]))[:60] or ""
+
+        console.print()
+        console.print(title_block(title, sub))
+        console.print()
+        if PS["playing"]:
+            np = now_playing_panel()
+            if np:
+                console.print(np)
+                console.print()
+
+        # FAVORITES
+        if state["mode"] == "favorites":
+            fav_tracks = [t for t in all_tracks(artists) if t["path"] in favs]
+            if not fav_tracks:
+                console.print(Text("💔 Favorites пусто. Нажми 'f' при воспроизведении.", style=GRAY))
+            else:
+                console.print(tracks_table(fav_tracks, favs=favs))
+                state["current_filtered"] = fav_tracks
+            console.print()
+            console.print(commands_panel([("back","◀ К библиотеке"),("export","💾 Экспорт")]))
+        # MAIN
+        elif state["mode"] == "main":
+            console.print(stats_panel(artists, favs))
+            console.print()
+            hf = state["fg"] or state["ft"] or state["search"]
+            if hf:
+                fl = Text()
+                fl.append("🔎 ", style=YELLOW)
+                if state["fg"]:
+                    fl.append(f"жанр: {state['fg']}  ", style=genre_color(state['fg']))
+                if state["ft"]:
+                    fl.append(f"тип: {TYPE_LABELS.get(state['ft'],state['ft'])}  ", style=CYAN)
+                if state["search"]:
+                    fl.append(f"поиск: {state['search']}", style=YELLOW)
+                console.print(fl)
+                console.print()
+                tracks = filter_tracks(artists, {"fg":state["fg"], "ft":state["ft"], "s":state["search"]})
+                if not tracks:
+                    console.print(Text("❌ Ничего не найдено", style=RED))
+                    console.print()
+                else:
+                    tp = max(1, (len(tracks)+PAGE_SIZE-1)//PAGE_SIZE)
+                    state["filter_page"] = max(1, min(state["filter_page"], tp))
+                    s = (state["filter_page"]-1)*PAGE_SIZE
+                    e = s+PAGE_SIZE
+                    state["current_filtered"] = tracks
+                    console.print(tracks_table(tracks[s:e], start_idx=s+1, favs=favs))
+                    console.print()
+                    console.print(Text(f"   Стр. {state['filter_page']}/{tp}  ·  всего {len(tracks)}",
+                                       style=f"dim {GRAY}"))
+                    console.print()
+                console.print(commands_panel([("n/p","◀ ▶"),("f","Сброс"),
+                                               ("/слово","Поиск"),("bygenre","Жанр"),("bytype","Тип")]))
+            else:
+                items = sorted(artists.items(), key=lambda x: x[1]["display"].lower())
+                tbl, p, tp = artists_table(items, state["page"], favs)
+                state["page"] = p
+                console.print(tbl)
+                console.print()
+                console.print(Text(f"   Стр. {p}/{tp}  ·  всего {len(items)}", style=f"dim {GRAY}"))
+                console.print()
+                console.print(commands_panel([("n/p","◀ ▶"),("/слово","Поиск"),
+                                               ("bygenre","Жанр"),("bytype","Тип")]))
+        # ARTIST
+        else:
+            d = artists[state["artist_key"]]
+            state["current_tracks"] = []
+            flat = []
+            idx = 1
+            albums = sorted(d["albums"].items(),
+                            key=lambda x: (x[1]["display"]=="Без альбома", x[1]["display"].lower()))
+            for alk, alb in albums:
+                console.print(Text(f"💿 {alb['display']}  ({len(alb['tracks'])})", style=f"bold {MAGENTA}"))
+                console.print(tracks_table(alb["tracks"], start_idx=idx, favs=favs))
+                console.print()
+                flat.extend(alb["tracks"])
+                idx += len(alb["tracks"])
+            state["current_tracks"] = flat
+            console.print(commands_panel([("back","◀ К списку")]))
+
+        try:
+            cmd = session.prompt(FormattedText([("bold ansibrightmagenta","╰─❯ ")])).strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            stop_playback()
+            break
+
+        if not cmd:
+            continue
+        cl = cmd.lower()
+
+        if cl in ("q","exit","quit","выход"):
+            stop_playback()
+            break
+        if cl == "stop":
+            stop_playback()
+            console.print(Text("  ⏹ Стоп", style=YELLOW))
+            time.sleep(0.4)
+            continue
+
+        if cl == "random":
+            pool = (state["current_filtered"] if state.get("current_filtered")
+                    else state["current_tracks"] if state["mode"] == "artist"
+                    else [t for t in all_tracks(artists) if t["path"] in favs] if state["mode"] == "favorites"
+                    else all_tracks(artists))
+            if pool:
+                tr = random.choice(pool)
+                play_and_wait(tr, pool)
+            continue
+
+        if cl == "favorites":
+            state["mode"] = "favorites"
+            state["current_filtered"] = []
+            continue
+
+        if cl == "back":
+            if state["mode"] in ("favorites","artist"):
+                state["mode"] = "main"
+                state["artist_key"] = None
+                state["page"] = 1
+            continue
+
+        if cl == "export":
+            pool = (state["current_filtered"] if state.get("current_filtered")
+                    else state["current_tracks"] if state["mode"] == "artist"
+                    else [t for t in all_tracks(artists) if t["path"] in favs] if state["mode"] == "favorites"
+                    else all_tracks(artists))
+            console.print()
+            console.print("[yellow]💾 Экспорт:[/]")
+            console.print(f"  [cyan]1[/])  M3U playlist")
+            console.print(f"  [cyan]2[/])  CSV (Excel)")
+            console.print(f"  [cyan]0[/])  Отмена")
+            try:
+                ch = console.input("[bold magenta]Выбери> [/]").strip()
+            except (EOFError, KeyboardInterrupt):
+                continue
+            name = f"export_{int(time.time())}"
+            if ch == "1":
+                p = export_m3u(pool, name)
+                if p:
+                    console.print(f"[green]✔ {p}[/] ({len(pool)} треков)")
+            elif ch == "2":
+                p = export_csv(pool, name)
+                if p:
+                    console.print(f"[green]✔ {p}[/] ({len(pool)} треков)")
+            console.print()
+            console.input("[dim]Enter — назад[/] ")
+            continue
+
+        if cl == "bygenre":
+            g = all_genres(artists)
+            if not g:
+                continue
+            console.clear()
+            console.print()
+            console.print(title_block("ВЫБОР ЖАНРА"))
+            console.print()
+            t = Table(box=SIMPLE_HEAD, border_style=MAGENTA, header_style=f"bold {MAGENTA}", padding=(0,2))
+            t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
+            t.add_column("ЖАНР", style=WHITE)
+            t.add_column("ТРЕКОВ", style=CYAN, justify="right", width=10)
+            gs = sorted(g.items(), key=lambda x: -x[1])
+            for i, (gg, c) in enumerate(gs, 1):
+                t.add_row(str(i), Text(gg, style=genre_color(gg)), str(c))
+            console.print(t)
+            console.print(Text("\n  0 — сброс  •  Enter — назад", style=f"dim {GRAY}"))
+            console.print()
+            try:
+                ch = console.input(Text("╰─[жанр]❯ ", style=f"bold {GREEN_BRIGHT}")).strip()
+                if ch == "0":
+                    state["fg"] = None
+                elif ch.isdigit() and 1 <= int(ch) <= len(gs):
+                    state["fg"] = gs[int(ch)-1][0]
+                state["filter_page"] = 1
+                state["current_filtered"] = []
+            except (EOFError, KeyboardInterrupt):
+                pass
+            continue
+
+        if cl == "bytype":
+            tp = all_types(artists)
+            if not tp:
+                continue
+            console.clear()
+            console.print()
+            console.print(title_block("ВЫБОР ТИПА"))
+            console.print()
+            t = Table(box=SIMPLE_HEAD, border_style=CYAN, header_style=f"bold {CYAN}", padding=(0,2))
+            t.add_column("#", style=f"bold {YELLOW}", width=4, justify="right")
+            t.add_column("ТИП", style=WHITE)
+            t.add_column("ТРЕКОВ", style=CYAN, justify="right", width=10)
+            ts = sorted(tp.items(), key=lambda x: -x[1])
+            for i, (tt, c) in enumerate(ts, 1):
+                t.add_row(str(i), TYPE_LABELS.get(tt, tt), str(c))
+            console.print(t)
+            console.print(Text("\n  0 — сброс  •  Enter — назад", style=f"dim {GRAY}"))
+            console.print()
+            try:
+                ch = console.input(Text("╰─[тип]❯ ", style=f"bold {GREEN_BRIGHT}")).strip()
+                if ch == "0":
+                    state["ft"] = None
+                elif ch.isdigit() and 1 <= int(ch) <= len(ts):
+                    state["ft"] = ts[int(ch)-1][0]
+                state["filter_page"] = 1
+                state["current_filtered"] = []
+            except (EOFError, KeyboardInterrupt):
+                pass
+            continue
+
+        if cl == "f":
+            state["fg"] = None
+            state["ft"] = None
+            state["search"] = ""
+            state["filter_page"] = 1
+            state["current_filtered"] = []
+            continue
+        if cmd.startswith("/"):
+            state["search"] = cmd[1:].strip()
+            state["filter_page"] = 1
+            state["current_filtered"] = []
+            continue
+
+        if state["mode"] == "main":
+            hf = state["fg"] or state["ft"] or state["search"]
+            if hf:
+                if cl == "n":
+                    state["filter_page"] += 1
+                    continue
+                if cl == "p" and state["filter_page"] > 1:
+                    state["filter_page"] -= 1
+                    continue
+            else:
+                if cl == "n":
+                    state["page"] += 1
+                    continue
+                if cl == "p" and state["page"] > 1:
+                    state["page"] -= 1
+                    continue
+
+        if cl.isdigit():
+            num = int(cl)
+            if state["mode"] == "main":
+                hf = state["fg"] or state["ft"] or state["search"]
+                if hf:
+                    tracks = state["current_filtered"] or filter_tracks(
+                        artists, {"fg":state["fg"], "ft":state["ft"], "s":state["search"]})
+                    if 1 <= num <= len(tracks):
+                        tr = tracks[num-1]
+                        play_and_wait(tr, tracks)
+                    else:
+                        console.print(f"[red]❌ 1..{len(tracks)}[/]")
+                        time.sleep(0.8)
+                else:
+                    items = sorted(artists.items(), key=lambda x: x[1]["display"].lower())
+                    s = (state["page"]-1)*PAGE_SIZE
+                    e = s+PAGE_SIZE
+                    if s+1 <= num <= min(e, len(items)):
+                        state["artist_key"] = items[num-1][0]
+                        state["mode"] = "artist"
+                    else:
+                        console.print("[red]❌ вне страницы[/]")
+                        time.sleep(0.8)
+            elif state["mode"] == "favorites":
+                fav_tracks = [t for t in all_tracks(artists) if t["path"] in favs]
+                if 1 <= num <= len(fav_tracks):
+                    play_and_wait(fav_tracks[num-1], fav_tracks)
+                else:
+                    console.print(f"[red]❌ 1..{len(fav_tracks)}[/]")
+                    time.sleep(0.8)
+            else:
+                if 1 <= num <= len(state["current_tracks"]):
+                    play_and_wait(state["current_tracks"][num-1], state["current_tracks"])
+                else:
+                    console.print(f"[red]❌ 1..{len(state['current_tracks'])}[/]")
+                    time.sleep(0.8)
+            continue
+
+        console.print(Text(f"  ❌ {cmd}", style=RED))
+        time.sleep(0.6)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        stop_playback()
+        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
 ```
 
 ---
@@ -8031,6 +9806,552 @@ if __name__ == "__main__":
 
 ---
 
+## 📄 todo.py
+
+*21171 байт · 538 строк*
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · TODO
+#  Трекер задач с приоритетами, дедлайнами и уведомлениями
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Трекер задач с Tab-автодополнением и уведомлениями Termux.
+
+Использование:
+    todo                 # через argonov
+    argonov todo         # то же
+
+Примеры:
+    add Купить хлеб !high @tomorrow #покупки
+    add Позвонить маме @+2d
+    done 3
+    filter today
+    notify-all
+
+Синтаксис add:
+    !high / !medium / !low    — приоритет
+    @tomorrow / @today        — дедлайн
+    @+3d / @+2h / @+1w        — относительный
+    @15.09 / @15.09.2026      — дата
+    @15.09 18:00              — дата + время
+    #тег                      — тег
+
+Зависимости:
+    - rich, prompt_toolkit
+    - termux-notification (Termux:API)
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import subprocess
+from datetime import datetime, timedelta
+
+from rich.console import Console, Group
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich.align import Align
+from rich import box
+
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.styles import Style
+from prompt_toolkit.formatted_text import HTML
+
+# ═══ КОНСТАНТЫ ═══
+console = Console()
+TODO_FILE = os.path.expanduser("~/.todo.json")
+
+GREEN_BRIGHT = "bright_green"; GREEN_DIM = "green"
+CYAN = "bright_cyan"; YELLOW = "bright_yellow"; MAGENTA = "bright_magenta"
+RED = "bright_red"; WHITE = "bright_white"; GRAY = "grey50"
+ORANGE = "dark_orange"
+
+PRIORITY_ICON = {"high": "🔴", "medium": "🟡", "low": "🟢"}
+PRIORITY_LABEL = {"high": "Высокий", "medium": "Средний", "low": "Низкий"}
+PRIORITY_COLOR = {"high": RED, "medium": YELLOW, "low": GREEN_BRIGHT}
+
+# ═══ ХРАНИЛИЩЕ ═══
+def load_todo():
+    if not os.path.exists(TODO_FILE):
+        return {"next_id": 1, "tasks": []}
+    try:
+        with open(TODO_FILE, encoding="utf-8") as f:
+            d = json.load(f)
+            d.setdefault("next_id", 1)
+            d.setdefault("tasks", [])
+            return d
+    except Exception:
+        return {"next_id": 1, "tasks": []}
+
+
+def save_todo(data):
+    try:
+        with open(TODO_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=1)
+    except Exception as e:
+        console.print(f"[red]❌ {e}[/]")
+
+# ═══ ПАРСИНГ ═══
+def parse_date(s):
+    """today, tomorrow, +3d, +2h, +1w, 15.09, 15.09.2026, 15.09 18:00"""
+    s = s.lower().strip()
+    now = datetime.now()
+    if s in ("today", "сегодня"):
+        return now.strftime("%Y-%m-%d 23:59")
+    if s in ("tomorrow", "завтра"):
+        return (now + timedelta(days=1)).strftime("%Y-%m-%d 23:59")
+    m = re.match(r"\+(\d+)([dhmw])", s)
+    if m:
+        n = int(m.group(1))
+        u = m.group(2)
+        delta = {"d": timedelta(days=n), "h": timedelta(hours=n),
+                 "m": timedelta(minutes=n), "w": timedelta(weeks=n)}[u]
+        return (now + delta).strftime("%Y-%m-%d %H:%M")
+    m = re.match(r"(\d{1,2})\.(\d{1,2})(?:\.(\d{4}))?(?:\s+(\d{1,2}):(\d{2}))?$", s)
+    if m:
+        d = int(m.group(1))
+        mo = int(m.group(2))
+        y = int(m.group(3)) if m.group(3) else now.year
+        h = int(m.group(4)) if m.group(4) else 23
+        mi = int(m.group(5)) if m.group(5) else 59
+        try:
+            return datetime(y, mo, d, h, mi).strftime("%Y-%m-%d %H:%M")
+        except Exception:
+            return None
+    return None
+
+
+def parse_add(text):
+    """add Купить молоко !high @tomorrow #покупки"""
+    title_parts = []
+    priority = "medium"
+    deadline = None
+    tags = []
+    for w in text.split():
+        if w.startswith("!"):
+            p = w[1:].lower()
+            if p in ("h", "high", "1", "в", "высокий"):
+                priority = "high"
+            elif p in ("m", "mid", "medium", "2", "с", "средний"):
+                priority = "medium"
+            elif p in ("l", "low", "3", "н", "низкий"):
+                priority = "low"
+        elif w.startswith("@") and not deadline:
+            deadline = parse_date(w[1:])
+        elif w.startswith("#") and len(w) > 1:
+            tags.append(w[1:])
+        else:
+            title_parts.append(w)
+    return {"title": " ".join(title_parts).strip(),
+            "priority": priority, "deadline": deadline, "tags": tags}
+
+# ═══ ДАТЫ / ПРИОРИТЕТЫ ═══
+def is_overdue(task):
+    if task.get("done") or not task.get("deadline"):
+        return False
+    try:
+        return datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M") < datetime.now()
+    except Exception:
+        return False
+
+
+def is_today(task):
+    if task.get("done") or not task.get("deadline"):
+        return False
+    try:
+        d = datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M")
+        return d.date() == datetime.now().date()
+    except Exception:
+        return False
+
+
+def is_soon(task, hours=24):
+    if task.get("done") or not task.get("deadline"):
+        return False
+    try:
+        d = datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M")
+        delta = d - datetime.now()
+        return timedelta(0) <= delta <= timedelta(hours=hours)
+    except Exception:
+        return False
+
+
+def fmt_deadline(s):
+    if not s:
+        return "—"
+    try:
+        d = datetime.strptime(s, "%Y-%m-%d %H:%M")
+        now = datetime.now()
+        delta = d - now
+        date_s = d.strftime("%d.%m %H:%M")
+        if d.date() == now.date():
+            date_s = f"сегодня {d.strftime('%H:%M')}"
+        elif d.date() == (now + timedelta(days=1)).date():
+            date_s = f"завтра {d.strftime('%H:%M')}"
+        if delta.total_seconds() < 0:
+            return f"❗ {date_s}"
+        if delta.total_seconds() < 3600:
+            return f"⏰ {date_s} ({int(delta.total_seconds()//60)} мин)"
+        if delta < timedelta(days=1):
+            return f"⏰ {date_s}"
+        return date_s
+    except Exception:
+        return s
+
+# ═══ УВЕДОМЛЕНИЯ ═══
+def notify(task):
+    title = f"📌 TODO #{task['id']}: {task['title']}"
+    content = f"Приоритет: {PRIORITY_LABEL.get(task['priority'],'—')}"
+    if task.get("deadline"):
+        content += f"\nДедлайн: {fmt_deadline(task['deadline'])}"
+    if task.get("tags"):
+        content += f"\nТеги: {', '.join(task['tags'])}"
+    try:
+        subprocess.run(["termux-notification",
+            "--title", title, "--content", content,
+            "--id", str(task["id"])], check=False)
+        return True
+    except Exception:
+        return False
+
+# ═══ РИСОВКА ═══
+def clear():
+    os.system("clear")
+
+
+def title_block(main, sub=""):
+    lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    lines.append(Text("═"*60, style=GREEN_DIM))
+    return Group(*lines)
+
+
+def stats_panel(tasks):
+    total = len(tasks)
+    active = sum(1 for t in tasks if not t.get("done"))
+    done = sum(1 for t in tasks if t.get("done"))
+    overdue = sum(1 for t in tasks if is_overdue(t))
+    today = sum(1 for t in tasks if is_today(t))
+    t = Table(box=None, show_header=False, padding=(0, 3))
+    for _ in range(4):
+        t.add_column("")
+    t.add_row(f"📋 Всего [bold]{total}[/]", f"⏳ Активных [bold]{active}[/]",
+              f"✅ Выполнено [bold]{done}[/]", f"❗ Просрочено [bold]{overdue}[/]")
+    t.add_row(f"📅 Сегодня [bold]{today}[/]", "", "", "")
+    return t
+
+
+def tasks_table(tasks, filter_mode="active"):
+    if filter_mode == "active":
+        shown = [t for t in tasks if not t.get("done")]
+    elif filter_mode == "done":
+        shown = [t for t in tasks if t.get("done")]
+    elif filter_mode == "today":
+        shown = [t for t in tasks if is_today(t)]
+    elif filter_mode == "overdue":
+        shown = [t for t in tasks if is_overdue(t)]
+    else:
+        shown = tasks
+
+    def sort_key(t):
+        pri = {"high": 0, "medium": 1, "low": 2}.get(t.get("priority"), 1)
+        d = t.get("deadline") or "9999-99-99 99:99"
+        return (t.get("done", False), d, pri)
+
+    shown = sorted(shown, key=sort_key)
+
+    if not shown:
+        console.print(Text(f"  📭 Задач нет (фильтр: {filter_mode})", style=f"dim {GRAY}"))
+        console.print()
+        return
+
+    t = Table(box=box.SIMPLE_HEAD, border_style=CYAN,
+              header_style=f"bold {CYAN}", padding=(0, 1), expand=True)
+    t.add_column("ID", style=f"bold {YELLOW}", width=4, justify="right")
+    t.add_column("✓",  width=3, justify="center")
+    t.add_column("!",  width=3, justify="center")
+    t.add_column("Задача", style=WHITE)
+    t.add_column("Дедлайн", width=22)
+    t.add_column("Теги", style=MAGENTA, width=18)
+
+    for task in shown:
+        mark = "[green]✔[/]" if task.get("done") else "[ ]"
+        pri_icon = PRIORITY_ICON.get(task.get("priority"), "⚪")
+        title = task["title"]
+        if task.get("done"):
+            title = f"[dim strikethrough]{title}[/]"
+        deadline_s = fmt_deadline(task.get("deadline"))
+        if is_overdue(task):
+            deadline_s = f"[bold {RED}]{deadline_s}[/]"
+        elif is_soon(task):
+            deadline_s = f"[{YELLOW}]{deadline_s}[/]"
+        else:
+            deadline_s = f"[{GRAY}]{deadline_s}[/]"
+        tags_s = " ".join(f"#{x}" for x in task.get("tags", []))[:18] or "[dim]—[/]"
+        t.add_row(str(task["id"]), mark, pri_icon, title, deadline_s, tags_s)
+    console.print(t)
+    console.print()
+
+
+def commands_panel():
+    t = Table(box=box.DOUBLE_EDGE, border_style="black",
+              show_header=False, padding=(0, 2))
+    t.add_column("Команда", style="bold yellow", width=26, justify="right")
+    t.add_column("Действие", style="white")
+    t.add_row("[cyan]add <текст> !high @tomorrow #tag[/]", "➕ Добавить задачу")
+    t.add_row("[cyan]done <id>[/]",     "✅ Отметить выполненной")
+    t.add_row("[cyan]undone <id>[/]",   "↩ Вернуть в работу")
+    t.add_row("[cyan]del <id>[/]",      "🗑 Удалить задачу")
+    t.add_row("[cyan]edit <id>[/]",     "✏ Изменить задачу")
+    t.add_row("[cyan]notify <id>[/]",   "🔔 Отправить уведомление")
+    t.add_row("[cyan]notify-all[/]",    "🔔 Уведомить о всех активных")
+    t.add_row("[cyan]filter <mode>[/]", "🔎 filter: active/done/all/today/overdue")
+    t.add_row("[cyan]clear-done[/]",    "🧹 Удалить все выполненные")
+    t.add_row("[cyan]q[/]",             "🚪 Выход")
+    console.print(Panel(t, title="[bold green]⌨  КОМАНДЫ  (Tab — автодополнение)[/]",
+                        border_style="black"))
+    console.print()
+
+# ═══ TAB-COMPLETER ═══
+class TodoCompleter(Completer):
+    def __init__(self, get_tasks):
+        self.get_tasks = get_tasks
+
+    def get_completions(self, document, complete_event):
+        text = document.text_before_cursor
+        words = text.split()
+
+        if not words or (len(words) == 1 and not text.endswith(" ")):
+            partial = words[0] if words else ""
+            commands = [
+                "add","done","undone","del","edit","notify","notify-all",
+                "filter","clear-done","clear","help","q",
+            ]
+            for c in commands:
+                if c.startswith(partial.lower()):
+                    yield Completion(c, start_position=-len(partial))
+            return
+
+        cmd = words[0].lower()
+        partial = words[-1] if not text.endswith(" ") else ""
+
+        if cmd in ("done","undone","del","edit","notify"):
+            tasks = self.get_tasks()
+            for t in tasks:
+                sid = str(t["id"])
+                if sid.startswith(partial):
+                    label = f'{sid}  {t["title"][:50]}'
+                    yield Completion(sid, start_position=-len(partial),
+                                     display=label,
+                                     display_meta=PRIORITY_LABEL.get(t.get("priority"), ""))
+            return
+
+        if cmd == "filter":
+            for m in ("active","done","all","today","overdue"):
+                if m.startswith(partial.lower()):
+                    yield Completion(m, start_position=-len(partial))
+
+# ═══ MAIN ═══
+def main():
+    data = load_todo()
+    current_filter = "active"
+
+    style = Style.from_dict({
+        "prompt": "bold ansibrightmagenta",
+        "completion-menu.completion": "bg:#000000 #00ff88",
+        "completion-menu.completion.current": "bg:#aa00aa #ffffff bold",
+        "completion-menu.meta.completion": "bg:#000000 #557755",
+        "completion-menu.meta.completion.current": "bg:#aa00aa #000000",
+    })
+
+    while True:
+        data = load_todo()
+        tasks = data["tasks"]
+
+        clear()
+        console.print()
+        console.print(title_block("T O D O", "Terminal Argonov  •  Task Manager"))
+        console.print()
+        console.print(stats_panel(tasks))
+        console.print()
+
+        soon = [t for t in tasks if (is_overdue(t) or is_today(t) or is_soon(t)) and not t.get("done")]
+        if soon:
+            console.print(f"[bold {YELLOW}]⏰ Требуют внимания ({len(soon)}):[/]")
+            for t in soon[:3]:
+                mark = "❗" if is_overdue(t) else "⏰"
+                console.print(f"  {mark} [bold]#{t['id']}[/] {t['title'][:55]}  [dim]{fmt_deadline(t.get('deadline'))}[/]")
+            console.print()
+
+        console.print(f"[dim]Фильтр: [bold]{current_filter}[/][/]")
+        console.print()
+        tasks_table(tasks, filter_mode=current_filter)
+        commands_panel()
+
+        session = PromptSession(
+            completer=TodoCompleter(lambda: load_todo()["tasks"]),
+            style=style, complete_while_typing=True)
+        try:
+            cmd = session.prompt(HTML("<prompt>╰─❯</prompt> ")).strip()
+        except (EOFError, KeyboardInterrupt):
+            console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+
+        if not cmd:
+            continue
+        parts = cmd.split(maxsplit=1)
+        c = parts[0].lower()
+        arg = parts[1] if len(parts) > 1 else ""
+
+        if c in ("q","exit","quit","выход"):
+            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+        if c == "clear":
+            continue
+
+        if c == "add":
+            if not arg:
+                console.print(Text("  ❌ add <текст> [!high] [@tomorrow] [#tag]", style=RED))
+                time.sleep(1)
+                continue
+            p = parse_add(arg)
+            if not p["title"]:
+                console.print(Text("  ❌ Пустой заголовок", style=RED))
+                time.sleep(1)
+                continue
+            task = {
+                "id": data["next_id"],
+                "title": p["title"],
+                "priority": p["priority"],
+                "deadline": p["deadline"],
+                "tags": p["tags"],
+                "done": False,
+                "created": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            }
+            data["next_id"] += 1
+            data["tasks"].append(task)
+            save_todo(data)
+            console.print(Text(f"  ✔ Добавлено #{task['id']}: {task['title']}", style=GREEN_BRIGHT))
+            if task["deadline"]:
+                console.print(Text(f"     📅 {fmt_deadline(task['deadline'])}", style=YELLOW))
+            time.sleep(0.8)
+            continue
+
+        if c in ("done","undone","del","edit","notify"):
+            if not arg.isdigit():
+                console.print(Text(f"  ❌ {c} <id>", style=RED))
+                time.sleep(1)
+                continue
+            tid = int(arg)
+            task = next((t for t in data["tasks"] if t["id"] == tid), None)
+            if not task:
+                console.print(Text(f"  ❌ Задача #{tid} не найдена", style=RED))
+                time.sleep(1)
+                continue
+
+            if c == "done":
+                task["done"] = True
+                save_todo(data)
+                console.print(Text(f"  ✅ #{tid} выполнено", style=GREEN_BRIGHT))
+            elif c == "undone":
+                task["done"] = False
+                save_todo(data)
+                console.print(Text(f"  ↩ #{tid} возвращено в работу", style=YELLOW))
+            elif c == "del":
+                data["tasks"] = [t for t in data["tasks"] if t["id"] != tid]
+                save_todo(data)
+                console.print(Text(f"  🗑 #{tid} удалено", style=RED))
+            elif c == "edit":
+                console.print(Text(f"  ✏ Текущий: {task['title']}", style=WHITE))
+                try:
+                    new_title = console.input("[bold magenta]Новый заголовок (Enter — оставить)> [/]").strip()
+                    if new_title:
+                        task["title"] = new_title
+                    new_pri = console.input("[bold magenta]Приоритет (h/m/l, Enter — оставить)> [/]").strip().lower()
+                    if new_pri in ("h","high","1"):
+                        task["priority"] = "high"
+                    elif new_pri in ("m","mid","2"):
+                        task["priority"] = "medium"
+                    elif new_pri in ("l","low","3"):
+                        task["priority"] = "low"
+                    new_dl = console.input("[bold magenta]Дедлайн (@tomorrow, @+3d, Enter — оставить)> [/]").strip()
+                    if new_dl.startswith("@"):
+                        pd = parse_date(new_dl[1:])
+                        if pd:
+                            task["deadline"] = pd
+                    save_todo(data)
+                    console.print(Text(f"  ✔ #{tid} обновлено", style=GREEN_BRIGHT))
+                except (EOFError, KeyboardInterrupt):
+                    console.print(Text("  Отменено", style=YELLOW))
+            elif c == "notify":
+                if notify(task):
+                    console.print(Text(f"  🔔 Уведомление отправлено: {task['title']}", style=GREEN_BRIGHT))
+                else:
+                    console.print(Text("  ⚠ termux-notification не сработал (установлен ли Termux:API?)", style=YELLOW))
+            time.sleep(0.8)
+            continue
+
+        if c == "notify-all":
+            active = [t for t in data["tasks"] if not t.get("done")]
+            if not active:
+                console.print(Text("  ⚠ Нет активных задач", style=YELLOW))
+                time.sleep(1)
+                continue
+            cnt = 0
+            for t in active[:10]:
+                if notify(t):
+                    cnt += 1
+                time.sleep(0.3)
+            console.print(Text(f"  🔔 Отправлено уведомлений: {cnt}", style=GREEN_BRIGHT))
+            time.sleep(1)
+            continue
+
+        if c == "filter":
+            if arg in ("active","done","all","today","overdue"):
+                current_filter = arg
+                console.print(Text(f"  🔎 Фильтр: {arg}", style=GREEN_BRIGHT))
+                time.sleep(0.5)
+            else:
+                console.print(Text("  ❌ filter: active/done/all/today/overdue", style=RED))
+                time.sleep(1)
+            continue
+
+        if c == "clear-done":
+            before = len(data["tasks"])
+            data["tasks"] = [t for t in data["tasks"] if not t.get("done")]
+            save_todo(data)
+            removed = before - len(data["tasks"])
+            console.print(Text(f"  🧹 Удалено выполненных: {removed}", style=GREEN_BRIGHT))
+            time.sleep(0.8)
+            continue
+
+        if c in ("help","h","?"):
+            console.print(Text("  Tab — автодополнение. Пример: add Купить хлеб !high @tomorrow #покупки", style=CYAN))
+            time.sleep(1.5)
+            continue
+
+        console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
+        time.sleep(0.6)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
+```
+
+---
+
 ## 📄 utils.py
 
 *14925 байт · 337 строк*
@@ -8367,249 +10688,6 @@ def main():
             continue
         # Поиск по строке
         filt["search"] = cmd
-
-if __name__ == "__main__":
-    try: main()
-    except KeyboardInterrupt:
-        console.print("\n[dim]Прервано.[/]")
-```
-
----
-
-## 📄 art.py
-
-*8497 байт · 235 строк*
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Art — поиск картинки по телефону и показ через viu"""
-
-import os, sys, subprocess, time
-from rich.console import Console
-from rich.prompt import Prompt
-
-console = Console()
-
-HOME = os.path.expanduser("~")
-WELCOME_FILE = os.path.join(HOME, ".argonov_welcome_image")
-STORAGE = os.path.join(HOME, "storage")
-SEARCH_DIRS = [
-    os.path.join(STORAGE, "shared"),
-    os.path.join(HOME, "storage"),
-    HOME,
-    "/sdcard",
-    "/storage/emulated/0",
-]
-
-IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".bmp", ".gif", ".tiff"}
-
-def has_cmd(c): 
-    return subprocess.run(f"which {c}", shell=True, capture_output=True).returncode == 0
-
-def find_image(name):
-    """
-    Ищет файл по имени в SEARCH_DIRS.
-    name может быть:
-      - полный путь
-      - имя с расширением (fantasy.png)
-      - имя без (fantasy)
-    """
-    # 1. Если полный путь
-    if os.path.isfile(name): return name
-
-    # 2. Если с расширением
-    if os.path.splitext(name)[1].lower() in IMAGE_EXTS:
-        target = name.lower()
-    else:
-        target_exts = IMAGE_EXTS
-        target = name.lower()
-
-    results = []
-    for base in SEARCH_DIRS:
-        if not os.path.isdir(base): continue
-        for root, dirs, files in os.walk(base):
-            # Пропускаем системные
-            dirs[:] = [d for d in dirs if d not in
-                       ("Android/data", "Android/obb", ".thumbnails", ".cache", "Termux")]
-            for f in files:
-                ext = os.path.splitext(f)[1].lower()
-                if ext not in IMAGE_EXTS: continue
-                f_lower = f.lower()
-                if name.lower() in f_lower:
-                    results.append(os.path.join(root, f))
-            if len(results) > 50: break
-        if len(results) > 50: break
-
-    if not results: return None
-    if len(results) == 1: return results[0]
-
-    # Несколько результатов — показать выбор
-    console.print()
-    console.print(f"[bold yellow]🔍 Найдено {len(results)} файлов:[/]")
-    console.print()
-    for i, r in enumerate(results[:20], 1):
-        sz = os.path.getsize(r)
-        short = r.replace(STORAGE + "/", "").replace(HOME, "~")
-        console.print(f"  [cyan]{i:2}.[/] {short}  [dim]({sz//1024} КБ)[/]")
-    console.print()
-    try:
-        ch = console.input("[bold magenta]Номер (Enter = 1)> [/]").strip()
-        n = int(ch) if ch.isdigit() else 1
-        if 1 <= n <= len(results):
-            return results[n-1]
-    except: pass
-    return results[0]
-
-def show_art(path):
-    if not path or not os.path.isfile(path):
-        console.print(f"[red]❌ Файл не найден: {path}[/]")
-        return False
-    if not has_cmd("viu"):
-        console.print("[red]❌ viu не установлен[/]")
-        return False
-
-    os.system("clear")
-    cols = int(subprocess.run("tput cols", shell=True, capture_output=True, text=True).stdout.strip() or 50)
-    rows = int(subprocess.run("tput lines", shell=True, capture_output=True, text=True).stdout.strip() or 40)
-    w = cols - 2
-    h = rows - 4
-
-    console.print()
-    console.print(f"[dim]🎨 {os.path.basename(path)}[/]")
-    console.print()
-    try:
-        subprocess.run(["viu", "-w", str(w), "-h", str(h), "-b", "-t", path])
-    except Exception as e:
-        console.print(f"[red]❌ {e}[/]")
-        return False
-    console.print()
-    return True
-
-def set_welcome(path):
-    if not path or not os.path.isfile(path):
-        console.print(f"[red]❌ Файл не найден: {path}[/]")
-        return False
-    with open(WELCOME_FILE, "w") as f:
-        f.write(os.path.abspath(path))
-    console.print(f"[green]✔ Welcome-картинка установлена:[/] [cyan]{os.path.basename(path)}[/]")
-    console.print(f"[dim]   {os.path.abspath(path)}[/]")
-    console.print()
-    console.print(f"[dim]При следующем запуске Termux будет показана эта картинка.[/]")
-    return True
-
-def get_welcome():
-    if not os.path.exists(WELCOME_FILE): return None
-    try:
-        with open(WELCOME_FILE) as f:
-            p = f.read().strip()
-        return p if os.path.isfile(p) else None
-    except: return None
-
-def reset_welcome():
-    if os.path.exists(WELCOME_FILE):
-        os.remove(WELCOME_FILE)
-        console.print("[green]✔ Welcome-картинка сброшена[/]")
-    else:
-        console.print("[yellow]⚠ Welcome не был установлен[/]")
-
-def show_help():
-    console.print()
-    console.print("[bold bright_green]🎨 ART — показ картинок[/]")
-    console.print()
-    console.print("  [cyan]art[/]                     — показать welcome-картинку")
-    console.print("  [cyan]art <имя>[/]                — найти и показать файл")
-    console.print("  [cyan]art <имя> set[/]            — установить как welcome")
-    console.print("  [cyan]art set <имя>[/]            — то же самое")
-    console.print("  [cyan]art reset[/]                — сбросить welcome")
-    console.print("  [cyan]art list[/]                 — список найденных картинок")
-    console.print("  [cyan]art help[/]                 — эта справка")
-    console.print()
-
-def list_images():
-    console.print()
-    console.print("[bold yellow]🔍 Поиск изображений в памяти телефона...[/]")
-    console.print()
-    found = []
-    for base in SEARCH_DIRS[:2]:  # только shared/storage чтобы не долго
-        if not os.path.isdir(base): continue
-        for root, dirs, files in os.walk(base):
-            dirs[:] = [d for d in dirs if d not in
-                       ("Android/data", "Android/obb", ".thumbnails", ".cache", "Termux")]
-            for f in files:
-                if os.path.splitext(f)[1].lower() in IMAGE_EXTS:
-                    fp = os.path.join(root, f)
-                    try: sz = os.path.getsize(fp)
-                    except: sz = 0
-                    found.append((fp, sz))
-            if len(found) > 200: break
-        if len(found) > 200: break
-
-    found.sort(key=lambda x: -x[1])
-    for i, (fp, sz) in enumerate(found[:30], 1):
-        short = fp.replace(STORAGE + "/", "").replace(HOME, "~")
-        console.print(f"  [cyan]{i:2}.[/] {short[:60]}  [dim]({sz//1024} КБ)[/]")
-    console.print()
-    console.print(f"[dim]Всего найдено: {len(found)} (показаны 30 крупнейших)[/]")
-    console.print()
-
-def main():
-    args = sys.argv[1:]
-
-    if not args:
-        # Просто art — показать welcome
-        w = get_welcome()
-        if not w:
-            console.print("[yellow]⚠ Welcome-картинка не установлена. Используй: art <имя> set[/]")
-            console.print()
-            show_help()
-            return
-        show_art(w)
-        return
-
-    # art help
-    if args[0].lower() in ("help", "-h", "--help"):
-        show_help()
-        return
-
-    # art list
-    if args[0].lower() == "list":
-        list_images()
-        return
-
-    # art reset
-    if args[0].lower() == "reset":
-        reset_welcome()
-        return
-
-    # art set <имя>
-    if args[0].lower() == "set" and len(args) >= 2:
-        name = " ".join(args[1:])
-        console.print(f"[yellow]🔍 Ищу '{name}'...[/]")
-        path = find_image(name)
-        if path: set_welcome(path)
-        else: console.print(f"[red]❌ Не найдено: {name}[/]")
-        return
-
-    # art <имя> set
-    if len(args) >= 2 and args[-1].lower() == "set":
-        name = " ".join(args[:-1])
-        console.print(f"[yellow]🔍 Ищу '{name}'...[/]")
-        path = find_image(name)
-        if path: set_welcome(path)
-        else: console.print(f"[red]❌ Не найдено: {name}[/]")
-        return
-
-    # art <имя> — просто показать
-    name = " ".join(args)
-    console.print(f"[yellow]🔍 Ищу '{name}'...[/]")
-    path = find_image(name)
-    if not path:
-        console.print(f"[red]❌ Не найдено: {name}[/]")
-        return
-    console.print(f"[green]✔ {path}[/]")
-    time.sleep(0.5)
-    show_art(path)
 
 if __name__ == "__main__":
     try: main()

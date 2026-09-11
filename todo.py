@@ -1,20 +1,58 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""TODO — трекер задач с Tab-автодополнением и уведомлениями"""
+# ═══════════════════════════════════════════════════════
+#  ARGONOV OS · TODO
+#  Трекер задач с приоритетами, дедлайнами и уведомлениями
+#  Версия: 3.0  ·  Обновлён: 2026-09-11
+# ═══════════════════════════════════════════════════════
+"""
+Трекер задач с Tab-автодополнением и уведомлениями Termux.
 
-import os, sys, json, re, subprocess, time
+Использование:
+    todo                 # через argonov
+    argonov todo         # то же
+
+Примеры:
+    add Купить хлеб !high @tomorrow #покупки
+    add Позвонить маме @+2d
+    done 3
+    filter today
+    notify-all
+
+Синтаксис add:
+    !high / !medium / !low    — приоритет
+    @tomorrow / @today        — дедлайн
+    @+3d / @+2h / @+1w        — относительный
+    @15.09 / @15.09.2026      — дата
+    @15.09 18:00              — дата + время
+    #тег                      — тег
+
+Зависимости:
+    - rich, prompt_toolkit
+    - termux-notification (Termux:API)
+"""
+
+import os
+import re
+import sys
+import json
+import time
+import subprocess
 from datetime import datetime, timedelta
+
 from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.align import Align
 from rich import box
+
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
+# ═══ КОНСТАНТЫ ═══
 console = Console()
 TODO_FILE = os.path.expanduser("~/.todo.json")
 
@@ -27,7 +65,7 @@ PRIORITY_ICON = {"high": "🔴", "medium": "🟡", "low": "🟢"}
 PRIORITY_LABEL = {"high": "Высокий", "medium": "Средний", "low": "Низкий"}
 PRIORITY_COLOR = {"high": RED, "medium": YELLOW, "low": GREEN_BRIGHT}
 
-# ═══════════ ХРАНИЛИЩЕ ═══════════
+# ═══ ХРАНИЛИЩЕ ═══
 def load_todo():
     if not os.path.exists(TODO_FILE):
         return {"next_id": 1, "tasks": []}
@@ -40,6 +78,7 @@ def load_todo():
     except Exception:
         return {"next_id": 1, "tasks": []}
 
+
 def save_todo(data):
     try:
         with open(TODO_FILE, "w", encoding="utf-8") as f:
@@ -47,24 +86,28 @@ def save_todo(data):
     except Exception as e:
         console.print(f"[red]❌ {e}[/]")
 
-# ═══════════ ПАРСИНГ ═══════════
+# ═══ ПАРСИНГ ═══
 def parse_date(s):
-    """Поддержка: today, tomorrow, +3d, +2h, +1w, 15.09, 15.09.2026, 15.09 18:00"""
+    """today, tomorrow, +3d, +2h, +1w, 15.09, 15.09.2026, 15.09 18:00"""
     s = s.lower().strip()
     now = datetime.now()
-    if s in ("today", "сегодня"):     return now.strftime("%Y-%m-%d 23:59")
-    if s in ("tomorrow", "завтра"):   return (now + timedelta(days=1)).strftime("%Y-%m-%d 23:59")
+    if s in ("today", "сегодня"):
+        return now.strftime("%Y-%m-%d 23:59")
+    if s in ("tomorrow", "завтра"):
+        return (now + timedelta(days=1)).strftime("%Y-%m-%d 23:59")
     m = re.match(r"\+(\d+)([dhmw])", s)
     if m:
-        n = int(m.group(1)); u = m.group(2)
+        n = int(m.group(1))
+        u = m.group(2)
         delta = {"d": timedelta(days=n), "h": timedelta(hours=n),
                  "m": timedelta(minutes=n), "w": timedelta(weeks=n)}[u]
         return (now + delta).strftime("%Y-%m-%d %H:%M")
     m = re.match(r"(\d{1,2})\.(\d{1,2})(?:\.(\d{4}))?(?:\s+(\d{1,2}):(\d{2}))?$", s)
     if m:
-        d = int(m.group(1)); mo = int(m.group(2))
-        y  = int(m.group(3)) if m.group(3) else now.year
-        h  = int(m.group(4)) if m.group(4) else 23
+        d = int(m.group(1))
+        mo = int(m.group(2))
+        y = int(m.group(3)) if m.group(3) else now.year
+        h = int(m.group(4)) if m.group(4) else 23
         mi = int(m.group(5)) if m.group(5) else 59
         try:
             return datetime(y, mo, d, h, mi).strftime("%Y-%m-%d %H:%M")
@@ -72,15 +115,22 @@ def parse_date(s):
             return None
     return None
 
+
 def parse_add(text):
     """add Купить молоко !high @tomorrow #покупки"""
-    title_parts = []; priority = "medium"; deadline = None; tags = []
+    title_parts = []
+    priority = "medium"
+    deadline = None
+    tags = []
     for w in text.split():
         if w.startswith("!"):
             p = w[1:].lower()
-            if p in ("h","high","1","в","высокий"): priority = "high"
-            elif p in ("m","mid","medium","2","с","средний"): priority = "medium"
-            elif p in ("l","low","3","н","низкий"): priority = "low"
+            if p in ("h", "high", "1", "в", "высокий"):
+                priority = "high"
+            elif p in ("m", "mid", "medium", "2", "с", "средний"):
+                priority = "medium"
+            elif p in ("l", "low", "3", "н", "низкий"):
+                priority = "low"
         elif w.startswith("@") and not deadline:
             deadline = parse_date(w[1:])
         elif w.startswith("#") and len(w) > 1:
@@ -90,24 +140,29 @@ def parse_add(text):
     return {"title": " ".join(title_parts).strip(),
             "priority": priority, "deadline": deadline, "tags": tags}
 
-# ═══════════ ДАТЫ / ПРИОРИТЕТЫ ═══════════
+# ═══ ДАТЫ / ПРИОРИТЕТЫ ═══
 def is_overdue(task):
-    if task.get("done") or not task.get("deadline"): return False
+    if task.get("done") or not task.get("deadline"):
+        return False
     try:
         return datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M") < datetime.now()
     except Exception:
         return False
 
+
 def is_today(task):
-    if task.get("done") or not task.get("deadline"): return False
+    if task.get("done") or not task.get("deadline"):
+        return False
     try:
         d = datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M")
         return d.date() == datetime.now().date()
     except Exception:
         return False
 
+
 def is_soon(task, hours=24):
-    if task.get("done") or not task.get("deadline"): return False
+    if task.get("done") or not task.get("deadline"):
+        return False
     try:
         d = datetime.strptime(task["deadline"], "%Y-%m-%d %H:%M")
         delta = d - datetime.now()
@@ -115,16 +170,19 @@ def is_soon(task, hours=24):
     except Exception:
         return False
 
+
 def fmt_deadline(s):
-    if not s: return "—"
+    if not s:
+        return "—"
     try:
         d = datetime.strptime(s, "%Y-%m-%d %H:%M")
         now = datetime.now()
         delta = d - now
-        # Короткий формат
         date_s = d.strftime("%d.%m %H:%M")
-        if d.date() == now.date():   date_s = f"сегодня {d.strftime('%H:%M')}"
-        elif d.date() == (now + timedelta(days=1)).date(): date_s = f"завтра {d.strftime('%H:%M')}"
+        if d.date() == now.date():
+            date_s = f"сегодня {d.strftime('%H:%M')}"
+        elif d.date() == (now + timedelta(days=1)).date():
+            date_s = f"завтра {d.strftime('%H:%M')}"
         if delta.total_seconds() < 0:
             return f"❗ {date_s}"
         if delta.total_seconds() < 3600:
@@ -135,13 +193,14 @@ def fmt_deadline(s):
     except Exception:
         return s
 
-# ═══════════ УВЕДОМЛЕНИЯ ═══════════
+# ═══ УВЕДОМЛЕНИЯ ═══
 def notify(task):
-    """Отправить уведомление через termux-notification"""
     title = f"📌 TODO #{task['id']}: {task['title']}"
     content = f"Приоритет: {PRIORITY_LABEL.get(task['priority'],'—')}"
-    if task.get("deadline"): content += f"\nДедлайн: {fmt_deadline(task['deadline'])}"
-    if task.get("tags"):     content += f"\nТеги: {', '.join(task['tags'])}"
+    if task.get("deadline"):
+        content += f"\nДедлайн: {fmt_deadline(task['deadline'])}"
+    if task.get("tags"):
+        content += f"\nТеги: {', '.join(task['tags'])}"
     try:
         subprocess.run(["termux-notification",
             "--title", title, "--content", content,
@@ -150,14 +209,18 @@ def notify(task):
     except Exception:
         return False
 
-# ═══════════ РИСОВКА ═══════════
-def clear(): os.system("clear")
+# ═══ РИСОВКА ═══
+def clear():
+    os.system("clear")
+
 
 def title_block(main, sub=""):
     lines = [Text("▓▒░ " + main.upper() + " ░▒▓", style=f"bold {GREEN_BRIGHT}")]
-    if sub: lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
+    if sub:
+        lines.append(Text(sub, style=f"dim {GREEN_DIM}"))
     lines.append(Text("═"*60, style=GREEN_DIM))
     return Group(*lines)
+
 
 def stats_panel(tasks):
     total = len(tasks)
@@ -166,15 +229,15 @@ def stats_panel(tasks):
     overdue = sum(1 for t in tasks if is_overdue(t))
     today = sum(1 for t in tasks if is_today(t))
     t = Table(box=None, show_header=False, padding=(0, 3))
-    for _ in range(4): t.add_column("")
+    for _ in range(4):
+        t.add_column("")
     t.add_row(f"📋 Всего [bold]{total}[/]", f"⏳ Активных [bold]{active}[/]",
               f"✅ Выполнено [bold]{done}[/]", f"❗ Просрочено [bold]{overdue}[/]")
     t.add_row(f"📅 Сегодня [bold]{today}[/]", "", "", "")
     return t
 
+
 def tasks_table(tasks, filter_mode="active"):
-    """filter_mode: active, done, all, today, overdue"""
-    now = datetime.now()
     if filter_mode == "active":
         shown = [t for t in tasks if not t.get("done")]
     elif filter_mode == "done":
@@ -186,11 +249,11 @@ def tasks_table(tasks, filter_mode="active"):
     else:
         shown = tasks
 
-    # Сортировка: активные → по дедлайну → по приоритету
     def sort_key(t):
         pri = {"high": 0, "medium": 1, "low": 2}.get(t.get("priority"), 1)
         d = t.get("deadline") or "9999-99-99 99:99"
         return (t.get("done", False), d, pri)
+
     shown = sorted(shown, key=sort_key)
 
     if not shown:
@@ -225,6 +288,7 @@ def tasks_table(tasks, filter_mode="active"):
     console.print(t)
     console.print()
 
+
 def commands_panel():
     t = Table(box=box.DOUBLE_EDGE, border_style="black",
               show_header=False, padding=(0, 2))
@@ -244,7 +308,7 @@ def commands_panel():
                         border_style="black"))
     console.print()
 
-# ═══════════ TAB-COMPLETER ═══════════
+# ═══ TAB-COMPLETER ═══
 class TodoCompleter(Completer):
     def __init__(self, get_tasks):
         self.get_tasks = get_tasks
@@ -252,7 +316,7 @@ class TodoCompleter(Completer):
     def get_completions(self, document, complete_event):
         text = document.text_before_cursor
         words = text.split()
-        # Первое слово — команда
+
         if not words or (len(words) == 1 and not text.endswith(" ")):
             partial = words[0] if words else ""
             commands = [
@@ -263,6 +327,7 @@ class TodoCompleter(Completer):
                 if c.startswith(partial.lower()):
                     yield Completion(c, start_position=-len(partial))
             return
+
         cmd = words[0].lower()
         partial = words[-1] if not text.endswith(" ") else ""
 
@@ -273,7 +338,8 @@ class TodoCompleter(Completer):
                 if sid.startswith(partial):
                     label = f'{sid}  {t["title"][:50]}'
                     yield Completion(sid, start_position=-len(partial),
-                                     display=label, display_meta=PRIORITY_LABEL.get(t.get("priority"),""))
+                                     display=label,
+                                     display_meta=PRIORITY_LABEL.get(t.get("priority"), ""))
             return
 
         if cmd == "filter":
@@ -281,7 +347,7 @@ class TodoCompleter(Completer):
                 if m.startswith(partial.lower()):
                     yield Completion(m, start_position=-len(partial))
 
-# ═══════════ MAIN ═══════════
+# ═══ MAIN ═══
 def main():
     data = load_todo()
     current_filter = "active"
@@ -305,7 +371,6 @@ def main():
         console.print(stats_panel(tasks))
         console.print()
 
-        # Напоминание о близких
         soon = [t for t in tasks if (is_overdue(t) or is_today(t) or is_soon(t)) and not t.get("done")]
         if soon:
             console.print(f"[bold {YELLOW}]⏰ Требуют внимания ({len(soon)}):[/]")
@@ -328,22 +393,28 @@ def main():
             console.print(Text("\n До связи. 🖖", style=f"dim {GREEN_DIM}"))
             break
 
-        if not cmd: continue
+        if not cmd:
+            continue
         parts = cmd.split(maxsplit=1)
         c = parts[0].lower()
         arg = parts[1] if len(parts) > 1 else ""
 
         if c in ("q","exit","quit","выход"):
-            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}")); break
-        if c == "clear": continue
+            console.print(Text(" До связи. 🖖", style=f"dim {GREEN_DIM}"))
+            break
+        if c == "clear":
+            continue
 
         if c == "add":
             if not arg:
                 console.print(Text("  ❌ add <текст> [!high] [@tomorrow] [#tag]", style=RED))
-                time.sleep(1); continue
+                time.sleep(1)
+                continue
             p = parse_add(arg)
             if not p["title"]:
-                console.print(Text("  ❌ Пустой заголовок", style=RED)); time.sleep(1); continue
+                console.print(Text("  ❌ Пустой заголовок", style=RED))
+                time.sleep(1)
+                continue
             task = {
                 "id": data["next_id"],
                 "title": p["title"],
@@ -359,15 +430,20 @@ def main():
             console.print(Text(f"  ✔ Добавлено #{task['id']}: {task['title']}", style=GREEN_BRIGHT))
             if task["deadline"]:
                 console.print(Text(f"     📅 {fmt_deadline(task['deadline'])}", style=YELLOW))
-            time.sleep(0.8); continue
+            time.sleep(0.8)
+            continue
 
         if c in ("done","undone","del","edit","notify"):
             if not arg.isdigit():
-                console.print(Text(f"  ❌ {c} <id>", style=RED)); time.sleep(1); continue
+                console.print(Text(f"  ❌ {c} <id>", style=RED))
+                time.sleep(1)
+                continue
             tid = int(arg)
             task = next((t for t in data["tasks"] if t["id"] == tid), None)
             if not task:
-                console.print(Text(f"  ❌ Задача #{tid} не найдена", style=RED)); time.sleep(1); continue
+                console.print(Text(f"  ❌ Задача #{tid} не найдена", style=RED))
+                time.sleep(1)
+                continue
 
             if c == "done":
                 task["done"] = True
@@ -385,15 +461,20 @@ def main():
                 console.print(Text(f"  ✏ Текущий: {task['title']}", style=WHITE))
                 try:
                     new_title = console.input("[bold magenta]Новый заголовок (Enter — оставить)> [/]").strip()
-                    if new_title: task["title"] = new_title
+                    if new_title:
+                        task["title"] = new_title
                     new_pri = console.input("[bold magenta]Приоритет (h/m/l, Enter — оставить)> [/]").strip().lower()
-                    if new_pri in ("h","high","1"): task["priority"] = "high"
-                    elif new_pri in ("m","mid","2"): task["priority"] = "medium"
-                    elif new_pri in ("l","low","3"): task["priority"] = "low"
+                    if new_pri in ("h","high","1"):
+                        task["priority"] = "high"
+                    elif new_pri in ("m","mid","2"):
+                        task["priority"] = "medium"
+                    elif new_pri in ("l","low","3"):
+                        task["priority"] = "low"
                     new_dl = console.input("[bold magenta]Дедлайн (@tomorrow, @+3d, Enter — оставить)> [/]").strip()
                     if new_dl.startswith("@"):
                         pd = parse_date(new_dl[1:])
-                        if pd: task["deadline"] = pd
+                        if pd:
+                            task["deadline"] = pd
                     save_todo(data)
                     console.print(Text(f"  ✔ #{tid} обновлено", style=GREEN_BRIGHT))
                 except (EOFError, KeyboardInterrupt):
@@ -403,18 +484,23 @@ def main():
                     console.print(Text(f"  🔔 Уведомление отправлено: {task['title']}", style=GREEN_BRIGHT))
                 else:
                     console.print(Text("  ⚠ termux-notification не сработал (установлен ли Termux:API?)", style=YELLOW))
-            time.sleep(0.8); continue
+            time.sleep(0.8)
+            continue
 
         if c == "notify-all":
             active = [t for t in data["tasks"] if not t.get("done")]
             if not active:
-                console.print(Text("  ⚠ Нет активных задач", style=YELLOW)); time.sleep(1); continue
+                console.print(Text("  ⚠ Нет активных задач", style=YELLOW))
+                time.sleep(1)
+                continue
             cnt = 0
             for t in active[:10]:
-                if notify(t): cnt += 1
+                if notify(t):
+                    cnt += 1
                 time.sleep(0.3)
             console.print(Text(f"  🔔 Отправлено уведомлений: {cnt}", style=GREEN_BRIGHT))
-            time.sleep(1); continue
+            time.sleep(1)
+            continue
 
         if c == "filter":
             if arg in ("active","done","all","today","overdue"):
@@ -432,16 +518,20 @@ def main():
             save_todo(data)
             removed = before - len(data["tasks"])
             console.print(Text(f"  🧹 Удалено выполненных: {removed}", style=GREEN_BRIGHT))
-            time.sleep(0.8); continue
+            time.sleep(0.8)
+            continue
 
         if c in ("help","h","?"):
             console.print(Text("  Tab — автодополнение. Пример: add Купить хлеб !high @tomorrow #покупки", style=CYAN))
-            time.sleep(1.5); continue
+            time.sleep(1.5)
+            continue
 
         console.print(Text(f"  ❌ Неизвестно: {c}", style=RED))
         time.sleep(0.6)
 
+
 if __name__ == "__main__":
-    try: main()
+    try:
+        main()
     except KeyboardInterrupt:
         console.print(Text("\n Прервано.", style=f"dim {GREEN_DIM}"))
