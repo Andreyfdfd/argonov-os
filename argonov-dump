@@ -9,10 +9,10 @@ HOME = os.path.expanduser("~")
 DUMP_FILE = os.path.join(HOME, "ARGONOV_FULL_DUMP.md")
 REPO_DIR  = os.path.join(HOME, "argonov-os")
 
-# ─── Файлы для дампа ───
 SCRIPTS = [
     ("argonov",           "bash"),
     ("argonov-dump",      "python"),
+    ("doctor.py",         "python"),
     ("net_helper.py",     "python"),
     ("ai.py",             "python"),
     ("hacktool.py",       "python"),
@@ -106,20 +106,16 @@ def build_dump():
 def do_push():
     if not os.path.isdir(os.path.join(REPO_DIR, ".git")):
         print(f"{R}❌ {REPO_DIR} — не git-репозиторий{RST}")
-        print(f"{DIM}   Сначала: argonov push (создаст и запушит){RST}")
         return False
 
     print(f"{C}⚙ Копирую свежие скрипты в репо...{RST}")
-    # Копируем всё из SCRIPTS + конфиги
     for fname, _ in SCRIPTS:
         src = os.path.join(HOME, fname)
         if os.path.isfile(src):
             subprocess.run(f'cp "{src}" "{REPO_DIR}/"', shell=True)
 
-    # Дамп тоже кладём в репо
     subprocess.run(f'cp "{DUMP_FILE}" "{REPO_DIR}/"', shell=True)
 
-    # fish config
     fish_src = os.path.join(HOME, ".config/fish/config.fish")
     fish_dst = os.path.join(REPO_DIR, "fish-config/config.fish")
     if os.path.isfile(fish_src):

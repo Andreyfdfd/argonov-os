@@ -1,9 +1,9 @@
 #!/data/data/com.termux/files/usr/bin/bash
 # ═══════════════════════════════════════════════════════
-#  ARGONOV OS v1.3 — art с поиском и welcome
+#  ARGONOV OS v1.4 — doctor v2 + push обновлён
 # ═══════════════════════════════════════════════════════
 
-ARGONOV_VERSION="1.3.0"
+ARGONOV_VERSION="1.4.0"
 REPO_DIR="$HOME/argonov-os"
 BACKUP_DIR="$HOME/argonov_backups"
 
@@ -30,7 +30,7 @@ show_help() {
     echo -e "  ${Y}📌 ${C}todo${RST}    · ${Y}📝 ${C}notes${RST}     · ${Y}🔒 ${C}pm${RST}"
     echo -e "  ${Y}🎮 ${C}hack${RST}    · ${Y}🕹  ${C}rpg${RST}       · ${Y}📥 ${C}d${RST}"
     echo -e "  ${Y}🌧  ${C}m${RST}       · ${Y}🔐 ${C}p${RST}         · ${Y}⚡ ${C}s${RST}"
-    echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}"
+    echo -e "  ${Y}📦 ${C}util${RST}    · ${Y}🎨 ${C}art${RST}       · ${Y}🩺 ${C}doctor${RST}"
     echo ""
     echo -e "${M}[ ART ]:${RST}"
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
@@ -45,6 +45,12 @@ show_help() {
     echo -e "${G}═══════════════════════════════════════════════════════${RST}"
     echo ""
     echo -e "  ${C}push · pull · status · backup · restore · doctor${RST}"
+    echo -e "  ${DIM}doctor --full — с проверкой сети${RST}"
+    echo ""
+    echo -e "${M}[ СЛУЖЕБНОЕ ]:${RST}"
+    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
+    echo ""
+    echo -e "  ${C}python ~/argonov-dump${RST}  — дамп скриптов + push"
     echo ""
 }
 
@@ -58,6 +64,7 @@ show_menu() {
         echo -e "  ${C}9${RST})  📥  d           ${C}10${RST}) 🌧   m"
         echo -e "  ${C}11${RST}) 🔐  p           ${C}12${RST}) ⚡  s"
         echo -e "  ${C}13${RST}) 📦  util        ${C}14${RST}) 🎨  art"
+        echo -e "  ${C}15${RST}) 🩺  doctor"
         echo ""
         echo -e "  ${C}p${RST})   🚀  push    ${C}l${RST})   ⬇️   pull"
         echo -e "  ${C}st${RST})  📊  status  ${C}b${RST})   💾  backup"
@@ -81,6 +88,7 @@ show_menu() {
             12) run_s ;;
             13) run_util ;;
             14) run_art ;;
+            15) run_doctor ;;
             p|push) do_push; echo -ne "${DIM}Enter...${RST}"; read -r ;;
             l|pull) do_pull; echo -ne "${DIM}Enter...${RST}"; read -r ;;
             st|status) do_status; echo -ne "${DIM}Enter...${RST}"; read -r ;;
@@ -113,6 +121,7 @@ run_p()       { check_py ~/passgen.py && python ~/passgen.py ; }
 run_s()       { check_py ~/sysinfo.py && python ~/sysinfo.py ; }
 run_util()    { check_py ~/utils.py && python ~/utils.py ; }
 run_art()     { check_py ~/art.py && python ~/art.py ; }
+run_doctor()  { check_py ~/doctor.py && python ~/doctor.py "$@" ; }
 
 do_push() {
     if [ ! -d "$REPO_DIR/.git" ]; then
@@ -120,12 +129,15 @@ do_push() {
     fi
     echo -e "${Y}⚙ Копирую актуальные файлы...${RST}"
     cp ~/argonov "$REPO_DIR/" 2>/dev/null
+    cp ~/argonov-dump "$REPO_DIR/" 2>/dev/null
     for f in ai.py crypto_informer.py download_zone.py hacktool.py matrix.py \
              music_meta.py notes.py passmanager.py passgen.py randomaudio.py \
-             sysinfo.py todo.py utils.py hacker_rpg.py art.py; do
+             sysinfo.py todo.py utils.py hacker_rpg.py art.py \
+             net_helper.py doctor.py; do
         cp ~/"$f" "$REPO_DIR/" 2>/dev/null
     done
     [ -f ~/.config/fish/config.fish ] && cp ~/.config/fish/config.fish "$REPO_DIR/fish-config/config.fish" 2>/dev/null
+    [ -f ~/ARGONOV_FULL_DUMP.md ] && cp ~/ARGONOV_FULL_DUMP.md "$REPO_DIR/" 2>/dev/null
 
     cd "$REPO_DIR" || return 1
     git add .
@@ -145,8 +157,8 @@ do_pull() {
     fi
     cd "$REPO_DIR" || return 1
     git pull origin main 2>&1 | tail -5
-    cp *.py argonov "$HOME/" 2>/dev/null
-    chmod +x "$HOME/argonov"
+    cp *.py argonov argonov-dump "$HOME/" 2>/dev/null
+    chmod +x "$HOME/argonov" "$HOME/argonov-dump" "$HOME/doctor.py" 2>/dev/null
     echo -e "${G}✔ Готово${RST}"
 }
 
@@ -177,11 +189,12 @@ do_backup() {
         ai.py crypto_informer.py randomaudio.py todo.py notes.py \
         passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
         passgen.py sysinfo.py utils.py music_meta.py art.py argonov \
+        argonov-dump doctor.py net_helper.py \
         .ai_config.json .ai_context.json .crypto_watchlist.json \
         .todo.json .notes.json .pm.vault .music_favorites.json \
         .hacker_rpg_save.json .argonov_welcome_image \
         .config/fish .termux \
-        music_cache ai_chats 2>/dev/null
+        music_cache ai_chats ARGONOV_FULL_DUMP.md 2>/dev/null
     if [ -f "$file" ]; then
         size=$(du -h "$file" | cut -f1)
         echo -e "${G}✔ $file ${DIM}($size)${RST}"
@@ -207,50 +220,6 @@ do_restore() {
     sleep 2
 }
 
-do_doctor() {
-    header
-    echo -e "${M}[ ПРОВЕРКА ]:${RST}"
-    echo -e "${G}═══════════════════════════════════════════════════════${RST}"
-    echo ""
-    cf() {
-        [ -f "$1" ] && echo -e "  ${G}✔${RST} $1" || echo -e "  ${R}✘${RST} $1"
-    }
-    cc() {
-        command -v "$1" &>/dev/null && echo -e "  ${G}✔${RST} $1" || echo -e "  ${R}✘${RST} $1"
-    }
-    echo -e "${C}📂 Скрипты:${RST}"
-    for f in ai.py crypto_informer.py randomaudio.py todo.py notes.py \
-             passmanager.py hacktool.py hacker_rpg.py download_zone.py matrix.py \
-             passgen.py sysinfo.py utils.py music_meta.py art.py argonov; do
-        cf "$HOME/$f"
-    done
-    echo ""
-    echo -e "${C}⚙ Утилиты:${RST}"
-    for c in python pip git fish llama-server viu chafa gh; do cc "$c"; done
-    echo ""
-    echo -e "${C}🧠 Модели:${RST}"
-    for f in ~/*.gguf; do
-        [ -f "$f" ] && echo -e "  ${G}✔${RST} $(basename "$f") ${DIM}($(du -h "$f"|cut -f1))${RST}"
-    done
-    echo ""
-    echo -e "${C}🎨 Welcome-картинка:${RST}"
-    if [ -f "$HOME/.argonov_welcome_image" ]; then
-        wfile=$(cat "$HOME/.argonov_welcome_image")
-        if [ -f "$wfile" ]; then
-            echo -e "  ${G}✔${RST} $(basename "$wfile")"
-        else
-            echo -e "  ${Y}⚠${RST} Файл не найден: $wfile"
-        fi
-    else
-        echo -e "  ${DIM}не установлена (по умолчанию ~/fantasy.png)${RST}"
-    fi
-    echo ""
-    echo -e "${C}🌐 Git:${RST}"
-    [ -d "$REPO_DIR/.git" ] && echo -e "  ${G}✔${RST} $REPO_DIR" || echo -e "  ${R}✘${RST} Нет репо"
-    echo ""
-    echo -ne "${DIM}Enter...${RST}"; read -r
-}
-
 case "$1" in
     "")              show_menu ;;
     ai)              run_ai ;;
@@ -267,13 +236,13 @@ case "$1" in
     s|sysinfo)       run_s ;;
     util)            run_util ;;
     art)             shift; python ~/art.py "$@" ;;
+    doctor)          shift; python ~/doctor.py "$@" ;;
     plate)           python ~/sysinfo.py; echo "" ;;
     push)            do_push ;;
     pull)            do_pull ;;
     status)          do_status ;;
     backup)          do_backup ;;
     restore)         do_restore ;;
-    doctor)          do_doctor ;;
     help|-h|--help)  show_help ;;
     version|-v)      echo -e "${G}Argonov OS v${ARGONOV_VERSION}${RST}" ;;
     *)
